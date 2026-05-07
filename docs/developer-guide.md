@@ -115,3 +115,7 @@
 - Sensitive vars: `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`.
 - Never add Supabase service role key to frontend env.
 - Use [docs/security-review.md](c:/MyProjects/Wedly/docs/security-review.md) as production security reference.
+
+## 14) Launch and Demo Docs
+- Live demo talk track: [docs/demo-script.md](c:/MyProjects/Wedly/docs/demo-script.md)
+- Post-deploy verification: [docs/production-smoke-test.md](c:/MyProjects/Wedly/docs/production-smoke-test.md)

@@ -24,13 +24,15 @@ export function WishesList({ wishes }: WishesListProps) {
           className="rounded-xl border border-border bg-white p-4 shadow-[0_8px_16px_rgba(63,48,42,0.04)]"
         >
           <div className="flex items-center justify-between gap-3">
-            <h4 className="text-base font-semibold text-textMain">{wish.guest_name}</h4>
+            <h4 className="break-words text-base font-semibold text-textMain">
+              {wish.guest_name}
+            </h4>
             <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-textMuted">
               {wish.attendance.replace("_", " ")}
             </span>
           </div>
           {wish.wish_message ? (
-            <p className="mt-2 text-sm text-textMuted">{wish.wish_message}</p>
+            <p className="mt-2 break-words text-sm text-textMuted">{wish.wish_message}</p>
           ) : null}
         </article>
       ))}

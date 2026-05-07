@@ -166,6 +166,12 @@ npm run typecheck
 npm run build
 ```
 
+## Demo and Launch Docs
+- Demo walkthrough script: [docs/demo-script.md](c:/MyProjects/Wedly/docs/demo-script.md)
+- Production smoke test: [docs/production-smoke-test.md](c:/MyProjects/Wedly/docs/production-smoke-test.md)
+- Developer handoff: [docs/developer-guide.md](c:/MyProjects/Wedly/docs/developer-guide.md)
+- Security checklist: [docs/security-review.md](c:/MyProjects/Wedly/docs/security-review.md)
+
 ## Known Limitations
 - No image upload
 - No multiple themes

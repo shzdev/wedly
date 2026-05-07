@@ -74,7 +74,9 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-xl border border-border bg-white p-4 shadow-[0_8px_16px_rgba(63,48,42,0.04)]">
           <p className="text-xs uppercase tracking-[0.2em] text-textMuted">Couple</p>
-          <p className="mt-1 text-lg font-semibold text-textMain">{event.couple_names}</p>
+          <p className="mt-1 break-words text-lg font-semibold text-textMain">
+            {event.couple_names}
+          </p>
         </div>
         <div className="rounded-xl border border-border bg-white p-4 shadow-[0_8px_16px_rgba(63,48,42,0.04)]">
           <p className="text-xs uppercase tracking-[0.2em] text-textMuted">Total RSVPs</p>
@@ -88,7 +90,7 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
         </div>
         <div className="rounded-xl border border-border bg-white p-4 shadow-[0_8px_16px_rgba(63,48,42,0.04)]">
           <p className="text-xs uppercase tracking-[0.2em] text-textMuted">Venue</p>
-          <p className="mt-1 text-lg font-semibold text-textMain">{event.venue}</p>
+          <p className="mt-1 break-words text-lg font-semibold text-textMain">{event.venue}</p>
         </div>
       </div>
 
@@ -134,7 +136,9 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <h4 className="text-base font-semibold text-textMain">{rsvp.guest_name}</h4>
+                  <h4 className="break-words text-base font-semibold text-textMain">
+                    {rsvp.guest_name}
+                  </h4>
                   <p className="text-xs text-textMuted">{formatDateTime(rsvp.created_at)}</p>
                 </div>
                 <form action={deleteRsvp.bind(null, rsvp.id)}>
@@ -150,7 +154,7 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
                 </span>
               </div>
               {rsvp.wish_message ? (
-                <p className="mt-3 text-sm text-textMuted">{rsvp.wish_message}</p>
+                <p className="mt-3 break-words text-sm text-textMuted">{rsvp.wish_message}</p>
               ) : null}
             </article>
           ))}

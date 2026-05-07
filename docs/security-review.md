@@ -121,3 +121,7 @@ Defined in [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql):
 1. Add per-IP/session rate limiting.
 2. Add optional CAPTCHA for high-traffic links.
 3. Add security event dashboard/alerts for abuse patterns.
+
+## 15) Related Launch Docs
+- Demo flow and talking points: [docs/demo-script.md](c:/MyProjects/Wedly/docs/demo-script.md)
+- Production verification steps: [docs/production-smoke-test.md](c:/MyProjects/Wedly/docs/production-smoke-test.md)

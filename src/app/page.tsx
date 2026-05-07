@@ -15,10 +15,16 @@ function getBaseUrl(host: string) {
   return `${protocol}://${host}`;
 }
 
-export default async function Home() {
+type HomePageProps = {
+  searchParams?: Promise<{ auth?: string }>;
+};
+
+export default async function Home({ searchParams }: HomePageProps) {
   const requestHeaders = await headers();
   const host = requestHeaders.get("host") ?? "";
   const baseUrl = getBaseUrl(host);
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const authState = resolvedSearchParams?.auth ?? null;
   const user = await getCurrentUser();
   const event = user ? await getUserEvent() : null;
   const rsvps = event ? await getRsvpsByEvent(event.id) : [];
@@ -43,6 +49,13 @@ export default async function Home() {
             />
           ) : null}
         </WeddingShell>
+        {!user && (authState === "missing_code" || authState === "error") ? (
+          <div className="mx-auto mb-4 w-full max-w-6xl px-4 md:px-8">
+            <p className="rounded-xl border border-border bg-surface px-4 py-3 text-sm text-textMuted">
+              Sign-in could not be completed. Please request a new magic link and try again.
+            </p>
+          </div>
+        ) : null}
         <div className="mx-auto mb-8 w-full max-w-6xl px-4 md:px-8">
           <p className="text-center text-sm text-textMuted">
             {user

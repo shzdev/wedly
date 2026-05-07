@@ -42,7 +42,7 @@ I focused on scope discipline, reliable data access, and a warm luxury UI style.
 Live demo: `<LIVE_URL>`
 GitHub: `<GITHUB_URL>`
 
-If you have feedback on product direction or polish, I’d love to hear it.
+If you have feedback on product direction or polish, I'd love to hear it.
 
 ## 3) Portfolio Project Description
 **Wedly** is a one-day MVP that lets couples create a beautiful wedding RSVP page in minutes.
@@ -51,3 +51,4 @@ It includes magic-link auth, single-event management, a public RSVP + guestbook 
 
 Live: `<LIVE_URL>`  
 Source: `<GITHUB_URL>`
+
