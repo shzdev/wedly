@@ -13,8 +13,24 @@ const bodyFont = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Wedly",
-  description: "Luxury wedding RSVP + guestbook MVP",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  title: {
+    default: "Wedly | Beautiful Wedding RSVP Pages",
+    template: "%s | Wedly",
+  },
+  description: "Create a beautiful wedding RSVP page in minutes.",
+  openGraph: {
+    title: "Wedly",
+    description: "Create a beautiful wedding RSVP page in minutes.",
+    type: "website",
+    url: "/",
+    siteName: "Wedly",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Wedly",
+    description: "Create a beautiful wedding RSVP page in minutes.",
+  },
 };
 
 export default function RootLayout({
