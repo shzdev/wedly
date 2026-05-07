@@ -42,7 +42,7 @@ export async function getEventBySlug(slug: string) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("events")
-    .select("*")
+    .select("id,slug,couple_names,wedding_date,venue,message,created_at")
     .eq("slug", slug)
     .maybeSingle();
 
