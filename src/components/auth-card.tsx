@@ -3,6 +3,21 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
+const COOLDOWN_MS = 60_000;
+
+function getCooldownKey(email: string) {
+  return `wedly-magic-link:${email.trim().toLowerCase()}`;
+}
+
+function formatCooldownMessage(msRemaining: number) {
+  const seconds = Math.ceil(msRemaining / 1000);
+  if (seconds >= 60) {
+    const minutes = Math.ceil(seconds / 60);
+    return `Please wait about ${minutes} minute${minutes === 1 ? "" : "s"} before requesting another link.`;
+  }
+  return `Please wait about ${seconds} second${seconds === 1 ? "" : "s"} before requesting another link.`;
+}
+
 export function AuthCard() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,19 +30,38 @@ export function AuthCard() {
     setError(null);
     setSuccess(null);
 
-    const supabase = createClient();
-    const redirectTo = `${window.location.origin}/auth/callback`;
-    const { error: signInError } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: redirectTo },
-    });
+    const normalizedEmail = email.trim().toLowerCase();
+    const cooldownKey = getCooldownKey(normalizedEmail);
+    const lastSentRaw = window.localStorage.getItem(cooldownKey);
+    const lastSentAt = lastSentRaw ? Number(lastSentRaw) : 0;
+    const elapsed = Date.now() - lastSentAt;
 
-    if (signInError) {
-      setError(signInError.message);
+    if (Number.isFinite(lastSentAt) && elapsed >= 0 && elapsed < COOLDOWN_MS) {
+      setError(formatCooldownMessage(COOLDOWN_MS - elapsed));
       setLoading(false);
       return;
     }
 
+    const supabase = createClient();
+    const redirectTo = `${window.location.origin}/auth/callback`;
+    const { error: signInError } = await supabase.auth.signInWithOtp({
+      email: normalizedEmail,
+      options: { emailRedirectTo: redirectTo },
+    });
+
+    if (signInError) {
+      if (signInError.message.toLowerCase().includes("rate limit")) {
+        setError(
+          "Supabase is temporarily rate limiting magic-link emails. Please wait a minute and try again.",
+        );
+      } else {
+        setError(signInError.message);
+      }
+      setLoading(false);
+      return;
+    }
+
+    window.localStorage.setItem(cooldownKey, Date.now().toString());
     setSuccess("Magic link sent. Please check your email.");
     setLoading(false);
     setEmail("");
