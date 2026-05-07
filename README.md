@@ -68,6 +68,8 @@ See full schema: [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql)
 - Public can read invitation data and submit RSVP
 - No Supabase service role key exposed in frontend
 - Owner RSVP delete is enforced by RLS policy (`rsvps owner delete`)
+- Owner CSV export is enforced by session + ownership checks in route handler
+- Detailed security notes: [docs/security-review.md](c:/MyProjects/Wedly/docs/security-review.md)
 
 ## Sentry Monitoring Overview
 - Runtime init:
@@ -91,6 +93,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 NEXT_PUBLIC_SITE_URL=
 NEXT_PUBLIC_SENTRY_DSN=
 SENTRY_AUTH_TOKEN=
+SENTRY_ORG=
+SENTRY_PROJECT=
 ```
 
 Run local:
@@ -141,6 +145,19 @@ v1.1 schema note for existing projects:
 - Not-found state works for invalid slug
 - Sentry dev test route works on local:
   - `GET /api/dev/sentry-test`
+
+## Manual Security Checklist
+- Logged-out user cannot create event
+- User A cannot view/manage User B owner data
+- User A cannot delete User B RSVP
+- User A cannot export User B CSV
+- Public guest can open `/w/[slug]`
+- Public guest can submit RSVP
+- Duplicate RSVP gets friendly rejection
+- Honeypot spam simulation is rejected
+- CSV route returns unauthorized when logged out
+- Unknown slug shows not-found
+- No secrets are committed in repo
 
 ## Commands
 ```bash

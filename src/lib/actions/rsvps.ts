@@ -32,6 +32,29 @@ export async function submitRsvp(
   _prevState: RsvpActionState,
   formData: FormData,
 ): Promise<RsvpActionState> {
+  const supabase = await createClient();
+  const { data: targetEvent, error: targetEventError } = await supabase
+    .from("events")
+    .select("id,slug")
+    .eq("id", eventId)
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (targetEventError || !targetEvent) {
+    if (targetEventError) {
+      Sentry.withScope((scope) => {
+        scope.setTag("feature", "submit_rsvp");
+        scope.setTag("slug", slug);
+        scope.setExtra("event_id", eventId);
+        scope.setExtra("reason", "target_event_lookup_failed");
+        scope.setExtra("db_error_code", targetEventError.code);
+        scope.setExtra("db_error_message", targetEventError.message);
+        Sentry.captureException(targetEventError);
+      });
+    }
+    return { error: "This RSVP page is unavailable. Please check the invitation link." };
+  }
+
   const honeypot = String(formData.get("company_website") ?? "").trim();
   const renderedAtRaw = String(formData.get("form_rendered_at") ?? "").trim();
 
@@ -86,7 +109,6 @@ export async function submitRsvp(
     return { error: parsed.error.issues[0]?.message ?? "Invalid RSVP input." };
   }
 
-  const supabase = await createClient();
   const normalizedGuestName = normalizeGuestName(parsed.data.guest_name);
   const { data: existingRows, error: existingError } = await supabase
     .from("rsvps")

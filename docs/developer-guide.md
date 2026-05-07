@@ -94,6 +94,7 @@
 3. Set Supabase auth redirect URL
 4. Run `npm run lint`, `npm run typecheck`, `npm run build`
 5. Deploy
+6. Run security checklist in [docs/security-review.md](c:/MyProjects/Wedly/docs/security-review.md)
 
 ## 12) Common Debug Cases
 - Magic link redirect fails:
@@ -108,3 +109,9 @@
   - Check owner auth, event ownership, and route params in [src/app/api/rsvps/export/route.ts](c:/MyProjects/Wedly/src/app/api/rsvps/export/route.ts)
 - Sentry events missing:
   - Check DSN env var and runtime init files
+
+## 13) Security Notes
+- Public-safe vars: `NEXT_PUBLIC_*` values only.
+- Sensitive vars: `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`.
+- Never add Supabase service role key to frontend env.
+- Use [docs/security-review.md](c:/MyProjects/Wedly/docs/security-review.md) as production security reference.
