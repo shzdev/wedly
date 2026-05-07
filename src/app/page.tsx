@@ -25,7 +25,8 @@ export default async function Home() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-background">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(185,143,120,0.16),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(139,96,76,0.14),transparent_45%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(185,143,120,0.2),transparent_43%),radial-gradient(circle_at_bottom_right,rgba(139,96,76,0.15),transparent_48%)]" />
+      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-surface/50 to-transparent" />
       <div className="relative">
         <WeddingShell
           eyebrow="Luxury Wedding RSVP"
@@ -42,7 +43,7 @@ export default async function Home() {
             />
           ) : null}
         </WeddingShell>
-        <div className="mx-auto mb-10 w-full max-w-6xl px-4 md:px-8">
+        <div className="mx-auto mb-8 w-full max-w-6xl px-4 md:px-8">
           <p className="text-center text-sm text-textMuted">
             {user
               ? "Your wedding page is live. Share the link and collect RSVPs beautifully."
