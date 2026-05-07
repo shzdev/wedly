@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { submitRsvp } from "@/lib/actions/rsvps";
 
@@ -27,6 +27,7 @@ function SubmitButton() {
 }
 
 export function RsvpForm({ eventId, slug }: RsvpFormProps) {
+  const [renderedAt] = useState(() => Date.now().toString());
   const formRef = useRef<HTMLFormElement>(null);
   const submitAction = submitRsvp.bind(null, eventId, slug);
   const [state, formAction] = useActionState(submitAction, initialState);
@@ -87,6 +88,15 @@ export function RsvpForm({ eventId, slug }: RsvpFormProps) {
           className="min-h-24 w-full rounded-lg border border-border bg-white p-3 outline-none focus:border-primary"
         />
       </label>
+      <input
+        type="text"
+        name="company_website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+      />
+      <input type="hidden" name="form_rendered_at" value={renderedAt} />
       <SubmitButton />
       <div aria-live="polite" className="min-h-5">
         {state.error ? <p className="text-sm text-red-600">{state.error}</p> : null}
