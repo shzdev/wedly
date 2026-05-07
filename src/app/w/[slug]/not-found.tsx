@@ -2,8 +2,9 @@ import Link from "next/link";
 
 export default function WeddingNotFound() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-4">
-      <section className="w-full max-w-xl rounded-3xl border border-border bg-surface p-8 text-center shadow-[0_25px_45px_rgba(63,48,42,0.08)]">
+    <main className="relative flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(185,143,120,0.16),transparent_40%)]" />
+      <section className="relative w-full max-w-xl rounded-3xl border border-border bg-surface p-8 text-center shadow-[0_25px_45px_rgba(63,48,42,0.08)]">
         <p className="text-xs font-semibold tracking-[0.3em] uppercase text-primary">
           Wedly
         </p>
@@ -13,7 +14,7 @@ export default function WeddingNotFound() {
         </p>
         <Link
           href="/"
-          className="mt-6 inline-flex h-11 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-white"
+          className="mt-6 inline-flex h-11 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-white transition hover:bg-primaryDark"
         >
           Back to Wedly
         </Link>

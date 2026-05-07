@@ -5,8 +5,9 @@ Live demo: `<LIVE_URL>`
 GitHub: `<GITHUB_URL>`
 
 ## Screenshot
-- Home page: `<SCREENSHOT_URL_OR_PATH>`
-- Public RSVP page: `<SCREENSHOT_URL_OR_PATH>`
+- Logged-out home (hero + magic-link form): `<SCREENSHOT_URL_OR_PATH>`
+- Logged-in home (manage RSVP + summary + CSV): `<SCREENSHOT_URL_OR_PATH>`
+- Public RSVP page (`/w/nadia-aiman`): `<SCREENSHOT_URL_OR_PATH>`
 
 ## Problem Statement
 Most wedding tools are either too heavy or too expensive for couples who only need:

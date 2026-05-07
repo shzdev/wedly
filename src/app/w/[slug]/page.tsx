@@ -43,31 +43,35 @@ export default async function WeddingPage({ params }: WeddingPageProps) {
   const rsvps = await getRsvpsByEvent(event.id);
 
   return (
-    <main className="min-h-screen bg-background px-4 py-10 md:px-8 md:py-16">
-      <section className="mx-auto grid w-full max-w-6xl gap-8 md:grid-cols-[1fr_0.95fr]">
-        <div className="rounded-[2rem] border border-border bg-surface p-8 shadow-[0_30px_60px_rgba(63,48,42,0.09)]">
+    <main className="relative min-h-screen bg-background px-4 py-10 md:px-8 md:py-16">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(185,143,120,0.18),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(139,96,76,0.12),transparent_48%)]" />
+      <section className="relative mx-auto grid w-full max-w-6xl gap-8 md:grid-cols-[1fr_0.95fr]">
+        <div className="rounded-[2rem] border border-border bg-surface p-7 shadow-[0_30px_60px_rgba(63,48,42,0.09)] md:p-9">
           <p className="text-xs font-semibold tracking-[0.35em] uppercase text-primary">
             You are invited
           </p>
-          <h1 className="mt-4 text-5xl leading-tight text-textMain md:text-6xl">
+          <h1 className="mt-4 text-5xl leading-[1.04] text-textMain md:text-7xl">
             {event.couple_names}
           </h1>
-          <div className="mt-6 space-y-2 text-textMuted">
-            <p>
+          <div className="mt-6 space-y-2 text-textMuted md:text-lg">
+            <p className="break-words">
               <span className="font-semibold text-textMain">Date:</span>{" "}
               {formatDate(event.wedding_date)}
             </p>
-            <p>
+            <p className="break-words">
               <span className="font-semibold text-textMain">Venue:</span> {event.venue}
             </p>
           </div>
           {event.message ? (
-            <p className="mt-6 rounded-xl bg-secondary/45 p-4 text-textMuted">
+            <p className="mt-6 rounded-xl border border-border/60 bg-[color:var(--surfaceMuted)]/50 p-4 text-textMuted">
               {event.message}
             </p>
           ) : null}
           <div className="mt-8">
-            <h2 className="text-2xl text-textMain">Latest Wishes</h2>
+            <h2 className="text-3xl text-textMain">Guestbook Wishes</h2>
+            <p className="mt-1 text-sm text-textMuted">
+              Loving notes from family and friends.
+            </p>
             <div className="mt-4">
               <WishesList wishes={rsvps.slice(0, 8)} />
             </div>
@@ -75,7 +79,7 @@ export default async function WeddingPage({ params }: WeddingPageProps) {
           <div className="mt-8">
             <Link
               href="/"
-              className="inline-flex h-10 items-center rounded-lg border border-border px-4 text-sm font-semibold text-textMain transition hover:border-primary"
+              className="wedly-btn-secondary inline-flex items-center"
             >
               Create your own Wedly page
             </Link>
