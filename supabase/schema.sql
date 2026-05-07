@@ -24,6 +24,8 @@ create table if not exists public.rsvps (
 create index if not exists events_user_id_idx on public.events(user_id);
 create index if not exists events_slug_idx on public.events(slug);
 create index if not exists rsvps_event_id_idx on public.rsvps(event_id);
+create index if not exists rsvps_event_guest_name_ci_idx
+  on public.rsvps (event_id, lower(trim(guest_name)));
 create unique index if not exists events_user_one_event_idx on public.events(user_id);
 
 alter table public.events enable row level security;
