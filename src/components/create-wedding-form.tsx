@@ -10,11 +10,7 @@ const initialState: ActionState = {};
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="h-12 w-full rounded-xl bg-primary text-sm font-semibold text-white transition hover:bg-primaryDark disabled:cursor-not-allowed disabled:opacity-70"
-    >
+    <button type="submit" disabled={pending} className="wedly-btn-primary">
       {pending ? "Creating..." : "Create Wedding Page"}
     </button>
   );
@@ -33,10 +29,10 @@ export function CreateWeddingForm() {
   }, [router, state.success]);
 
   return (
-    <div className="rounded-[1.5rem] border border-border bg-surface p-6 shadow-[0_20px_45px_rgba(63,48,42,0.08)]">
-      <h2 className="text-3xl text-textMain">Create Your Wedding Page</h2>
-      <p className="mt-2 text-sm text-textMuted">
-        One event per account in v1. Keep details simple and elegant.
+    <div className="wedly-card p-6 md:p-7">
+      <h2 className="text-4xl leading-tight text-textMain">Create Your Wedding Page</h2>
+      <p className="mt-2 text-sm leading-relaxed text-textMuted">
+        Fill in a few details and we&apos;ll prepare your elegant RSVP page.
       </p>
       <form ref={formRef} action={formAction} className="mt-6 space-y-4">
         <label className="block">
@@ -44,8 +40,8 @@ export function CreateWeddingForm() {
           <input
             name="couple_names"
             required
-            placeholder="Aisyah & Hafiz"
-            className="h-12 w-full rounded-xl border border-border bg-[#fffdfb] px-4 outline-none focus:border-primary"
+            placeholder="Nadia & Aiman"
+            className="wedly-input"
           />
         </label>
         <label className="block">
@@ -54,7 +50,7 @@ export function CreateWeddingForm() {
             name="wedding_date"
             type="date"
             required
-            className="h-12 w-full rounded-xl border border-border bg-[#fffdfb] px-4 outline-none focus:border-primary"
+            className="wedly-input"
           />
         </label>
         <label className="block">
@@ -62,8 +58,8 @@ export function CreateWeddingForm() {
           <input
             name="venue"
             required
-            placeholder="Putrajaya Marriott Hotel"
-            className="h-12 w-full rounded-xl border border-border bg-[#fffdfb] px-4 outline-none focus:border-primary"
+            placeholder="The Glasshouse, Kuala Lumpur"
+            className="wedly-input"
           />
         </label>
         <label className="block">
@@ -72,7 +68,7 @@ export function CreateWeddingForm() {
             name="slug"
             required
             placeholder="nadia-aiman"
-            className="h-12 w-full rounded-xl border border-border bg-[#fffdfb] px-4 outline-none focus:border-primary"
+            className="wedly-input"
           />
           <p className="mt-1 text-xs text-textMuted">
             Lowercase letters, numbers, and hyphens only.
@@ -83,14 +79,14 @@ export function CreateWeddingForm() {
           <textarea
             name="message"
             maxLength={500}
-            placeholder="A short message for your loved ones..."
-            className="min-h-24 w-full rounded-xl border border-border bg-[#fffdfb] p-4 outline-none focus:border-primary"
+            placeholder="Join us as we celebrate our special day with the people we love most."
+            className="wedly-textarea"
           />
         </label>
         <SubmitButton />
         <div aria-live="polite" className="min-h-5">
-          {state.error ? <p className="text-sm text-red-600">{state.error}</p> : null}
-          {state.success ? <p className="text-sm text-emerald-700">{state.success}</p> : null}
+          {state.error ? <p className="text-sm text-rose-700">{state.error}</p> : null}
+          {state.success ? <p className="text-sm text-emerald-800">{state.success}</p> : null}
         </div>
       </form>
     </div>

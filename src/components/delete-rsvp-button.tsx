@@ -14,7 +14,7 @@ export function DeleteRsvpButton() {
           event.preventDefault();
         }
       }}
-      className="rounded-lg border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-60"
+      className="h-9 rounded-lg border border-rose-300 px-3 text-xs font-semibold text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {pending ? "Deleting..." : "Delete"}
     </button>
