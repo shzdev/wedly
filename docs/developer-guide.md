@@ -16,6 +16,7 @@
 - Auth callback: [src/app/auth/callback/route.ts](c:/MyProjects/Wedly/src/app/auth/callback/route.ts)
 - Event actions: [src/lib/actions/events.ts](c:/MyProjects/Wedly/src/lib/actions/events.ts)
 - RSVP actions: [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts)
+- CSV export route: [src/app/api/rsvps/export/route.ts](c:/MyProjects/Wedly/src/app/api/rsvps/export/route.ts)
 - Event validation: [src/lib/validations/event.ts](c:/MyProjects/Wedly/src/lib/validations/event.ts)
 - RSVP validation: [src/lib/validations/rsvp.ts](c:/MyProjects/Wedly/src/lib/validations/rsvp.ts)
 - RLS: [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql)
@@ -27,7 +28,8 @@
 4. User creates event via Server Action (`createEvent`)
 5. Guests open `/w/[slug]`
 6. Guests submit RSVP via Server Action (`submitRsvp`)
-7. Wishes list refreshes from `getRsvpsByEvent`
+7. Server applies spam + duplicate checks before insert
+8. Owner sees summary/list updates and can export CSV/delete entries
 
 ## 4) Auth Flow
 - Login starts in [src/components/auth-card.tsx](c:/MyProjects/Wedly/src/components/auth-card.tsx)
@@ -39,6 +41,12 @@
 - Form UI: [src/components/rsvp-form.tsx](c:/MyProjects/Wedly/src/components/rsvp-form.tsx)
 - Validation + insert: [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts)
 - Schema rules: [src/lib/validations/rsvp.ts](c:/MyProjects/Wedly/src/lib/validations/rsvp.ts)
+- Spam guard:
+  - Honeypot field `company_website`
+  - Hidden timestamp `form_rendered_at`
+  - Server rejects unrealistic fast submits (<2s)
+- Duplicate guard:
+  - Server normalizes `guest_name` and checks existing RSVP in same event
 
 ## 6) Supabase RLS Flow
 - `events` owner policies protect private management
@@ -54,6 +62,10 @@
   - [instrumentation-client.ts](c:/MyProjects/Wedly/instrumentation-client.ts)
 - App registration: [src/instrumentation.ts](c:/MyProjects/Wedly/src/instrumentation.ts)
 - Tagged errors from event/RSVP actions
+- Also captures:
+  - spam rejection warnings
+  - duplicate RSVP warnings
+  - delete/export failures
 
 ## 8) Add New Event Field
 1. Add DB column in `supabase/schema.sql`
@@ -90,5 +102,9 @@
   - Check RLS and unique constraints in `events`
 - RSVP fails:
   - Check `rsvps` insert policies
+- Duplicate RSVP flagged too aggressively:
+  - Check normalization logic in [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts)
+- Export CSV fails:
+  - Check owner auth, event ownership, and route params in [src/app/api/rsvps/export/route.ts](c:/MyProjects/Wedly/src/app/api/rsvps/export/route.ts)
 - Sentry events missing:
   - Check DSN env var and runtime init files

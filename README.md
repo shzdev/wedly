@@ -21,7 +21,10 @@ Wedly solves this with a focused MVP flow and warm luxury visual direction.
 - One event per account (v1 scope)
 - Public wedding page at `/w/[slug]`
 - Guest RSVP + wish submission
-- Owner manage card with copy-link and latest wishes
+- Basic spam protection (honeypot + minimum submit delay)
+- Duplicate RSVP protection per event + guest name
+- Owner RSVP management (summary + list + delete)
+- Owner CSV export for RSVP list
 - Sentry monitoring for critical server actions
 
 ## Tech Stack
@@ -63,6 +66,7 @@ See full schema: [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql)
 - Owner can manage own event data
 - Public can read invitation data and submit RSVP
 - No Supabase service role key exposed in frontend
+- Owner RSVP delete is enforced by RLS policy (`rsvps owner delete`)
 
 ## Sentry Monitoring Overview
 - Runtime init:
@@ -72,6 +76,7 @@ See full schema: [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql)
 - Error capture in:
   - [src/lib/actions/events.ts](c:/MyProjects/Wedly/src/lib/actions/events.ts)
   - [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts)
+  - [src/app/api/rsvps/export/route.ts](c:/MyProjects/Wedly/src/app/api/rsvps/export/route.ts)
 
 ## Local Setup
 ```bash
@@ -109,6 +114,11 @@ Seed note:
 - Replace `demo_user_id` in `seed.sql` with a real `auth.users.id` from your Supabase project before running.
 - Demo event slug: `nadia-aiman`.
 
+v1.1 schema note for existing projects:
+- Re-run [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql) to ensure:
+  - `rsvps owner delete` policy exists
+  - `rsvps_event_guest_name_ci_idx` index exists
+
 ## Vercel Deployment
 1. Push to GitHub
 2. Import repo in Vercel
@@ -122,7 +132,11 @@ Seed note:
 - Duplicate slug shows friendly error
 - Public page `/w/[slug]` loads
 - Guest RSVP submission succeeds
+- Honeypot/fast-submit spam checks reject suspicious submissions
+- Duplicate RSVP shows friendly message
 - Wishes list updates
+- Owner can delete RSVP from manage panel
+- Owner CSV export download works
 - Not-found state works for invalid slug
 - Sentry dev test route works on local:
   - `GET /api/dev/sentry-test`
@@ -143,9 +157,9 @@ npm run build
 - No advanced analytics dashboard
 
 ## Future Improvements (v1.1)
-1. Rate limiting and CAPTCHA on RSVP
-2. Wish moderation tools for owner
-3. CSV export for RSVP list
+1. Stronger rate limiting per IP/session
+2. Optional CAPTCHA toggle for high-traffic events
+3. Bulk RSVP actions (archive/restore)
 4. Lightweight RSVP analytics summary
 
 ## Portfolio Case Study Summary
