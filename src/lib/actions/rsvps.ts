@@ -48,7 +48,19 @@ export async function submitRsvp(
   }
 
   const renderedAt = Number(renderedAtRaw);
-  const elapsedMs = Number.isFinite(renderedAt) ? Date.now() - renderedAt : -1;
+  if (!Number.isFinite(renderedAt)) {
+    Sentry.withScope((scope) => {
+      scope.setLevel("warning");
+      scope.setTag("feature", "submit_rsvp");
+      scope.setTag("slug", slug);
+      scope.setExtra("event_id", eventId);
+      scope.setExtra("reason", "missing_render_timestamp");
+      Sentry.captureMessage("RSVP rejected due to missing timestamp");
+    });
+    return { success: "Thank you. Your RSVP and wish have been received." };
+  }
+
+  const elapsedMs = Date.now() - renderedAt;
   if (elapsedMs >= 0 && elapsedMs < 2000) {
     Sentry.withScope((scope) => {
       scope.setLevel("warning");
