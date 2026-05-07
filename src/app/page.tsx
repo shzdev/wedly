@@ -22,7 +22,6 @@ export default async function Home() {
   const user = await getCurrentUser();
   const event = user ? await getUserEvent() : null;
   const rsvps = event ? await getRsvpsByEvent(event.id) : [];
-  const latestWishes = rsvps.slice(0, 5);
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-background">
@@ -39,8 +38,7 @@ export default async function Home() {
             <ManageWeddingCard
               event={event}
               publicLink={`${baseUrl}/w/${event.slug}`}
-              rsvpCount={rsvps.length}
-              latestWishes={latestWishes}
+              rsvps={rsvps}
             />
           ) : null}
         </WeddingShell>
