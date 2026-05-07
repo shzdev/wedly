@@ -3,8 +3,10 @@
 :root {
   --background: #f8f3ee;
   --surface: #fffaf6;
+  --surfaceMuted: #f1e5dd;
   --primary: #b98f78;
   --primaryDark: #8b604c;
+  --accent: #d9b8a6;
   --secondary: #ead8cf;
   --textMain: #3f302a;
   --textMuted: #8f7468;
@@ -14,8 +16,10 @@
 @theme inline {
   --color-background: #f8f3ee;
   --color-surface: #fffaf6;
+  --color-surfaceMuted: #f1e5dd;
   --color-primary: #b98f78;
   --color-primaryDark: #8b604c;
+  --color-accent: #d9b8a6;
   --color-secondary: #ead8cf;
   --color-textMain: #3f302a;
   --color-textMuted: #8f7468;
@@ -28,6 +32,7 @@ body {
   background: var(--background);
   color: var(--textMain);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
 }
 
 h1,
@@ -35,4 +40,77 @@ h2,
 h3,
 h4 {
   font-family: var(--font-heading), "Times New Roman", serif;
+}
+
+.wedly-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 1.35rem;
+  box-shadow: 0 18px 35px rgba(63, 48, 42, 0.08);
+}
+
+.wedly-input {
+  height: 2.95rem;
+  width: 100%;
+  border-radius: 0.8rem;
+  border: 1px solid var(--border);
+  background: #fffdfb;
+  padding: 0 0.95rem;
+  color: var(--textMain);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wedly-input:focus {
+  border-color: var(--primaryDark);
+  box-shadow: 0 0 0 3px rgba(185, 143, 120, 0.18);
+}
+
+.wedly-textarea {
+  min-height: 6rem;
+  width: 100%;
+  resize: vertical;
+  border-radius: 0.8rem;
+  border: 1px solid var(--border);
+  background: #fffdfb;
+  padding: 0.8rem 0.95rem;
+  color: var(--textMain);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wedly-textarea:focus {
+  border-color: var(--primaryDark);
+  box-shadow: 0 0 0 3px rgba(185, 143, 120, 0.18);
+}
+
+.wedly-btn-primary {
+  height: 3rem;
+  width: 100%;
+  border-radius: 0.8rem;
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primaryDark) 100%);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: transform 0.15s ease, filter 0.2s ease;
+}
+
+.wedly-btn-primary:hover {
+  filter: brightness(1.03);
+}
+
+.wedly-btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.wedly-btn-secondary {
+  height: 2.5rem;
+  border-radius: 0.7rem;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--textMain);
+  padding: 0 0.9rem;
+  font-size: 0.83rem;
+  font-weight: 600;
 }

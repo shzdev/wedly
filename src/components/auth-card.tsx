@@ -34,14 +34,14 @@ export function AuthCard() {
   }
 
   return (
-    <div className="rounded-[1.5rem] border border-border bg-surface p-6 shadow-[0_20px_45px_rgba(63,48,42,0.08)]">
-      <h2 className="text-3xl text-textMain">Start Your Wedly Page</h2>
-      <p className="mt-2 text-sm text-textMuted">
+    <div className="wedly-card p-6 md:p-7">
+      <h2 className="text-4xl leading-tight text-textMain">Start Your Wedly Page</h2>
+      <p className="mt-2 text-sm leading-relaxed text-textMuted">
         Use your email and we&apos;ll send a secure magic link.
       </p>
       <form className="mt-6 space-y-4" onSubmit={handleLogin}>
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-textMain">Email</span>
+          <span className="mb-2 block text-sm font-medium text-textMain">Email Address</span>
           <input
             type="email"
             required
@@ -50,23 +50,23 @@ export function AuthCard() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="h-12 w-full rounded-xl border border-border bg-[#fffdfb] px-4 text-textMain outline-none focus:border-primary"
+            className="wedly-input"
           />
         </label>
         <button
           disabled={loading}
-          className="h-12 w-full rounded-xl bg-primary text-sm font-semibold text-white transition hover:bg-primaryDark disabled:cursor-not-allowed disabled:opacity-70"
+          className="wedly-btn-primary"
         >
           {loading ? "Sending..." : "Send Magic Link"}
         </button>
       </form>
-      <p className="mt-3 text-xs text-textMuted">
+      <p className="mt-4 text-xs text-textMuted">
         No password needed. Your link expires automatically for safety.
       </p>
       <div aria-live="polite" className="mt-2 min-h-5">
-        {error ? <p className="text-sm text-red-600">{error}</p> : null}
+        {error ? <p className="text-sm text-rose-700">{error}</p> : null}
         {success ? (
-          <p className="text-sm text-emerald-700">
+          <p className="text-sm text-emerald-800">
             Magic link sent. Please check your inbox and spam folder.
           </p>
         ) : null}
