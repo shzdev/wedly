@@ -2,19 +2,19 @@ import type { Metadata } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
+const headingFont = Playfair_Display({
+  variable: "--font-heading",
   subsets: ["latin"],
 });
 
-const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair",
+const bodyFont = Plus_Jakarta_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Wedly - Luxury Wedding RSVP Page Builder",
-  description: "Create elegant wedding RSVP pages in minutes with Wedly.",
+  title: "Wedly",
+  description: "Luxury wedding RSVP + guestbook MVP",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${plusJakartaSans.variable} ${playfairDisplay.variable} h-full antialiased`}
+      className={`${headingFont.variable} ${bodyFont.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
