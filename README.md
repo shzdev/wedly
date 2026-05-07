@@ -1,8 +1,8 @@
 # Wedly
 Create a beautiful wedding RSVP page in minutes.
 
-Live demo: `<LIVE_URL>`  
-GitHub: `<GITHUB_URL>`
+Live demo: `[LIVE_DEMO_URL]`  
+GitHub: `[GITHUB_REPO_URL]`
 
 ## Screenshot
 - Logged-out home (hero + magic-link form): `<SCREENSHOT_URL_OR_PATH>`
@@ -103,11 +103,15 @@ npm run dev
 ```
 
 ## Supabase Setup
-1. Create project in Supabase
-2. Apply [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql) in SQL Editor
-3. Configure auth redirect URLs:
-  - Local: `http://localhost:3000/auth/callback`
-  - Production: `https://<your-domain>/auth/callback`
+1. Create project in Supabase.
+2. Apply [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql) in SQL Editor.
+3. Configure Auth URL settings:
+  - Site URL: `https://YOUR_VERCEL_DOMAIN` (or custom domain)
+  - Redirect URLs:
+  - `http://localhost:3000/auth/callback`
+  - `https://YOUR_VERCEL_DOMAIN/auth/callback`
+  - `https://YOUR_CUSTOM_DOMAIN/auth/callback` (if custom domain is enabled)
+4. Confirm RLS is enabled and policies exist on `events` and `rsvps`.
 
 ## Schema and Seed Instructions
 - Base schema:
@@ -125,11 +129,13 @@ v1.1 schema note for existing projects:
   - `rsvps_event_guest_name_ci_idx` index exists
 
 ## Vercel Deployment
-1. Push to GitHub
-2. Import repo in Vercel
-3. Set env vars from `.env.example`
-4. Set `NEXT_PUBLIC_SITE_URL` to production URL
-5. Redeploy
+1. Push repository to GitHub.
+2. Import project in Vercel (framework preset: Next.js).
+3. Set environment variables from [.env.example](c:/MyProjects/Wedly/.env.example).
+4. Deploy once, copy production URL, then set `NEXT_PUBLIC_SITE_URL` to that URL.
+5. Redeploy after updating `NEXT_PUBLIC_SITE_URL`.
+6. Add production callback URL to Supabase redirect list.
+7. Test magic-link auth on production URL.
 
 ## Testing Checklist
 - Login magic link works
@@ -171,6 +177,8 @@ npm run build
 - Production smoke test: [docs/production-smoke-test.md](c:/MyProjects/Wedly/docs/production-smoke-test.md)
 - Developer handoff: [docs/developer-guide.md](c:/MyProjects/Wedly/docs/developer-guide.md)
 - Security checklist: [docs/security-review.md](c:/MyProjects/Wedly/docs/security-review.md)
+- Deployment troubleshooting: [docs/deployment-troubleshooting.md](c:/MyProjects/Wedly/docs/deployment-troubleshooting.md)
+- Final launch copy: [docs/final-launch-copy.md](c:/MyProjects/Wedly/docs/final-launch-copy.md)
 
 ## Known Limitations
 - No image upload
@@ -185,6 +193,16 @@ npm run build
 2. Optional CAPTCHA toggle for high-traffic events
 3. Bulk RSVP actions (archive/restore)
 4. Lightweight RSVP analytics summary
+
+## Before Sharing Publicly
+1. Replace placeholders:
+- `[LIVE_DEMO_URL]`
+- `[GITHUB_REPO_URL]`
+- Screenshot placeholders
+2. Confirm production env vars are set in Vercel.
+3. Confirm Supabase redirect URLs include production domain.
+4. Run [docs/production-smoke-test.md](c:/MyProjects/Wedly/docs/production-smoke-test.md) end-to-end.
+5. Use [docs/final-launch-copy.md](c:/MyProjects/Wedly/docs/final-launch-copy.md) for first public post.
 
 ## Portfolio Case Study Summary
 Wedly demonstrates end-to-end MVP delivery: product scoping, Supabase RLS design, server action flows, UI polish, and production monitoring within a small, maintainable codebase.

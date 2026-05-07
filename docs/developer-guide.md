@@ -119,3 +119,5 @@
 ## 14) Launch and Demo Docs
 - Live demo talk track: [docs/demo-script.md](c:/MyProjects/Wedly/docs/demo-script.md)
 - Post-deploy verification: [docs/production-smoke-test.md](c:/MyProjects/Wedly/docs/production-smoke-test.md)
+- Deployment troubleshooting: [docs/deployment-troubleshooting.md](c:/MyProjects/Wedly/docs/deployment-troubleshooting.md)
+- Final launch copy pack: [docs/final-launch-copy.md](c:/MyProjects/Wedly/docs/final-launch-copy.md)
