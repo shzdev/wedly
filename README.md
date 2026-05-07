@@ -1,157 +1,154 @@
-# Wedly MVP
+# Wedly
+Create a beautiful wedding RSVP page in minutes.
 
-Wedly ialah MVP satu-hari untuk wedding RSVP + guestbook:
-- Login magic link (Supabase Auth)
-- Setiap user cipta satu event sahaja (v1 scope)
-- Public page di `/w/[slug]` untuk RSVP + wishes
-- Owner boleh salin link, lihat kiraan RSVP, dan wishes terkini
+Live demo: `<LIVE_URL>`  
+GitHub: `<GITHUB_URL>`
+
+## Screenshot
+- Home page: `<SCREENSHOT_URL_OR_PATH>`
+- Public RSVP page: `<SCREENSHOT_URL_OR_PATH>`
+
+## Problem Statement
+Most wedding tools are either too heavy or too expensive for couples who only need:
+- one elegant invitation page
+- RSVP collection
+- guest wishes
+
+Wedly solves this with a focused MVP flow and warm luxury visual direction.
+
+## Core Features
+- Magic-link login (Supabase Auth)
+- One event per account (v1 scope)
+- Public wedding page at `/w/[slug]`
+- Guest RSVP + wish submission
+- Owner manage card with copy-link and latest wishes
+- Sentry monitoring for critical server actions
 
 ## Tech Stack
-- Next.js App Router + TypeScript + Tailwind CSS
-- Supabase Auth + Supabase Postgres + RLS
-- Zod validation
-- Sentry (error monitoring)
-- Vercel-ready deployment
+- Next.js 16 App Router
+- TypeScript
+- Tailwind CSS
+- Supabase Auth + Postgres + RLS
+- Zod
+- Sentry
+- Vercel
 
-## Ciri Utama
-- Logged-out: landing + login card
-- Logged-in tanpa event: create event form
-- Logged-in dengan event: manage card + copy link + latest wishes
-- Public guests: submit RSVP dan wish message
-- Elegant not-found state untuk slug tidak sah
+## Architecture Overview
+- `src/app/page.tsx`: main route with auth-aware UI branching
+- `src/app/w/[slug]/page.tsx`: public invitation + RSVP page
+- `src/lib/actions/events.ts`: event actions and owner flow
+- `src/lib/actions/rsvps.ts`: RSVP actions and guest flow
+- `supabase/schema.sql`: DB schema + RLS policies
 
-## Struktur Projek
-```txt
-src/
-  app/
-    page.tsx
-    auth/callback/route.ts
-    w/[slug]/page.tsx
-    w/[slug]/not-found.tsx
-    api/dev/sentry-test/route.ts
-  components/
-    auth-card.tsx
-    create-wedding-form.tsx
-    manage-wedding-card.tsx
-    rsvp-form.tsx
-    wishes-list.tsx
-    copy-link-button.tsx
-    wedding-shell.tsx
-  lib/
-    actions/
-      events.ts
-      rsvps.ts
-    supabase/
-      client.ts
-      server.ts
-    validations/
-      event.ts
-      rsvp.ts
-    utils/
-      slug.ts
-      date.ts
-  proxy.ts
-  instrumentation.ts
-supabase/
-  schema.sql
-```
+## User Flow
+1. User opens `/`
+2. User logs in via magic link
+3. User creates one event
+4. User copies public link
+5. Guest opens `/w/[slug]`
+6. Guest submits RSVP + wish
+7. Owner sees latest wishes on `/`
 
-## Setup dari Kosong
+## Database Overview
+- `events`
+  - stores owner event details and unique slug
+  - one-event-per-user constraint
+- `rsvps`
+  - stores guest responses and wishes per event
 
-### 1) Install dependencies
+See full schema: [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql)
+
+## Security and RLS Overview
+- RLS enabled on `events` and `rsvps`
+- Owner can manage own event data
+- Public can read invitation data and submit RSVP
+- No Supabase service role key exposed in frontend
+
+## Sentry Monitoring Overview
+- Runtime init:
+  - [sentry.server.config.ts](c:/MyProjects/Wedly/sentry.server.config.ts)
+  - [sentry.edge.config.ts](c:/MyProjects/Wedly/sentry.edge.config.ts)
+  - [instrumentation-client.ts](c:/MyProjects/Wedly/instrumentation-client.ts)
+- Error capture in:
+  - [src/lib/actions/events.ts](c:/MyProjects/Wedly/src/lib/actions/events.ts)
+  - [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts)
+
+## Local Setup
 ```bash
 npm install
 ```
 
-### 2) Cipta Supabase project
-Ambil dari Supabase dashboard:
-- `Project URL`
-- `Anon key`
-
-### 3) Apply schema SQL
-1. Buka Supabase SQL Editor.
-2. Run kandungan [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql).
-
-Jika perlu reset:
-1. Drop tables `public.rsvps` dan `public.events`.
-2. Run semula `supabase/schema.sql`.
-
-### 4) Auth redirect configuration
-Di Supabase `Authentication > URL Configuration`:
-- Site URL: `http://localhost:3000`
-- Redirect URL local: `http://localhost:3000/auth/callback`
-- Redirect URL production: `https://<your-domain>/auth/callback`
-
-### 5) Environment variables
-Copy `.env.example` ke `.env.local`:
+Create `.env.local` from `.env.example`:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_URL=
 NEXT_PUBLIC_SENTRY_DSN=
 SENTRY_AUTH_TOKEN=
-SENTRY_ORG=
-SENTRY_PROJECT=
 ```
 
-Nota keselamatan:
-- Jangan letak `SUPABASE_SERVICE_ROLE_KEY` di browser.
-- MVP ini tidak perlukan service role key.
-
-### 6) Run local
+Run local:
 ```bash
 npm run dev
 ```
-Open `http://localhost:3000`.
 
-## Integrasi Sentry
-- Runtime config:
-  - [sentry.server.config.ts](c:/MyProjects/Wedly/sentry.server.config.ts)
-  - [sentry.edge.config.ts](c:/MyProjects/Wedly/sentry.edge.config.ts)
-  - [instrumentation-client.ts](c:/MyProjects/Wedly/instrumentation-client.ts)
-  - [src/instrumentation.ts](c:/MyProjects/Wedly/src/instrumentation.ts)
-- Next config wrapper:
-  - [next.config.ts](c:/MyProjects/Wedly/next.config.ts)
-- Dev-only error test:
+## Supabase Setup
+1. Create project in Supabase
+2. Apply [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql) in SQL Editor
+3. Configure auth redirect URLs:
+  - Local: `http://localhost:3000/auth/callback`
+  - Production: `https://<your-domain>/auth/callback`
+
+## Schema and Seed Instructions
+- Base schema:
+  - [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql)
+- Demo seed:
+  - [supabase/seed.sql](c:/MyProjects/Wedly/supabase/seed.sql)
+
+Seed note:
+- Replace `demo_user_id` in `seed.sql` with a real `auth.users.id` from your Supabase project before running.
+- Demo event slug: `nadia-aiman`.
+
+## Vercel Deployment
+1. Push to GitHub
+2. Import repo in Vercel
+3. Set env vars from `.env.example`
+4. Set `NEXT_PUBLIC_SITE_URL` to production URL
+5. Redeploy
+
+## Testing Checklist
+- Login magic link works
+- Create event works
+- Duplicate slug shows friendly error
+- Public page `/w/[slug]` loads
+- Guest RSVP submission succeeds
+- Wishes list updates
+- Not-found state works for invalid slug
+- Sentry dev test route works on local:
   - `GET /api/dev/sentry-test`
-  - Di production route ini pulangkan `404`.
 
-## Validation Commands
+## Commands
 ```bash
 npm run lint
+npm run typecheck
 npm run build
 ```
 
-## Manual QA Checklist
-1. Logged-out user nampak login card pada `/`.
-2. Magic link dihantar, callback sign-in berjaya.
-3. Logged-in user tanpa event boleh create event.
-4. Cuba slug duplicate, dapat error mesra pengguna.
-5. Logged-in user dengan event nampak manage card + copy link.
-6. Buka `/w/[slug]`, event detail dipaparkan.
-7. Submit RSVP berjaya, wishes terkini dikemas kini.
-8. Slug tidak wujud tunjuk state not-found elegan.
-9. Layout mobile masih kemas untuk `/` dan `/w/[slug]`.
-10. Dev Sentry test route hantar event ke Sentry.
+## Known Limitations
+- No image upload
+- No multiple themes
+- No payment flow
+- No invite automation
+- No seating planner/vendor tools
+- No advanced analytics dashboard
 
-## Vercel Deployment Checklist
-1. Push repo ke GitHub.
-2. Import project di Vercel.
-3. Set env vars sama seperti `.env.local`.
-4. Set `NEXT_PUBLIC_SITE_URL` ke domain production.
-5. Update Supabase Auth redirect URL ke domain Vercel.
-6. Deploy dan run checklist manual di atas.
+## Future Improvements (v1.1)
+1. Rate limiting and CAPTCHA on RSVP
+2. Wish moderation tools for owner
+3. CSV export for RSVP list
+4. Lightweight RSVP analytics summary
 
-## Known Limitations (v1 scope)
-- Tiada image upload
-- Tiada multiple themes
-- Tiada advanced admin dashboard
-- Tiada spam protection lanjutan (hanya validation asas)
-- Tiada export CSV RSVP
-- Tiada automasi WhatsApp/email invite
+## Portfolio Case Study Summary
+Wedly demonstrates end-to-end MVP delivery: product scoping, Supabase RLS design, server action flows, UI polish, and production monitoring within a small, maintainable codebase.
 
-## Next Improvements (v1.1 cadangan)
-1. Tambah rate limiting + captcha pada RSVP form.
-2. Tambah owner moderation (hide/delete wishes).
-3. Tambah export CSV RSVP.
-4. Tambah analytics ringkas attendance breakdown.
+Detailed write-up: [docs/case-study.md](c:/MyProjects/Wedly/docs/case-study.md)
