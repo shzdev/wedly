@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f3ee;
+  --cream: #fffdf9;
+  --sand: #ebd9cf;
+  --rose: #b98975;
+  --terracotta: #a96e58;
+  --deep: #3a241c;
+  --muted: #8c6b5d;
+}
+
+@theme inline {
+  --color-background: #f8f3ee;
+  --color-cream: #fffdf9;
+  --color-sand: #ebd9cf;
+  --color-rose: #b98975;
+  --color-terracotta: #a96e58;
+  --color-deep: #3a241c;
+  --color-muted: #8c6b5d;
+  --font-sans: "Plus Jakarta Sans", "Plus Jakarta Sans Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", "Times New Roman", serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--deep);
+  font-family: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-playfair), "Times New Roman", serif;
+}
+
+.section-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: calc(100% - 3rem);
+}
+
+@media (max-width: 768px) {
+  .section-shell {
+    width: calc(100% - 1.5rem);
+  }
+}
