@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 const COOLDOWN_MS = 60_000;
 
 function getCooldownKey(email: string) {
-  return `wedly-magic-link:${email.trim().toLowerCase()}`;
+  return `wedly-sign-in-link:${email.trim().toLowerCase()}`;
 }
 
 function formatCooldownMessage(msRemaining: number) {
@@ -52,7 +52,7 @@ export function AuthCard() {
     if (signInError) {
       if (signInError.message.toLowerCase().includes("rate limit")) {
         setError(
-          "Supabase is temporarily rate limiting magic-link emails. Please wait a minute and try again.",
+          "Supabase is temporarily rate limiting sign-in emails. Please wait a minute and try again.",
         );
       } else {
         setError(signInError.message);
@@ -62,16 +62,16 @@ export function AuthCard() {
     }
 
     window.localStorage.setItem(cooldownKey, Date.now().toString());
-    setSuccess("Magic link sent. Please check your email.");
+    setSuccess("A sign-in link has been sent to your inbox.");
     setLoading(false);
     setEmail("");
   }
 
   return (
-    <div className="wedly-card p-6 md:p-7">
-      <h2 className="text-4xl leading-tight text-textMain">Start Your Wedly Page</h2>
+    <div className="wedly-card wedly-ticket-soft p-6 md:p-7">
+      <h3 className="text-3xl leading-tight text-textMain md:text-4xl">Sign In to Wedly</h3>
       <p className="mt-2 text-sm leading-relaxed text-textMuted">
-        Use your email and we&apos;ll send a secure magic link.
+        Enter your email and we&apos;ll send you a secure sign-in link.
       </p>
       <form className="mt-6 space-y-4" onSubmit={handleLogin}>
         <label className="block">
@@ -91,17 +91,17 @@ export function AuthCard() {
           disabled={loading}
           className="wedly-btn-primary"
         >
-          {loading ? "Sending..." : "Send Magic Link"}
+          {loading ? "Sending..." : "Send Sign-In Link"}
         </button>
       </form>
       <p className="mt-4 text-xs text-textMuted">
-        No password needed. Your link expires automatically for safety.
+        No password needed. Use the link in your inbox to continue.
       </p>
       <div aria-live="polite" className="mt-2 min-h-5">
         {error ? <p className="text-sm text-rose-700">{error}</p> : null}
         {success ? (
           <p className="text-sm text-emerald-800">
-            Magic link sent. Please check your inbox and spam folder.
+            A sign-in link has been sent to your inbox. Please check your email and spam folder.
           </p>
         ) : null}
       </div>

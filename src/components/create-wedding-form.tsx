@@ -29,8 +29,8 @@ export function CreateWeddingForm() {
   }, [router, state.success]);
 
   return (
-    <div className="wedly-card p-6 md:p-7">
-      <h2 className="text-4xl leading-tight text-textMain">Create Your Wedding Page</h2>
+    <div className="wedly-card wedly-ticket-soft p-6 md:p-7">
+      <h3 className="text-3xl leading-tight text-textMain md:text-4xl">Create Your Wedding Page</h3>
       <p className="mt-2 text-sm leading-relaxed text-textMuted">
         Fill in a few details and we&apos;ll prepare your elegant RSVP page.
       </p>

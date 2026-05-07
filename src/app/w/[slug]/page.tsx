@@ -46,7 +46,7 @@ export default async function WeddingPage({ params }: WeddingPageProps) {
     <main className="relative min-h-screen bg-background px-4 py-10 md:px-8 md:py-16">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(185,143,120,0.18),transparent_42%),radial-gradient(circle_at_bottom_left,rgba(139,96,76,0.12),transparent_48%)]" />
       <section className="relative mx-auto grid w-full max-w-6xl gap-8 md:grid-cols-[1fr_0.95fr]">
-        <div className="rounded-[2rem] border border-border bg-surface p-7 shadow-[0_30px_60px_rgba(63,48,42,0.09)] md:p-9">
+        <div className="wedly-ticket wedly-ticket-large p-7 md:p-9">
           <p className="text-xs font-semibold tracking-[0.35em] uppercase text-primary">
             You are invited
           </p>
@@ -89,11 +89,6 @@ export default async function WeddingPage({ params }: WeddingPageProps) {
           <RsvpForm eventId={event.id} slug={normalizedSlug} />
         </div>
       </section>
-      <footer className="mx-auto mt-8 w-full max-w-6xl">
-        <p className="text-center text-xs text-textMuted">
-          Built with Next.js, Supabase, Sentry, and Vercel.
-        </p>
-      </footer>
     </main>
   );
 }

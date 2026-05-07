@@ -25,7 +25,7 @@ export function CopyLinkButton({ url }: CopyLinkButtonProps) {
     <div>
       <button
         onClick={handleCopy}
-        className="h-10 rounded-lg border border-border bg-white px-4 text-sm font-semibold text-textMain transition hover:border-primary"
+        className="wedly-btn-secondary min-w-[8.5rem]"
         type="button"
       >
         {copied ? "Copied" : "Copy Link"}

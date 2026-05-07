@@ -5,7 +5,7 @@ Live demo: `[LIVE_DEMO_URL]`
 GitHub: `[GITHUB_REPO_URL]`
 
 ## Screenshot
-- Logged-out home (hero + magic-link form): `<SCREENSHOT_URL_OR_PATH>`
+- Logged-out home (hero + sign-in form): `<SCREENSHOT_URL_OR_PATH>`
 - Logged-in home (manage RSVP + summary + CSV): `<SCREENSHOT_URL_OR_PATH>`
 - Public RSVP page (`/w/nadia-aiman`): `<SCREENSHOT_URL_OR_PATH>`
 
@@ -18,7 +18,7 @@ Most wedding tools are either too heavy or too expensive for couples who only ne
 Wedly solves this with a focused MVP flow and warm luxury visual direction.
 
 ## Core Features
-- Magic-link login (Supabase Auth)
+- Sign-in link login (Supabase Auth)
 - One event per account (v1 scope)
 - Public wedding page at `/w/[slug]`
 - Guest RSVP + wish submission
@@ -46,7 +46,7 @@ Wedly solves this with a focused MVP flow and warm luxury visual direction.
 
 ## User Flow
 1. User opens `/`
-2. User logs in via magic link
+2. User logs in via sign-in link
 3. User creates one event
 4. User copies public link
 5. Guest opens `/w/[slug]`
@@ -112,6 +112,8 @@ npm run dev
   - `https://YOUR_VERCEL_DOMAIN/auth/callback`
   - `https://YOUR_CUSTOM_DOMAIN/auth/callback` (if custom domain is enabled)
 4. Confirm RLS is enabled and policies exist on `events` and `rsvps`.
+5. If you want email wording to say "sign-in link" instead of "magic link", update it manually in:
+  - Supabase Dashboard -> Authentication -> Email Templates -> Magic Link / Login template
 
 ## Schema and Seed Instructions
 - Base schema:
@@ -135,10 +137,10 @@ v1.1 schema note for existing projects:
 4. Deploy once, copy production URL, then set `NEXT_PUBLIC_SITE_URL` to that URL.
 5. Redeploy after updating `NEXT_PUBLIC_SITE_URL`.
 6. Add production callback URL to Supabase redirect list.
-7. Test magic-link auth on production URL.
+7. Test sign-in link auth on production URL.
 
 ## Testing Checklist
-- Login magic link works
+- Login sign-in link works
 - Create event works
 - Duplicate slug shows friendly error
 - Public page `/w/[slug]` loads

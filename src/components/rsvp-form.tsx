@@ -38,7 +38,7 @@ export function RsvpForm({ eventId, slug }: RsvpFormProps) {
     <form
       ref={formRef}
       action={formAction}
-      className="wedly-card space-y-4 p-5 md:p-6"
+      className="wedly-card wedly-ticket-soft space-y-4 p-5 md:p-6"
     >
       <h3 className="text-3xl leading-tight text-textMain">RSVP & Wishes</h3>
       <p className="text-sm leading-relaxed text-textMuted">
@@ -58,7 +58,7 @@ export function RsvpForm({ eventId, slug }: RsvpFormProps) {
         <select
           name="attendance"
           defaultValue="attending"
-          className="wedly-input"
+          className="wedly-select"
         >
           <option value="attending">Attending</option>
           <option value="not_attending">Not Attending</option>

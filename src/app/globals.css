@@ -11,6 +11,8 @@
   --textMain: #3f302a;
   --textMuted: #8f7468;
   --border: #eadbd4;
+  --shadowWarm: 0 22px 48px rgba(110, 83, 69, 0.11);
+  --shadowSoft: 0 14px 28px rgba(110, 83, 69, 0.08);
 }
 
 @theme inline {
@@ -28,11 +30,18 @@
   --font-serif: "Playfair Display", "Times New Roman", serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(233, 209, 196, 0.45), transparent 26%),
+    radial-gradient(circle at top right, rgba(244, 225, 214, 0.72), transparent 34%),
+    linear-gradient(180deg, #fffaf6 0%, #f8f3ee 42%, #f7efe8 100%);
   color: var(--textMain);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  min-height: 100vh;
 }
 
 h1,
@@ -40,77 +49,271 @@ h2,
 h3,
 h4 {
   font-family: var(--font-heading), "Times New Roman", serif;
+  letter-spacing: -0.03em;
 }
 
-.wedly-card {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 1.35rem;
-  box-shadow: 0 18px 35px rgba(63, 48, 42, 0.08);
+.wedly-card,
+.wedly-ticket {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(169, 110, 88, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 253, 250, 0.98) 0%, rgba(255, 250, 246, 0.96) 100%);
+  border-radius: 1.9rem;
+  box-shadow: var(--shadowWarm);
 }
 
-.wedly-input {
-  height: 2.95rem;
+.wedly-ticket::before,
+.wedly-ticket::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 1.25rem);
+  z-index: 1;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 999px;
+  background: var(--background);
+  box-shadow: inset 0 0 0 1px rgba(169, 110, 88, 0.12);
+}
+
+.wedly-ticket::before {
+  left: -1.25rem;
+}
+
+.wedly-ticket::after {
+  right: -1.25rem;
+}
+
+.wedly-ticket-large {
+  border-radius: 2.2rem;
+}
+
+.wedly-ticket-soft {
+  box-shadow: var(--shadowSoft);
+}
+
+.wedly-ticket-divider {
+  position: relative;
+}
+
+.wedly-ticket-divider::after {
+  content: "";
+  position: absolute;
+  top: 1.1rem;
+  bottom: 1.1rem;
+  right: 1.1rem;
+  width: 1px;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(185, 143, 120, 0.35) 0%,
+    rgba(185, 143, 120, 0.35) 50%,
+    transparent 50%,
+    transparent 100%
+  );
+  background-size: 1px 12px;
+  background-repeat: repeat-y;
+}
+
+.wedly-ornament {
+  position: relative;
+}
+
+.wedly-ornament::before,
+.wedly-ornament::after {
+  content: "";
+  position: absolute;
+  inset: auto auto 0 50%;
+  width: 2.9rem;
+  height: 1rem;
+  transform: translateX(-50%);
+  border-top: 1px solid rgba(185, 143, 120, 0.48);
+  border-radius: 999px 999px 0 0;
+}
+
+.wedly-ornament::after {
+  width: 0.65rem;
+  height: 0.65rem;
+  bottom: 0.65rem;
+  border: 1px solid rgba(185, 143, 120, 0.48);
+  border-bottom: none;
+  border-right: none;
+  transform: translateX(-50%) rotate(45deg);
+  background: transparent;
+}
+
+.wedly-input,
+.wedly-textarea,
+.wedly-select {
   width: 100%;
-  border-radius: 0.8rem;
-  border: 1px solid var(--border);
-  background: #fffdfb;
-  padding: 0 0.95rem;
+  border-radius: 0.95rem;
+  border: 1px solid rgba(169, 110, 88, 0.18);
+  background: rgba(255, 253, 251, 0.96);
   color: var(--textMain);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.wedly-input:focus {
-  border-color: var(--primaryDark);
-  box-shadow: 0 0 0 3px rgba(185, 143, 120, 0.18);
+.wedly-input,
+.wedly-select {
+  height: 3.15rem;
+  padding: 0 1rem;
 }
 
 .wedly-textarea {
-  min-height: 6rem;
-  width: 100%;
+  min-height: 7rem;
   resize: vertical;
-  border-radius: 0.8rem;
-  border: 1px solid var(--border);
-  background: #fffdfb;
-  padding: 0.8rem 0.95rem;
-  color: var(--textMain);
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  padding: 0.95rem 1rem;
 }
 
-.wedly-textarea:focus {
+.wedly-input:focus,
+.wedly-textarea:focus,
+.wedly-select:focus {
   border-color: var(--primaryDark);
   box-shadow: 0 0 0 3px rgba(185, 143, 120, 0.18);
+  background: #fffdfb;
+}
+
+.wedly-btn-primary,
+.wedly-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: transform 0.18s ease, filter 0.2s ease, background-color 0.2s ease;
 }
 
 .wedly-btn-primary {
-  height: 3rem;
+  min-height: 3.2rem;
   width: 100%;
-  border-radius: 0.8rem;
-  background: linear-gradient(180deg, var(--primary) 0%, var(--primaryDark) 100%);
+  padding: 0.9rem 1.25rem;
+  background: linear-gradient(180deg, #c7957f 0%, var(--primaryDark) 100%);
   color: #fff;
-  font-size: 0.92rem;
-  font-weight: 600;
-  transition: transform 0.15s ease, filter 0.2s ease;
+  box-shadow: 0 14px 28px rgba(139, 96, 76, 0.2);
 }
 
 .wedly-btn-primary:hover {
   filter: brightness(1.03);
 }
 
-.wedly-btn-primary:disabled {
-  opacity: 0.65;
+.wedly-btn-primary:disabled,
+.wedly-btn-secondary:disabled {
   cursor: not-allowed;
+  opacity: 0.65;
 }
 
 .wedly-btn-secondary {
-  height: 2.5rem;
-  border-radius: 0.7rem;
-  border: 1px solid var(--border);
-  background: #fff;
+  min-height: 3rem;
+  padding: 0.85rem 1.05rem;
+  border: 1px solid rgba(169, 110, 88, 0.18);
+  background: rgba(255, 255, 255, 0.82);
   color: var(--textMain);
-  padding: 0 0.9rem;
-  font-size: 0.83rem;
+}
+
+.wedly-btn-inline {
+  width: auto;
+  min-width: 11rem;
+}
+
+.wedly-kicker {
+  font-size: 0.78rem;
   font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.wedly-section-shell {
+  position: relative;
+}
+
+.wedly-section-shell::before,
+.wedly-section-shell::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  opacity: 0.58;
+  pointer-events: none;
+}
+
+.wedly-section-shell::before {
+  left: -1.2rem;
+  bottom: 3rem;
+  width: 7rem;
+  height: 11rem;
+  background:
+    radial-gradient(circle at 45% 20%, rgba(185, 143, 120, 0.3) 0 0.16rem, transparent 0.18rem),
+    linear-gradient(160deg, transparent 28%, rgba(185, 143, 120, 0.22) 28% 30%, transparent 30%),
+    linear-gradient(40deg, transparent 38%, rgba(185, 143, 120, 0.22) 38% 40%, transparent 40%);
+  background-repeat: no-repeat;
+}
+
+.wedly-section-shell::after {
+  right: -1rem;
+  top: 1rem;
+  width: 8rem;
+  height: 13rem;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(185, 143, 120, 0.28) 0 0.16rem, transparent 0.18rem),
+    linear-gradient(150deg, transparent 32%, rgba(185, 143, 120, 0.22) 32% 34%, transparent 34%),
+    linear-gradient(25deg, transparent 44%, rgba(185, 143, 120, 0.22) 44% 46%, transparent 46%);
+  background-repeat: no-repeat;
+}
+
+.wedly-flower-outline {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 999px;
+  border: 1px solid rgba(185, 143, 120, 0.26);
+  opacity: 0.6;
+}
+
+.wedly-flower-outline::before,
+.wedly-flower-outline::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  border-radius: 999px;
+  border: 1px solid rgba(185, 143, 120, 0.2);
+  transform: translate(-50%, -50%);
+}
+
+.wedly-flower-outline::before {
+  width: 150%;
+  height: 56%;
+}
+
+.wedly-flower-outline::after {
+  width: 56%;
+  height: 150%;
+}
+
+@media (max-width: 767px) {
+  .wedly-ticket::before,
+  .wedly-ticket::after {
+    top: auto;
+    bottom: calc(50% - 1rem);
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .wedly-ticket::before {
+    left: -1rem;
+  }
+
+  .wedly-ticket::after {
+    right: -1rem;
+  }
+
+  .wedly-ticket-divider::after {
+    display: none;
+  }
+
+  .wedly-section-shell::before,
+  .wedly-section-shell::after {
+    opacity: 0.32;
+    transform: scale(0.85);
+  }
 }

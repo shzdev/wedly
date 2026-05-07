@@ -21,7 +21,7 @@ export function WishesList({ wishes }: WishesListProps) {
       {wishes.map((wish) => (
         <article
           key={wish.id}
-          className="rounded-xl border border-border bg-white p-4 shadow-[0_8px_16px_rgba(63,48,42,0.04)]"
+          className="wedly-card wedly-ticket-soft rounded-[1.45rem] p-4"
         >
           <div className="flex items-center justify-between gap-3">
             <h4 className="break-words text-base font-semibold text-textMain">

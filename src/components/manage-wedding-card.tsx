@@ -38,10 +38,10 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
   const exportHref = `/api/rsvps/export?slug=${encodeURIComponent(event.slug)}`;
 
   return (
-    <div className="wedly-card space-y-6 p-6 md:p-7">
+    <div className="wedly-card wedly-ticket-soft space-y-6 p-6 md:p-7">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-4xl leading-tight text-textMain">Your Wedding Page</h2>
+          <h3 className="text-3xl leading-tight text-textMain md:text-4xl">Your Wedding Page</h3>
           <p className="mt-1 text-sm leading-relaxed text-textMuted">
             Share your link, review every RSVP, and keep guest messages in one place.
           </p>
@@ -53,19 +53,16 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
         </form>
       </div>
 
-      <div className="rounded-xl border border-border bg-white p-4 shadow-[0_8px_16px_rgba(63,48,42,0.04)]">
+      <div className="rounded-[1.35rem] border border-border bg-white/86 p-4 shadow-[0_8px_16px_rgba(63,48,42,0.04)]">
         <p className="text-xs font-semibold tracking-[0.22em] uppercase text-textMuted">
           Public Link
         </p>
-        <div className="mt-2 flex flex-wrap items-center gap-2 sm:gap-3">
-          <code className="max-w-full truncate rounded-lg bg-secondary px-3 py-2 text-sm text-textMain">
+        <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3">
+          <code className="max-w-full flex-1 break-all rounded-xl bg-secondary/70 px-3 py-2 text-sm text-textMain">
             {publicLink}
           </code>
           <CopyLinkButton url={publicLink} />
-          <a
-            href={exportHref}
-            className="wedly-btn-secondary inline-flex items-center"
-          >
+          <a href={exportHref} className="wedly-btn-secondary inline-flex items-center">
             Export CSV
           </a>
         </div>
@@ -95,7 +92,7 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
       </div>
 
       <div>
-        <h3 className="text-2xl text-textMain">RSVP Summary</h3>
+        <h4 className="text-2xl text-textMain">RSVP Summary</h4>
         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <div className="rounded-xl border border-border bg-white p-4 shadow-[0_8px_16px_rgba(63,48,42,0.04)]">
             <p className="text-xs uppercase tracking-[0.18em] text-textMuted">Attending</p>
@@ -119,7 +116,7 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
       </div>
 
       <div>
-        <h3 className="text-2xl text-textMain">RSVP Entries</h3>
+        <h4 className="text-2xl text-textMain">RSVP Entries</h4>
         <p className="mt-1 text-sm text-textMuted">
           Review entries, keep records tidy, and remove suspicious submissions.
         </p>

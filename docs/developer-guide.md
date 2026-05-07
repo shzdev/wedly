@@ -33,9 +33,11 @@
 
 ## 4) Auth Flow
 - Login starts in [src/components/auth-card.tsx](c:/MyProjects/Wedly/src/components/auth-card.tsx)
-- Supabase sends magic link
+- Supabase sends sign-in link email
 - Callback exchange in [src/app/auth/callback/route.ts](c:/MyProjects/Wedly/src/app/auth/callback/route.ts)
 - Session cookies stay fresh through [src/proxy.ts](c:/MyProjects/Wedly/src/proxy.ts)
+- Supabase email template wording is managed manually in:
+  - Authentication -> Email Templates -> Magic Link / Login template
 
 ## 5) RSVP Flow
 - Form UI: [src/components/rsvp-form.tsx](c:/MyProjects/Wedly/src/components/rsvp-form.tsx)
@@ -97,7 +99,7 @@
 6. Run security checklist in [docs/security-review.md](c:/MyProjects/Wedly/docs/security-review.md)
 
 ## 12) Common Debug Cases
-- Magic link redirect fails:
+- Sign-in link redirect fails:
   - Check Supabase redirect URL config
 - Create event fails:
   - Check RLS and unique constraints in `events`
