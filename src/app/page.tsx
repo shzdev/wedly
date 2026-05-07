@@ -29,9 +29,9 @@ export default async function Home() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(185,143,120,0.16),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(139,96,76,0.14),transparent_45%)]" />
       <div className="relative">
         <WeddingShell
-          eyebrow="Luxury RSVP + Guestbook"
+          eyebrow="Luxury Wedding RSVP"
           title="Wedly"
-          description="A simple and beautiful wedding RSVP page you can launch in minutes."
+          description="Create a beautiful wedding RSVP page in minutes."
         >
           {!user ? <AuthCard /> : null}
           {user && !event ? <CreateWeddingForm /> : null}
@@ -47,10 +47,15 @@ export default async function Home() {
         <div className="mx-auto mb-10 w-full max-w-6xl px-4 md:px-8">
           <p className="text-center text-sm text-textMuted">
             {user
-              ? "Your single-event workspace is active."
-              : "Sign in first. Then create one public wedding page for v1."}
+              ? "Your wedding page is live. Share the link and collect RSVPs beautifully."
+              : "Sign in to create your wedding RSVP page and share it instantly."}
           </p>
         </div>
+        <footer className="mx-auto mb-8 w-full max-w-6xl px-4 md:px-8">
+          <p className="text-center text-xs text-textMuted">
+            Built with Next.js, Supabase, Sentry, and Vercel.
+          </p>
+        </footer>
       </div>
     </main>
   );

@@ -15,7 +15,7 @@ export function WishesList({ wishes }: WishesListProps) {
     <div className="space-y-3">
       {wishes.length === 0 ? (
         <p className="rounded-xl border border-dashed border-border bg-white/70 p-4 text-sm text-textMuted">
-          No wishes yet.
+          No wishes yet. Share your page link to start receiving RSVP notes.
         </p>
       ) : null}
       {wishes.map((wish) => (

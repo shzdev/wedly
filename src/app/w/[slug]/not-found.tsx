@@ -9,7 +9,7 @@ export default function WeddingNotFound() {
         </p>
         <h1 className="mt-3 text-4xl text-textMain">Wedding page not found</h1>
         <p className="mt-3 text-textMuted">
-          This invitation link may be invalid or no longer available.
+          This invitation link may be incorrect or no longer available.
         </p>
         <Link
           href="/"
@@ -17,6 +17,9 @@ export default function WeddingNotFound() {
         >
           Back to Wedly
         </Link>
+        <p className="mt-6 text-xs text-textMuted">
+          Built with Next.js, Supabase, Sentry, and Vercel.
+        </p>
       </section>
     </main>
   );

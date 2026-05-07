@@ -77,7 +77,7 @@ export default async function WeddingPage({ params }: WeddingPageProps) {
               href="/"
               className="inline-flex h-10 items-center rounded-lg border border-border px-4 text-sm font-semibold text-textMain transition hover:border-primary"
             >
-              Create your own Wedly
+              Create your own Wedly page
             </Link>
           </div>
         </div>
@@ -85,6 +85,11 @@ export default async function WeddingPage({ params }: WeddingPageProps) {
           <RsvpForm eventId={event.id} slug={normalizedSlug} />
         </div>
       </section>
+      <footer className="mx-auto mt-8 w-full max-w-6xl">
+        <p className="text-center text-xs text-textMuted">
+          Built with Next.js, Supabase, Sentry, and Vercel.
+        </p>
+      </footer>
     </main>
   );
 }

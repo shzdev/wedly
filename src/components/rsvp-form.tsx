@@ -44,6 +44,9 @@ export function RsvpForm({ eventId, slug }: RsvpFormProps) {
       className="space-y-4 rounded-2xl border border-border bg-surface p-5"
     >
       <h3 className="text-2xl text-textMain">RSVP & Wishes</h3>
+      <p className="text-sm text-textMuted">
+        Please confirm your attendance and leave a short message for the couple.
+      </p>
       <label className="block">
         <span className="mb-1 block text-sm text-textMain">Guest Name</span>
         <input
@@ -74,6 +77,7 @@ export function RsvpForm({ eventId, slug }: RsvpFormProps) {
           defaultValue={1}
           className="h-11 w-full rounded-lg border border-border bg-white px-3 outline-none focus:border-primary"
         />
+        <p className="mt-1 text-xs text-textMuted">Allowed range: 0 to 10.</p>
       </label>
       <label className="block">
         <span className="mb-1 block text-sm text-textMain">Wish Message (Optional)</span>

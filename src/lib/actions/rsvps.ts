@@ -60,5 +60,5 @@ export async function submitRsvp(
 
   revalidatePath(`/w/${slug}`);
   revalidatePath("/");
-  return { success: "RSVP submitted. Thank you." };
+  return { success: "Thank you. Your RSVP and wish have been received." };
 }

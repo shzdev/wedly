@@ -36,7 +36,7 @@ export function CreateWeddingForm() {
     <div className="rounded-[1.5rem] border border-border bg-surface p-6 shadow-[0_20px_45px_rgba(63,48,42,0.08)]">
       <h2 className="text-3xl text-textMain">Create Your Wedding Page</h2>
       <p className="mt-2 text-sm text-textMuted">
-        One event per account for v1. Keep it simple and elegant.
+        One event per account in v1. Keep details simple and elegant.
       </p>
       <form ref={formRef} action={formAction} className="mt-6 space-y-4">
         <label className="block">
@@ -71,9 +71,12 @@ export function CreateWeddingForm() {
           <input
             name="slug"
             required
-            placeholder="aisyah-hafiz"
+            placeholder="nadia-aiman"
             className="h-12 w-full rounded-xl border border-border bg-[#fffdfb] px-4 outline-none focus:border-primary"
           />
+          <p className="mt-1 text-xs text-textMuted">
+            Lowercase letters, numbers, and hyphens only.
+          </p>
         </label>
         <label className="block">
           <span className="mb-2 block text-sm font-medium text-textMain">Message (Optional)</span>

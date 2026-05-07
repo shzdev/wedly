@@ -35,9 +35,9 @@ export function AuthCard() {
 
   return (
     <div className="rounded-[1.5rem] border border-border bg-surface p-6 shadow-[0_20px_45px_rgba(63,48,42,0.08)]">
-      <h2 className="text-3xl text-textMain">Login to Start</h2>
+      <h2 className="text-3xl text-textMain">Start Your Wedly Page</h2>
       <p className="mt-2 text-sm text-textMuted">
-        Enter your email and we&apos;ll send a secure magic link.
+        Use your email and we&apos;ll send a secure magic link.
       </p>
       <form className="mt-6 space-y-4" onSubmit={handleLogin}>
         <label className="block">
@@ -60,9 +60,16 @@ export function AuthCard() {
           {loading ? "Sending..." : "Send Magic Link"}
         </button>
       </form>
-      <div aria-live="polite" className="mt-3 min-h-5">
+      <p className="mt-3 text-xs text-textMuted">
+        No password needed. Your link expires automatically for safety.
+      </p>
+      <div aria-live="polite" className="mt-2 min-h-5">
         {error ? <p className="text-sm text-red-600">{error}</p> : null}
-        {success ? <p className="text-sm text-emerald-700">{success}</p> : null}
+        {success ? (
+          <p className="text-sm text-emerald-700">
+            Magic link sent. Please check your inbox and spam folder.
+          </p>
+        ) : null}
       </div>
     </div>
   );

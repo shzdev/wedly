@@ -37,7 +37,7 @@ export function ManageWeddingCard({
         <div>
           <h2 className="text-3xl text-textMain">Your Wedding Page</h2>
           <p className="mt-1 text-sm text-textMuted">
-            Manage your public RSVP page in one place.
+            Share your link, track RSVPs, and read guest wishes in one place.
           </p>
         </div>
         <form action={signOut}>
@@ -82,6 +82,9 @@ export function ManageWeddingCard({
 
       <div>
         <h3 className="text-xl text-textMain">Latest Wishes</h3>
+        <p className="mt-1 text-sm text-textMuted">
+          Your newest guest messages will appear here.
+        </p>
         <div className="mt-3">
           <WishesList wishes={latestWishes} />
         </div>
