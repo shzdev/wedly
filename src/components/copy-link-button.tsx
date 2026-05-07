@@ -15,23 +15,25 @@ export function CopyLinkButton({ url }: CopyLinkButtonProps) {
       await navigator.clipboard.writeText(url);
       setError(null);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1200);
+      window.setTimeout(() => setCopied(false), 1200);
     } catch {
       setError("Copy failed. Please copy manually.");
     }
   }
 
   return (
-    <div>
-      <button
-        onClick={handleCopy}
-        className="wedly-btn-secondary min-w-[8.5rem]"
-        type="button"
-      >
+    <div className="min-w-[8.75rem]">
+      <button onClick={handleCopy} className="wedly-btn-secondary w-full" type="button">
         {copied ? "Copied" : "Copy Link"}
       </button>
-      <p aria-live="polite" className="mt-1 text-xs text-red-600">
-        {error}
+      <p
+        aria-live="polite"
+        className={[
+          "mt-1 text-xs",
+          error ? "text-rose-700" : copied ? "text-emerald-700" : "text-transparent",
+        ].join(" ")}
+      >
+        {error ?? (copied ? "Link copied to clipboard." : "Link copied to clipboard.")}
       </p>
     </div>
   );

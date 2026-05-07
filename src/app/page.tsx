@@ -1,5 +1,6 @@
 import { AuthCard } from "@/components/auth-card";
 import { CreateWeddingForm } from "@/components/create-wedding-form";
+import { FloatingPetals } from "@/components/floating-petals";
 import { ManageWeddingCard } from "@/components/manage-wedding-card";
 import { WeddingShell } from "@/components/wedding-shell";
 import { getCurrentUser, getUserEvent } from "@/lib/actions/events";
@@ -47,20 +48,56 @@ export default async function Home({ searchParams }: HomePageProps) {
   const event = user ? await getUserEvent() : null;
   const rsvps = event ? await getRsvpsByEvent(event.id) : [];
 
-  const sectionEyebrow = user
-    ? event
-      ? "Manage Responses"
-      : "Create Your RSVP Page"
-    : "Get Started";
-  const sectionTitle = user
-    ? event
-      ? "Manage Your Wedly Page"
-      : "Set Up Your Wedding Details"
-    : "Start Your Wedly Page";
+  if (user && event) {
+    return (
+      <main className="relative min-h-screen overflow-hidden bg-background">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.92),transparent_32%),radial-gradient(circle_at_top_right,rgba(244,225,214,0.64),transparent_36%),linear-gradient(180deg,rgba(255,250,246,0.96),rgba(248,243,238,0.88)_44%,rgba(247,239,232,0.98)_100%)]" />
+        <FloatingPetals />
+        <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-16 pt-8 md:px-8 md:pb-20 md:pt-10">
+          <div className="inline-flex items-center gap-3 self-start rounded-full border border-border/70 bg-white/70 px-4 py-2 shadow-[0_10px_24px_rgba(110,83,69,0.08)] backdrop-blur">
+            <span className="font-serif text-xl tracking-[0.08em] text-primaryDark">Wedly</span>
+          </div>
+          <div className="mt-6">
+            <ManageWeddingCard
+              event={event}
+              publicLink={`${baseUrl}/w/${event.slug}`}
+              rsvps={rsvps}
+            />
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (user && !event) {
+    return (
+      <main className="relative min-h-screen overflow-hidden bg-background">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.9),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(235,213,201,0.38),transparent_35%),linear-gradient(180deg,rgba(255,250,246,0.85),rgba(248,243,238,0))]" />
+        <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-14 pt-8 md:px-8 md:pb-18 md:pt-10">
+          <div className="inline-flex items-center gap-3 self-start rounded-full border border-border/70 bg-white/70 px-4 py-2 shadow-[0_10px_24px_rgba(110,83,69,0.08)] backdrop-blur">
+            <span className="font-serif text-xl tracking-[0.08em] text-primaryDark">Wedly</span>
+          </div>
+          <div className="mt-6">
+            <WeddingShell
+              eyebrow="Wedding Event Setup"
+              title="Create Your Wedding Event"
+              description="Fill in your wedding details to generate your RSVP page."
+              panelLabel="A Refined Beginning"
+              panelDescription="Set the tone for your wedding page with elegant details your guests will recognise instantly."
+              priority="content"
+            >
+              <CreateWeddingForm />
+            </WeddingShell>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  const sectionEyebrow = user ? "Manage Responses" : "Get Started";
+  const sectionTitle = user ? "Manage Your Wedly Page" : "Start Your Wedly Page";
   const sectionDescription = user
-    ? event
-      ? "Share your RSVP page, keep your guest list organised, and export your responses whenever you need them."
-      : "Complete a few details and we will prepare your polished RSVP page."
+    ? "Share your RSVP page, keep your guest list organised, and export your responses whenever you need them."
     : "Enter your email and we will send you a secure sign-in link.";
 
   return (
@@ -84,7 +121,7 @@ export default async function Home({ searchParams }: HomePageProps) {
               <a href="#wedly-entry" className="wedly-btn-primary wedly-btn-inline">
                 Get Started
                 <span aria-hidden="true" className="text-lg leading-none">
-                  ↓
+                  v
                 </span>
               </a>
             </div>
@@ -138,7 +175,6 @@ export default async function Home({ searchParams }: HomePageProps) {
           description={sectionDescription}
         >
           {!user ? <AuthCard /> : null}
-          {user && !event ? <CreateWeddingForm /> : null}
           {user && event ? (
             <ManageWeddingCard
               event={event}

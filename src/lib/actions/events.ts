@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { normalizeSlug } from "@/lib/utils/slug";
-import { eventSchema } from "@/lib/validations/event";
+import { createEventSchema, eventSchema } from "@/lib/validations/event";
 
 export type ActionState = {
   error?: string;
@@ -58,15 +58,36 @@ export async function createEvent(
     return { error: "Please log in first." };
   }
 
-  const rawInput = {
-    couple_names: String(formData.get("couple_names") ?? ""),
+  const rawFormInput = {
+    bride_name: String(formData.get("bride_name") ?? ""),
+    groom_name: String(formData.get("groom_name") ?? ""),
     wedding_date: String(formData.get("wedding_date") ?? ""),
     venue: String(formData.get("venue") ?? ""),
-    slug: normalizeSlug(String(formData.get("slug") ?? "")),
     message: String(formData.get("message") ?? ""),
   };
 
-  const parsed = eventSchema.safeParse(rawInput);
+  const parsedForm = createEventSchema.safeParse(rawFormInput);
+  if (!parsedForm.success) {
+    return { error: parsedForm.error.issues[0]?.message ?? "Invalid event input." };
+  }
+
+  const coupleNames = `${parsedForm.data.bride_name} & ${parsedForm.data.groom_name}`;
+  const generatedSlug = normalizeSlug(
+    `${parsedForm.data.bride_name} ${parsedForm.data.groom_name}`,
+  );
+
+  if (!generatedSlug) {
+    return { error: "We could not generate a valid RSVP link from those names." };
+  }
+
+  const parsed = eventSchema.safeParse({
+    couple_names: coupleNames,
+    wedding_date: parsedForm.data.wedding_date,
+    venue: parsedForm.data.venue,
+    slug: generatedSlug,
+    message: parsedForm.data.message,
+  });
+
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid event input." };
   }
@@ -96,7 +117,10 @@ export async function createEvent(
       if (error.message.includes("events_user_one_event_idx")) {
         return { error: "You already have one event for v1." };
       }
-      return { error: "Slug already exists. Please choose another slug." };
+      return {
+        error:
+          "A similar RSVP link already exists. Try using a middle name or a different spelling.",
+      };
     }
     return { error: "Failed to create event. Please try again." };
   }

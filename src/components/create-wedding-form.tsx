@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { createEvent, type ActionState } from "@/lib/actions/events";
+import { normalizeSlug } from "@/lib/utils/slug";
 
 const initialState: ActionState = {};
 
@@ -11,47 +12,100 @@ function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <button type="submit" disabled={pending} className="wedly-btn-primary">
-      {pending ? "Creating..." : "Create Wedding Page"}
+      {pending ? "Creating..." : "Create Wedding Event"}
     </button>
   );
 }
 
+function normalizePreviewName(value: string) {
+  return value.trim().replace(/\s+/g, " ");
+}
+
 export function CreateWeddingForm() {
   const router = useRouter();
-  const formRef = useRef<HTMLFormElement>(null);
+  const [brideName, setBrideName] = useState("");
+  const [groomName, setGroomName] = useState("");
   const [state, formAction] = useActionState(createEvent, initialState);
 
   useEffect(() => {
     if (state.success) {
-      formRef.current?.reset();
       router.refresh();
     }
   }, [router, state.success]);
 
+  const couplePreview = useMemo(() => {
+    const bride = normalizePreviewName(brideName);
+    const groom = normalizePreviewName(groomName);
+    if (!bride && !groom) {
+      return "Bride Name & Groom Name";
+    }
+    if (!bride) {
+      return `Bride Name & ${groom}`;
+    }
+    if (!groom) {
+      return `${bride} & Groom Name`;
+    }
+    return `${bride} & ${groom}`;
+  }, [brideName, groomName]);
+
+  const slugPreview = useMemo(() => {
+    const slug = normalizeSlug(`${brideName} ${groomName}`);
+    return slug || "generated automatically";
+  }, [brideName, groomName]);
+
   return (
     <div className="wedly-card wedly-ticket-soft p-6 md:p-7">
-      <h3 className="text-3xl leading-tight text-textMain md:text-4xl">Create Your Wedding Page</h3>
+      <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-900">
+        You&apos;re signed in. Let&apos;s create your RSVP page.
+      </div>
+      <h3 className="mt-5 text-3xl leading-tight text-textMain md:text-4xl">
+        Create Your Wedding Event
+      </h3>
       <p className="mt-2 text-sm leading-relaxed text-textMuted">
-        Fill in a few details and we&apos;ll prepare your elegant RSVP page.
+        Fill in your wedding details to generate your RSVP page.
       </p>
-      <form ref={formRef} action={formAction} className="mt-6 space-y-4">
-        <label className="block">
-          <span className="mb-2 block text-sm font-medium text-textMain">Couple Names</span>
-          <input
-            name="couple_names"
-            required
-            placeholder="Nadia & Aiman"
-            className="wedly-input"
-          />
-        </label>
+      <form action={formAction} className="mt-6 space-y-5">
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium text-textMain">Bride Name</span>
+            <input
+              name="bride_name"
+              required
+              placeholder="Sarah"
+              className="wedly-input"
+              value={brideName}
+              onChange={(event) => setBrideName(event.target.value)}
+            />
+          </label>
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium text-textMain">Groom Name</span>
+            <input
+              name="groom_name"
+              required
+              placeholder="James"
+              className="wedly-input"
+              value={groomName}
+              onChange={(event) => setGroomName(event.target.value)}
+            />
+          </label>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-white/65 px-4 py-4">
+          <p className="text-xs font-semibold tracking-[0.18em] uppercase text-textMuted">
+            Couple Preview
+          </p>
+          <p className="mt-2 break-words font-serif text-3xl leading-tight text-textMain">
+            {couplePreview}
+          </p>
+          <p className="mt-3 text-sm text-textMuted">
+            Your link will be generated automatically:{" "}
+            <span className="font-medium text-primaryDark">/{slugPreview}</span>
+          </p>
+        </div>
+
         <label className="block">
           <span className="mb-2 block text-sm font-medium text-textMain">Wedding Date</span>
-          <input
-            name="wedding_date"
-            type="date"
-            required
-            className="wedly-input"
-          />
+          <input name="wedding_date" type="date" required className="wedly-input" />
         </label>
         <label className="block">
           <span className="mb-2 block text-sm font-medium text-textMain">Venue</span>
@@ -63,19 +117,7 @@ export function CreateWeddingForm() {
           />
         </label>
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-textMain">Public Slug</span>
-          <input
-            name="slug"
-            required
-            placeholder="nadia-aiman"
-            className="wedly-input"
-          />
-          <p className="mt-1 text-xs text-textMuted">
-            Lowercase letters, numbers, and hyphens only.
-          </p>
-        </label>
-        <label className="block">
-          <span className="mb-2 block text-sm font-medium text-textMain">Message (Optional)</span>
+          <span className="mb-2 block text-sm font-medium text-textMain">Welcome Message</span>
           <textarea
             name="message"
             maxLength={500}
@@ -84,6 +126,9 @@ export function CreateWeddingForm() {
           />
         </label>
         <SubmitButton />
+        <p className="text-xs text-textMuted">
+          You can edit these details later from your Wedly dashboard.
+        </p>
         <div aria-live="polite" className="min-h-5">
           {state.error ? <p className="text-sm text-rose-700">{state.error}</p> : null}
           {state.success ? <p className="text-sm text-emerald-800">{state.success}</p> : null}

@@ -290,6 +290,138 @@ h4 {
   height: 150%;
 }
 
+.wedly-invitation-card {
+  background:
+    radial-gradient(circle at top center, rgba(255, 255, 255, 0.95), transparent 32%),
+    linear-gradient(180deg, rgba(255, 252, 249, 0.98) 0%, rgba(250, 241, 235, 0.96) 100%);
+  border-color: rgba(185, 143, 120, 0.2);
+}
+
+.wedly-invitation-card::before,
+.wedly-invitation-card::after {
+  display: none;
+}
+
+.wedly-invitation-corner {
+  position: absolute;
+  height: 4.5rem;
+  width: 4.5rem;
+  border-color: rgba(185, 143, 120, 0.32);
+  pointer-events: none;
+  animation: wedlyFloatCorner 7.5s ease-in-out infinite;
+}
+
+.wedly-invitation-corner-top-left {
+  top: 1.2rem;
+  left: 1.2rem;
+  border-top: 1px solid;
+  border-left: 1px solid;
+  border-top-left-radius: 2rem;
+}
+
+.wedly-invitation-corner-top-right {
+  top: 1.2rem;
+  right: 1.2rem;
+  border-top: 1px solid;
+  border-right: 1px solid;
+  border-top-right-radius: 2rem;
+}
+
+.wedly-invitation-corner-bottom-left {
+  bottom: 1.2rem;
+  left: 1.2rem;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+  border-bottom-left-radius: 2rem;
+}
+
+.wedly-invitation-corner-bottom-right {
+  right: 1.2rem;
+  bottom: 1.2rem;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  border-bottom-right-radius: 2rem;
+}
+
+.wedly-float-soft {
+  animation: wedlyFloatSoft 6.5s ease-in-out infinite;
+}
+
+.wedly-float-slower {
+  animation: wedlyFloatSoft 8.5s ease-in-out infinite;
+}
+
+.wedly-fade-slide {
+  animation: wedlyFadeSlide 0.55s ease;
+}
+
+.wedly-petal {
+  position: absolute;
+  top: -8%;
+  left: var(--petal-left);
+  width: var(--petal-size);
+  height: calc(var(--petal-size) * 1.4);
+  border-radius: 70% 30% 70% 30%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 236, 229, 0.9), transparent 48%),
+    linear-gradient(180deg, rgba(243, 199, 181, 0.9), rgba(204, 146, 122, 0.72));
+  opacity: 0.58;
+  transform: rotate(-18deg);
+  filter: blur(0.2px);
+  animation: wedlyPetalFall var(--petal-duration) linear var(--petal-delay) infinite;
+}
+
+@keyframes wedlyPetalFall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(var(--petal-drift), 45vh, 0) rotate(120deg);
+    opacity: 0.62;
+  }
+  100% {
+    transform: translate3d(calc(var(--petal-drift) * -1), 110vh, 0) rotate(240deg);
+    opacity: 0;
+  }
+}
+
+@keyframes wedlyFloatSoft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes wedlyFloatCorner {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@keyframes wedlyFadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 767px) {
   .wedly-ticket::before,
   .wedly-ticket::after {
@@ -315,5 +447,20 @@ h4 {
   .wedly-section-shell::after {
     opacity: 0.32;
     transform: scale(0.85);
+  }
+
+  .wedly-invitation-corner {
+    height: 3.2rem;
+    width: 3.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wedly-petal,
+  .wedly-float-soft,
+  .wedly-float-slower,
+  .wedly-invitation-corner,
+  .wedly-fade-slide {
+    animation: none;
   }
 }
