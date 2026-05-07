@@ -28,6 +28,9 @@ Wedly keeps the workflow minimal:
   - Auth (magic link)
   - Single-event management
   - Public RSVP page
+  - Basic anti-spam guard on public RSVP
+  - Duplicate RSVP prevention
+  - Owner RSVP management + CSV export
   - RLS-secured Supabase data model
   - Sentry error monitoring
 - Excluded:
@@ -67,6 +70,8 @@ Wedly keeps the workflow minimal:
 - Tagged errors on critical paths:
   - `feature=create_event`
   - `feature=submit_rsvp`
+  - `feature=delete_rsvp`
+  - `feature=export_csv`
   - `slug` when relevant
 
 ## Key Implementation Decisions
@@ -76,14 +81,14 @@ Wedly keeps the workflow minimal:
 
 ## Trade-offs
 - Faster delivery over deep feature set
-- Manual anti-spam hardening deferred to v1.1
+- Lightweight spam control (honeypot + timing) instead of heavy CAPTCHA
 - Single visual theme to preserve speed and polish
 
-## What I Would Improve in v1.1
-1. Add rate limiting and CAPTCHA for RSVP route
-2. Add owner moderation tools for wishes
-3. Add CSV export
-4. Add basic delivery analytics
+## What I Would Improve in v1.2
+1. Add robust rate limiting per IP/session
+2. Add optional CAPTCHA switch for public events
+3. Add bulk RSVP moderation actions
+4. Add simple attendance analytics
 
 ## Final Outcome
 Wedly is a focused, launch-ready micro-product that demonstrates rapid product delivery with solid engineering hygiene.
