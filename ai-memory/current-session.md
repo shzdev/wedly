@@ -41,6 +41,7 @@ Project: Wedly
 - Global first-landing refresh was added per route in `ScrollReset`: each pathname triggers `router.refresh()` once per browser session (sessionStorage key) to ensure first arrival on a page revalidates data/state after transitions such as homepage submit -> create page.
 - Landing/auth `WeddingShell` now enables `equalHeightDesktop` so desktop left decorative card matches right content card height.
 - Real mobile date input overflow on create-event page was hardened further: shared form controls now explicitly use block display, max-width, border-box sizing, inherited font, and targeted WebKit date input constraints; create form labels now use `min-w-0`.
+- Owner wedding page and public RSVP page sticky invitation behavior was fixed again by replacing desktop-page `overflow-x-hidden` with `overflow-x-clip`, keeping grid overflow visible, and hardening `.wedly-sticky-panel` with fit-content height, z-index, clipped horizontal overflow, and contained overscroll.
 
 ## Validation
 - `npm run lint` passed.
@@ -57,6 +58,7 @@ Project: Wedly
 - Validation after first-landing refresh update: `npm run typecheck` and `npm run build` passed.
 - Validation after landing equal-height tweak: `npm run typecheck` passed.
 - Validation after real-mobile date input hardening: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
+- Validation after owner/public sticky invitation fix: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.

@@ -45,7 +45,7 @@ export default async function WeddingPage({ params }: WeddingPageProps) {
   const wishes = rsvps.filter((item) => item.wish_message?.trim());
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-background">
+    <main className="relative min-h-screen overflow-x-clip bg-background">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.92),transparent_30%),radial-gradient(circle_at_top_right,rgba(244,225,214,0.62),transparent_35%),linear-gradient(180deg,rgba(255,250,246,0.96),rgba(248,243,238,0.9)_44%,rgba(247,239,232,0.98)_100%)]" />
       <FloatingPetals />
 
@@ -54,7 +54,7 @@ export default async function WeddingPage({ params }: WeddingPageProps) {
           <span className="font-serif text-xl tracking-[0.08em] text-primaryDark">Wedly</span>
         </div>
 
-        <div className="mt-5 grid items-start gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-8 xl:gap-10">
+        <div className="mt-5 grid items-start gap-6 overflow-visible lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-8 xl:gap-10">
           <aside className="wedly-sticky-panel">
             <WeddingInvitationCard
               coupleNames={event.couple_names}

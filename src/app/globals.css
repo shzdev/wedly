@@ -468,14 +468,18 @@ h4 {
 
 .wedly-sticky-panel {
   align-self: start;
+  height: fit-content;
 }
 
 @media (min-width: 1024px) {
   .wedly-sticky-panel {
     position: sticky;
     top: 2rem;
+    z-index: 5;
     max-height: calc(100vh - 4rem);
     overflow-y: auto;
+    overflow-x: clip;
+    overscroll-behavior: contain;
     padding-right: 0.2rem;
   }
 }

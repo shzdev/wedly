@@ -45,7 +45,7 @@ export default async function Home() {
 
   if (ownerEmail && event) {
     return (
-      <main className="relative min-h-screen overflow-x-hidden bg-background">
+      <main className="relative min-h-screen overflow-x-clip bg-background">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.92),transparent_32%),radial-gradient(circle_at_top_right,rgba(244,225,214,0.64),transparent_36%),linear-gradient(180deg,rgba(255,250,246,0.96),rgba(248,243,238,0.88)_44%,rgba(247,239,232,0.98)_100%)]" />
         <FloatingPetals />
         <div className="wedly-page-frame relative flex min-h-screen flex-col pb-14 pt-7 md:pb-18 md:pt-9">
