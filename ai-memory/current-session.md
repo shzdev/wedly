@@ -28,6 +28,7 @@ Project: Wedly
 - The 4 corner border ornaments were removed from the shared invitation card used on owner and public pages.
 - The shared invitation card no longer shows the `Wedly` pill in the top-right area; the card now keeps only the eyebrow, description, and invitation body.
 - Owner wedding page now has a bottom-right danger zone section with a dedicated owner-only action to delete the full workspace (`events` + cascading `rsvps`) and clear the owner email session cookie in one step.
+- Sticky invitation behavior was fixed for create/owner/public layouts using a shared `.wedly-sticky-panel` class with desktop `position: sticky`, capped viewport height, and `overflow-y: auto` so left panels remain sticky and scrollable when content is tall.
 
 ## Validation
 - `npm run lint` passed.
@@ -35,6 +36,7 @@ Project: Wedly
 - `npm run build` passed.
 - `npm audit` was reduced to `0 vulnerabilities` after fixing the dependency tree.
 - Post-update revalidation: `npm run lint`, `npm run typecheck`, and `npm run build` all passed after adding workspace-delete action/UI.
+- Follow-up validation after sticky fix: `npm run lint` and `npm run typecheck` both passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.

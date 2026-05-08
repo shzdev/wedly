@@ -443,6 +443,20 @@ h4 {
   filter: saturate(0.85);
 }
 
+.wedly-sticky-panel {
+  align-self: start;
+}
+
+@media (min-width: 1024px) {
+  .wedly-sticky-panel {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding-right: 0.2rem;
+  }
+}
+
 @keyframes wedlyPetalFall {
   0% {
     transform: translate3d(0, -10vh, 0) rotate(0deg);

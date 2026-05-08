@@ -49,7 +49,7 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
   return (
     <div className="relative">
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-8 xl:gap-10">
-        <aside className="self-start lg:sticky lg:top-8">
+        <aside className="wedly-sticky-panel">
           <WeddingInvitationCard
             coupleNames={event.couple_names}
             weddingDate={event.wedding_date}
