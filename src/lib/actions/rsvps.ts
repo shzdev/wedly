@@ -2,7 +2,7 @@
 
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
-import { getCurrentUser } from "@/lib/actions/events";
+import { getCurrentOwnerEmail } from "@/lib/owner-session";
 import { createClient } from "@/lib/supabase/server";
 import { rsvpSchema } from "@/lib/validations/rsvp";
 
@@ -169,8 +169,8 @@ export async function submitRsvp(
 }
 
 export async function deleteRsvp(rsvpId: string) {
-  const user = await getCurrentUser();
-  if (!user) {
+  const ownerEmail = await getCurrentOwnerEmail();
+  if (!ownerEmail) {
     return;
   }
 
@@ -185,7 +185,6 @@ export async function deleteRsvp(rsvpId: string) {
     if (rsvpError) {
       Sentry.withScope((scope) => {
         scope.setTag("feature", "delete_rsvp");
-        scope.setUser({ id: user.id });
         scope.setExtra("rsvp_id", rsvpId);
         scope.setExtra("db_error_code", rsvpError.code);
         scope.setExtra("db_error_message", rsvpError.message);
@@ -197,15 +196,14 @@ export async function deleteRsvp(rsvpId: string) {
 
   const { data: event, error: eventError } = await supabase
     .from("events")
-    .select("id,slug,user_id")
+    .select("id,slug,owner_email")
     .eq("id", rsvp.event_id)
     .maybeSingle();
 
-  if (eventError || !event || event.user_id !== user.id) {
+  if (eventError || !event || event.owner_email !== ownerEmail) {
     if (eventError) {
       Sentry.withScope((scope) => {
         scope.setTag("feature", "delete_rsvp");
-        scope.setUser({ id: user.id });
         scope.setExtra("rsvp_id", rsvpId);
         scope.setExtra("db_error_code", eventError.code);
         scope.setExtra("db_error_message", eventError.message);
@@ -220,7 +218,6 @@ export async function deleteRsvp(rsvpId: string) {
     Sentry.withScope((scope) => {
       scope.setTag("feature", "delete_rsvp");
       scope.setTag("slug", event.slug);
-      scope.setUser({ id: user.id });
       scope.setExtra("rsvp_id", rsvpId);
       scope.setExtra("db_error_code", deleteError.code);
       scope.setExtra("db_error_message", deleteError.message);

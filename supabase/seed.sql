@@ -1,23 +1,16 @@
 -- Wedly demo seed data
 -- IMPORTANT:
--- 1) Replace the UUID below with a real auth.users id from your Supabase project.
+-- 1) Replace the email below with your chosen owner workspace email.
 -- 2) Run this after schema.sql.
-
--- Example lookup:
--- select id, email from auth.users order by created_at desc;
 
 do $$
 declare
-  demo_user_id uuid := '00000000-0000-0000-0000-000000000000';
+  demo_owner_email text := 'demo@wedly.test';
   demo_event_id uuid;
 begin
-  if demo_user_id = '00000000-0000-0000-0000-000000000000' then
-    raise exception 'Please replace demo_user_id in supabase/seed.sql with a real auth.users id';
-  end if;
-
-  insert into public.events (user_id, slug, couple_names, wedding_date, venue, message)
+  insert into public.events (owner_email, slug, couple_names, wedding_date, venue, message)
   values (
-    demo_user_id,
+    lower(trim(demo_owner_email)),
     'nadia-aiman',
     'Nadia & Aiman',
     '2026-12-20',
@@ -25,7 +18,8 @@ begin
     'Join us as we celebrate our special day with the people we love most.'
   )
   on conflict (slug) do update
-    set couple_names = excluded.couple_names,
+    set owner_email = excluded.owner_email,
+        couple_names = excluded.couple_names,
         wedding_date = excluded.wedding_date,
         venue = excluded.venue,
         message = excluded.message

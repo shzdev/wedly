@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import { NextRequest, NextResponse } from "next/server";
+import { getCurrentOwnerEmail } from "@/lib/owner-session";
 import { createClient } from "@/lib/supabase/server";
 import { normalizeSlug } from "@/lib/utils/slug";
 
@@ -11,26 +12,22 @@ function escapeCsv(value: string | number | null) {
 export async function GET(request: NextRequest) {
   const slugRaw = request.nextUrl.searchParams.get("slug") ?? "";
   const slug = normalizeSlug(slugRaw);
+  const ownerEmail = await getCurrentOwnerEmail();
 
   if (!slug) {
     return NextResponse.json({ error: "Invalid slug" }, { status: 400 });
   }
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError || !user) {
+  if (!ownerEmail) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const supabase = await createClient();
   const { data: event, error: eventError } = await supabase
     .from("events")
-    .select("id,slug,user_id")
+    .select("id,slug")
     .eq("slug", slug)
-    .eq("user_id", user.id)
+    .eq("owner_email", ownerEmail)
     .maybeSingle();
 
   if (eventError || !event) {
@@ -38,7 +35,6 @@ export async function GET(request: NextRequest) {
       Sentry.withScope((scope) => {
         scope.setTag("feature", "export_csv");
         scope.setTag("slug", slug);
-        scope.setUser({ id: user.id });
         scope.setExtra("db_error_code", eventError.code);
         scope.setExtra("db_error_message", eventError.message);
         Sentry.captureException(eventError);
@@ -57,7 +53,6 @@ export async function GET(request: NextRequest) {
     Sentry.withScope((scope) => {
       scope.setTag("feature", "export_csv");
       scope.setTag("slug", slug);
-      scope.setUser({ id: user.id });
       scope.setExtra("db_error_code", rsvpError.code);
       scope.setExtra("db_error_message", rsvpError.message);
       Sentry.captureException(rsvpError);

@@ -31,6 +31,12 @@
 - A shared invitation component was introduced so owner and guest pages stay visually consistent without duplicating the printed-invitation markup.
 - The RSVP form was redesigned visually, but the honeypot, render timestamp, server action names, and submission values were intentionally preserved to avoid weakening spam or duplicate protection.
 
+## 2026-05-08 - Replace Supabase Email Auth With Email-Only Owner Workspace
+- Supabase magic-link login was removed from the active owner flow because free-plan email limits were too restrictive for MVP testing.
+- Owner identity now comes from a normalized email stored in an httpOnly cookie, with event ownership moved to `events.owner_email`.
+- CSV export and RSVP delete now verify ownership through the owner email cookie on the server.
+- Schema policies were relaxed to keep anon-key server access working without Supabase Auth, and docs were updated to say clearly that this is not production-secure authentication.
+
 ## 2026-05-08 - Publish Local Main to GitHub
 - Pushed local `main` to `origin/main` with `--force-with-lease` because the remote only contained the initial commit.
 - This preserved the Wedly project history and avoided merging against an empty remote baseline.

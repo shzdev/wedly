@@ -3,7 +3,8 @@ import { CreateWeddingForm } from "@/components/create-wedding-form";
 import { FloatingPetals } from "@/components/floating-petals";
 import { ManageWeddingCard } from "@/components/manage-wedding-card";
 import { WeddingShell } from "@/components/wedding-shell";
-import { getCurrentUser, getUserEvent } from "@/lib/actions/events";
+import { getCurrentOwnerEmail } from "@/lib/owner-session";
+import { getOwnerEvent } from "@/lib/actions/events";
 import { getRsvpsByEvent } from "@/lib/actions/rsvps";
 import { headers } from "next/headers";
 
@@ -15,10 +16,6 @@ function getBaseUrl(host: string) {
   const protocol = host.includes("localhost") ? "http" : "https";
   return `${protocol}://${host}`;
 }
-
-type HomePageProps = {
-  searchParams?: Promise<{ auth?: string }>;
-};
 
 const featureCards = [
   {
@@ -38,17 +35,15 @@ const featureCards = [
   },
 ];
 
-export default async function Home({ searchParams }: HomePageProps) {
+export default async function Home() {
   const requestHeaders = await headers();
   const host = requestHeaders.get("host") ?? "";
   const baseUrl = getBaseUrl(host);
-  const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const authState = resolvedSearchParams?.auth ?? null;
-  const user = await getCurrentUser();
-  const event = user ? await getUserEvent() : null;
+  const ownerEmail = await getCurrentOwnerEmail();
+  const event = ownerEmail ? await getOwnerEvent(ownerEmail) : null;
   const rsvps = event ? await getRsvpsByEvent(event.id) : [];
 
-  if (user && event) {
+  if (ownerEmail && event) {
     return (
       <main className="relative min-h-screen overflow-hidden bg-background">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.92),transparent_32%),radial-gradient(circle_at_top_right,rgba(244,225,214,0.64),transparent_36%),linear-gradient(180deg,rgba(255,250,246,0.96),rgba(248,243,238,0.88)_44%,rgba(247,239,232,0.98)_100%)]" />
@@ -69,7 +64,7 @@ export default async function Home({ searchParams }: HomePageProps) {
     );
   }
 
-  if (user && !event) {
+  if (ownerEmail && !event) {
     return (
       <main className="relative min-h-screen overflow-hidden bg-background">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.9),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(235,213,201,0.38),transparent_35%),linear-gradient(180deg,rgba(255,250,246,0.85),rgba(248,243,238,0))]" />
@@ -93,12 +88,6 @@ export default async function Home({ searchParams }: HomePageProps) {
       </main>
     );
   }
-
-  const sectionEyebrow = user ? "Manage Responses" : "Get Started";
-  const sectionTitle = user ? "Manage Your Wedly Page" : "Start Your Wedly Page";
-  const sectionDescription = user
-    ? "Share your RSVP page, keep your guest list organised, and export your responses whenever you need them."
-    : "Enter your email and we will send you a secure sign-in link.";
 
   return (
     <main className="relative overflow-hidden bg-background">
@@ -170,23 +159,11 @@ export default async function Home({ searchParams }: HomePageProps) {
 
         <WeddingShell
           id="wedly-entry"
-          eyebrow={sectionEyebrow}
-          title={sectionTitle}
-          description={sectionDescription}
+          eyebrow="Email Workspace"
+          title="Start Your Wedly Page"
+          description="Enter your email to continue. No email will be sent."
         >
-          {!user ? <AuthCard /> : null}
-          {user && event ? (
-            <ManageWeddingCard
-              event={event}
-              publicLink={`${baseUrl}/w/${event.slug}`}
-              rsvps={rsvps}
-            />
-          ) : null}
-          {!user && (authState === "missing_code" || authState === "error") ? (
-            <div className="mt-4 rounded-2xl border border-border bg-surfaceMuted/40 px-4 py-3 text-sm text-textMuted">
-              Sign-in could not be completed. Please request a new sign-in link and try again.
-            </div>
-          ) : null}
+          <AuthCard />
         </WeddingShell>
 
         <div className="mx-auto flex w-full max-w-6xl justify-center px-4 pb-16 pt-2 md:px-8">

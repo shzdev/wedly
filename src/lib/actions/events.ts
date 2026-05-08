@@ -3,6 +3,12 @@
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import {
+  clearOwnerEmailCookie,
+  getCurrentOwnerEmail,
+  setOwnerEmailCookie,
+  validateOwnerEmail,
+} from "@/lib/owner-session";
 import { createClient } from "@/lib/supabase/server";
 import { normalizeSlug } from "@/lib/utils/slug";
 import { createEventSchema, eventSchema } from "@/lib/validations/event";
@@ -12,18 +18,9 @@ export type ActionState = {
   success?: string;
 };
 
-export async function getCurrentUser() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error) {
-    return null;
-  }
-  return data.user;
-}
-
-export async function getUserEvent() {
-  const user = await getCurrentUser();
-  if (!user) {
+export async function getOwnerEvent(ownerEmail?: string | null) {
+  const resolvedOwnerEmail = ownerEmail ?? (await getCurrentOwnerEmail());
+  if (!resolvedOwnerEmail) {
     return null;
   }
 
@@ -31,7 +28,7 @@ export async function getUserEvent() {
   const { data } = await supabase
     .from("events")
     .select("*")
-    .eq("user_id", user.id)
+    .eq("owner_email", resolvedOwnerEmail)
     .limit(1)
     .maybeSingle();
 
@@ -49,13 +46,27 @@ export async function getEventBySlug(slug: string) {
   return data;
 }
 
+export async function continueWithEmail(
+  _prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const rawEmail = String(formData.get("email") ?? "");
+  const parsed = validateOwnerEmail(rawEmail);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Please enter a valid email." };
+  }
+
+  await setOwnerEmailCookie(parsed.data);
+  redirect("/");
+}
+
 export async function createEvent(
   _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const user = await getCurrentUser();
-  if (!user) {
-    return { error: "Please log in first." };
+  const ownerEmail = await getCurrentOwnerEmail();
+  if (!ownerEmail) {
+    return { error: "Please enter your email first." };
   }
 
   const rawFormInput = {
@@ -93,13 +104,13 @@ export async function createEvent(
   }
 
   const supabase = await createClient();
-  const existing = await getUserEvent();
+  const existing = await getOwnerEvent(ownerEmail);
   if (existing) {
-    return { error: "You already have one event for v1." };
+    return { error: "This email workspace already has one event for v1." };
   }
 
   const { error } = await supabase.from("events").insert({
-    user_id: user.id,
+    owner_email: ownerEmail,
     ...parsed.data,
     message: parsed.data.message || null,
   });
@@ -108,14 +119,13 @@ export async function createEvent(
     Sentry.withScope((scope) => {
       scope.setTag("feature", "create_event");
       scope.setTag("slug", parsed.data.slug);
-      scope.setUser({ id: user.id });
       scope.setExtra("db_error_code", error.code);
       scope.setExtra("db_error_message", error.message);
       Sentry.captureException(error);
     });
     if (error.code === "23505") {
-      if (error.message.includes("events_user_one_event_idx")) {
-        return { error: "You already have one event for v1." };
+      if (error.message.includes("events_owner_email_one_event_idx")) {
+        return { error: "This email workspace already has one event for v1." };
       }
       return {
         error:
@@ -129,8 +139,8 @@ export async function createEvent(
   return { success: "Wedding page created successfully." };
 }
 
-export async function signOut() {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
+export async function clearOwnerSession() {
+  await clearOwnerEmailCookie();
+  revalidatePath("/");
   redirect("/");
 }

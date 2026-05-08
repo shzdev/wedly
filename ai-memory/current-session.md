@@ -17,6 +17,10 @@ Project: Wedly
 - The public RSVP page now mirrors the owner visual system with a sticky invitation on the left, then a guest content column containing the wishes carousel and RSVP form.
 - The RSVP form now uses the same invitation/ticket language as the rest of the app and keeps the existing honeypot, timestamp, and duplicate-protection flow unchanged.
 - The wedding invitation card is now shared between owner and public pages through a reusable component.
+- Supabase magic-link auth has been removed from the active owner flow and replaced with email-only owner workspace access via an httpOnly cookie.
+- Event ownership now resolves through `events.owner_email` and the cookie helper in `src/lib/owner-session.ts`.
+- Create event, owner page, CSV export, and RSVP delete now perform ownership checks through the owner email cookie instead of Supabase Auth user id.
+- Schema and docs were rewritten to reflect that this solves free-plan email limits for testing, but is not production-secure authentication.
 
 ## Validation
 - `npm run lint` passed.

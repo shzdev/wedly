@@ -13,6 +13,8 @@ Stack:
 
 You create one page, share the link, and guests can RSVP + leave wishes.
 
+Current demo uses email-only owner workspace access for testing, so no email is sent.
+
 Live demo: `<LIVE_URL>`
 GitHub: `<GITHUB_URL>`
 
@@ -25,19 +27,21 @@ Just shipped **Wedly**, a one-day MVP for wedding RSVP + guestbook.
 Many wedding tools are too heavy for couples who only need a simple, elegant RSVP page.
 
 ### What Wedly does
-- Magic-link login
+- Email-only owner workspace access for demo mode
 - Create one wedding event
 - Share a public RSVP page (`/w/[slug]`)
 - Collect RSVP responses and guest wishes
 
 ### Tech stack
 - Next.js App Router
-- Supabase Auth + Postgres + RLS
+- Supabase Postgres
 - Zod validation
 - Sentry monitoring
 - Vercel deployment
 
-I focused on scope discipline, reliable data access, and a warm luxury UI style.
+I focused on scope discipline, reliable data flow, and a warm luxury UI style.
+
+Note: this MVP avoids free-plan auth email limits by not sending login emails. It is not the final production auth model.
 
 Live demo: `<LIVE_URL>`
 GitHub: `<GITHUB_URL>`
@@ -47,8 +51,7 @@ If you have feedback on product direction or polish, I'd love to hear it.
 ## 3) Portfolio Project Description
 **Wedly** is a one-day MVP that lets couples create a beautiful wedding RSVP page in minutes.
 
-It includes magic-link auth, single-event management, a public RSVP + guestbook page, Supabase RLS security, and Sentry monitoring. Built with Next.js, Supabase, and Vercel, with a minimal luxury UI approach.
+It includes email-only owner workspace access for testing, single-event management, a public RSVP + guestbook page, and Sentry monitoring. Built with Next.js, Supabase, and Vercel, with a minimal luxury UI approach.
 
 Live: `<LIVE_URL>`  
 Source: `<GITHUB_URL>`
-

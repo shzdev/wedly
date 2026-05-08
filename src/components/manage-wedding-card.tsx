@@ -1,7 +1,7 @@
 import { deleteRsvp } from "@/lib/actions/rsvps";
 import { formatDateTime } from "@/lib/utils/date";
 import { DeleteRsvpButton } from "./delete-rsvp-button";
-import { signOut } from "@/lib/actions/events";
+import { clearOwnerSession } from "@/lib/actions/events";
 import { CopyLinkButton } from "./copy-link-button";
 import { WishesList } from "./wishes-list";
 import { WeddingInvitationCard } from "./wedding-invitation-card";
@@ -72,9 +72,9 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
                 guest message in one polished owner view.
               </p>
             </div>
-            <form action={signOut}>
+            <form action={clearOwnerSession}>
               <button className="rounded-full border border-border bg-white/80 px-4 py-2 text-sm font-medium text-textMuted transition hover:bg-white">
-                Sign out
+                Switch Email
               </button>
             </form>
           </div>

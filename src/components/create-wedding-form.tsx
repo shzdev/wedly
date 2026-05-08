@@ -3,7 +3,11 @@
 import { useActionState, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
-import { createEvent, type ActionState } from "@/lib/actions/events";
+import {
+  clearOwnerSession,
+  createEvent,
+  type ActionState,
+} from "@/lib/actions/events";
 import { normalizeSlug } from "@/lib/utils/slug";
 
 const initialState: ActionState = {};
@@ -55,8 +59,13 @@ export function CreateWeddingForm() {
 
   return (
     <div className="wedly-card wedly-ticket-soft p-6 md:p-7">
-      <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-900">
-        You&apos;re signed in. Let&apos;s create your RSVP page.
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-200/80 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-900">
+        <span>You&apos;re in your Wedly workspace. Let&apos;s create your RSVP page.</span>
+        <form action={clearOwnerSession}>
+          <button className="text-xs font-semibold tracking-[0.12em] uppercase text-emerald-900 underline-offset-2 hover:underline">
+            Switch Email
+          </button>
+        </form>
       </div>
       <h3 className="mt-5 text-3xl leading-tight text-textMain md:text-4xl">
         Create Your Wedding Event

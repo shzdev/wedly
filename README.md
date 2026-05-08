@@ -5,21 +5,28 @@ Live demo: `[LIVE_DEMO_URL]`
 GitHub: `[GITHUB_REPO_URL]`
 
 ## Screenshot
-- Logged-out home (hero + sign-in form): `<SCREENSHOT_URL_OR_PATH>`
-- Logged-in home (manage RSVP + summary + CSV): `<SCREENSHOT_URL_OR_PATH>`
+- Home (landing + email workspace access): `<SCREENSHOT_URL_OR_PATH>`
+- Home (owner manage workspace): `<SCREENSHOT_URL_OR_PATH>`
 - Public RSVP page (`/w/nadia-aiman`): `<SCREENSHOT_URL_OR_PATH>`
 
-## Problem Statement
-Most wedding tools are either too heavy or too expensive for couples who only need:
+## Product Summary
+Wedly is a focused wedding RSVP + guestbook MVP for couples who only need:
 - one elegant invitation page
 - RSVP collection
 - guest wishes
 
-Wedly solves this with a focused MVP flow and warm luxury visual direction.
+## Important MVP Access Note
+Wedly now uses **email-only owner access** for MVP/testing:
+- the owner enters an email on `/`
+- no email is sent
+- the app stores that email in an httpOnly cookie
+- the event workspace is loaded by `owner_email`
+
+This avoids Supabase free-plan email limits during testing, but it is **not production-secure authentication**. Anyone who knows the owner email can open that workspace on the same deployment.
 
 ## Core Features
-- Sign-in link login (Supabase Auth)
-- One event per account (v1 scope)
+- Email-only owner workspace access for MVP/demo mode
+- One event per owner email (v1 scope)
 - Public wedding page at `/w/[slug]`
 - Guest RSVP + wish submission
 - Basic spam protection (honeypot + minimum submit delay)
@@ -32,44 +39,43 @@ Wedly solves this with a focused MVP flow and warm luxury visual direction.
 - Next.js 16 App Router
 - TypeScript
 - Tailwind CSS
-- Supabase Auth + Postgres + RLS
+- Supabase Postgres
 - Zod
 - Sentry
 - Vercel
 
 ## Architecture Overview
-- `src/app/page.tsx`: main route with auth-aware UI branching
-- `src/app/w/[slug]/page.tsx`: public invitation + RSVP page
-- `src/lib/actions/events.ts`: event actions and owner flow
-- `src/lib/actions/rsvps.ts`: RSVP actions and guest flow
-- `supabase/schema.sql`: DB schema + RLS policies
+- `src/app/page.tsx`: owner-email-aware home route
+- `src/lib/owner-session.ts`: owner email cookie helpers
+- `src/lib/actions/events.ts`: owner session and event flow
+- `src/lib/actions/rsvps.ts`: guest RSVP flow + owner RSVP delete
+- `src/app/api/rsvps/export/route.ts`: owner CSV export by slug + owner email
+- `supabase/schema.sql`: DB schema + MVP RLS posture
 
 ## User Flow
-1. User opens `/`
-2. User logs in via sign-in link
-3. User creates one event
-4. User copies public link
-5. Guest opens `/w/[slug]`
+1. Visitor opens `/`
+2. Visitor enters owner email
+3. App creates an email workspace cookie
+4. Owner creates one event
+5. Owner shares `/w/[slug]`
 6. Guest submits RSVP + wish
-7. Owner sees latest wishes on `/`
+7. Owner returns to `/` and manages responses
 
 ## Database Overview
 - `events`
-  - stores owner event details and unique slug
-  - one-event-per-user constraint
+  - stores owner email, event details, and unique slug
+  - one event per owner email
 - `rsvps`
   - stores guest responses and wishes per event
 
 See full schema: [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql)
 
-## Security and RLS Overview
-- RLS enabled on `events` and `rsvps`
-- Owner can manage own event data
-- Public can read invitation data and submit RSVP
-- No Supabase service role key exposed in frontend
-- Owner RSVP delete is enforced by RLS policy (`rsvps owner delete`)
-- Owner CSV export is enforced by session + ownership checks in route handler
-- Detailed security notes: [docs/security-review.md](c:/MyProjects/Wedly/docs/security-review.md)
+## Security Model Summary
+- Public guest flow remains open for RSVP + invitation viewing
+- Owner actions are gated in server actions/routes by the owner email cookie
+- No Supabase service role key is used
+- This MVP model is weaker than real auth because DB ownership is no longer enforced by `auth.uid()`
+- Detailed notes: [docs/security-review.md](c:/MyProjects/Wedly/docs/security-review.md)
 
 ## Sentry Monitoring Overview
 - Runtime init:
@@ -103,17 +109,11 @@ npm run dev
 ```
 
 ## Supabase Setup
-1. Create project in Supabase.
+1. Create a Supabase project.
 2. Apply [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql) in SQL Editor.
-3. Configure Auth URL settings:
-  - Site URL: `https://YOUR_VERCEL_DOMAIN` (or custom domain)
-  - Redirect URLs:
-  - `http://localhost:3000/auth/callback`
-  - `https://YOUR_VERCEL_DOMAIN/auth/callback`
-  - `https://YOUR_CUSTOM_DOMAIN/auth/callback` (if custom domain is enabled)
-4. Confirm RLS is enabled and policies exist on `events` and `rsvps`.
-5. If you want email wording to say "sign-in link" instead of "magic link", update it manually in:
-  - Supabase Dashboard -> Authentication -> Email Templates -> Magic Link / Login template
+3. No Supabase email auth setup is required for this MVP mode.
+4. Confirm tables and indexes exist on `events` and `rsvps`.
+5. Review [docs/security-review.md](c:/MyProjects/Wedly/docs/security-review.md) before public sharing.
 
 ## Schema and Seed Instructions
 - Base schema:
@@ -122,13 +122,8 @@ npm run dev
   - [supabase/seed.sql](c:/MyProjects/Wedly/supabase/seed.sql)
 
 Seed note:
-- Replace `demo_user_id` in `seed.sql` with a real `auth.users.id` from your Supabase project before running.
+- Replace the demo owner email in `seed.sql` if needed.
 - Demo event slug: `nadia-aiman`.
-
-v1.1 schema note for existing projects:
-- Re-run [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql) to ensure:
-  - `rsvps owner delete` policy exists
-  - `rsvps_event_guest_name_ci_idx` index exists
 
 ## Vercel Deployment
 1. Push repository to GitHub.
@@ -136,18 +131,17 @@ v1.1 schema note for existing projects:
 3. Set environment variables from [.env.example](c:/MyProjects/Wedly/.env.example).
 4. Deploy once, copy production URL, then set `NEXT_PUBLIC_SITE_URL` to that URL.
 5. Redeploy after updating `NEXT_PUBLIC_SITE_URL`.
-6. Add production callback URL to Supabase redirect list.
-7. Test sign-in link auth on production URL.
+6. Run the production smoke test.
 
 ## Testing Checklist
-- Login sign-in link works
+- Email workspace access works without sending email
 - Create event works
 - Duplicate slug shows friendly error
 - Public page `/w/[slug]` loads
 - Guest RSVP submission succeeds
 - Honeypot/fast-submit spam checks reject suspicious submissions
 - Duplicate RSVP shows friendly message
-- Wishes list updates
+- Wishes carousel updates
 - Owner can delete RSVP from manage panel
 - Owner CSV export download works
 - Not-found state works for invalid slug
@@ -155,15 +149,15 @@ v1.1 schema note for existing projects:
   - `GET /api/dev/sentry-test`
 
 ## Manual Security Checklist
-- Logged-out user cannot create event
-- User A cannot view/manage User B owner data
-- User A cannot delete User B RSVP
-- User A cannot export User B CSV
+- Logged-out visitor cannot create event
+- Email A cannot see Email B workspace
+- Email A cannot delete Email B RSVP through the app
+- Email A cannot export Email B CSV through the app
 - Public guest can open `/w/[slug]`
 - Public guest can submit RSVP
 - Duplicate RSVP gets friendly rejection
 - Honeypot spam simulation is rejected
-- CSV route returns unauthorized when logged out
+- CSV route returns unauthorized when no owner cookie exists
 - Unknown slug shows not-found
 - No secrets are committed in repo
 
@@ -183,6 +177,7 @@ npm run build
 - Final launch copy: [docs/final-launch-copy.md](c:/MyProjects/Wedly/docs/final-launch-copy.md)
 
 ## Known Limitations
+- Owner access is email-only and not production-secure
 - No image upload
 - No multiple themes
 - No payment flow
@@ -190,11 +185,11 @@ npm run build
 - No seating planner/vendor tools
 - No advanced analytics dashboard
 
-## Future Improvements (v1.1)
-1. Stronger rate limiting per IP/session
-2. Optional CAPTCHA toggle for high-traffic events
-3. Bulk RSVP actions (archive/restore)
-4. Lightweight RSVP analytics summary
+## Future Improvements (Real Auth Path)
+1. Restore proper Supabase Auth on a plan with sufficient email capacity
+2. Add passwordless OTP provider or OAuth
+3. Reintroduce DB ownership tied to verified identity
+4. Add stronger rate limiting and optional CAPTCHA
 
 ## Before Sharing Publicly
 1. Replace placeholders:
@@ -202,11 +197,11 @@ npm run build
 - `[GITHUB_REPO_URL]`
 - Screenshot placeholders
 2. Confirm production env vars are set in Vercel.
-3. Confirm Supabase redirect URLs include production domain.
-4. Run [docs/production-smoke-test.md](c:/MyProjects/Wedly/docs/production-smoke-test.md) end-to-end.
+3. Run [docs/production-smoke-test.md](c:/MyProjects/Wedly/docs/production-smoke-test.md) end-to-end.
+4. Decide whether the email-only owner access limitation is acceptable for your audience.
 5. Use [docs/final-launch-copy.md](c:/MyProjects/Wedly/docs/final-launch-copy.md) for first public post.
 
 ## Portfolio Case Study Summary
-Wedly demonstrates end-to-end MVP delivery: product scoping, Supabase RLS design, server action flows, UI polish, and production monitoring within a small, maintainable codebase.
+Wedly demonstrates end-to-end MVP delivery: product scoping, invitation-led UI polish, owner/guest workflows, server action flows, and monitoring within a small, maintainable codebase.
 
 Detailed write-up: [docs/case-study.md](c:/MyProjects/Wedly/docs/case-study.md)
