@@ -14,20 +14,10 @@ type WishesListProps = {
   wishes: WishItem[];
 };
 
-function getWishPreview(message: string | null) {
-  const trimmed = (message ?? "").trim();
-  if (!trimmed) {
-    return "Warm wishes received.";
-  }
-  if (trimmed.length <= 140) {
-    return trimmed;
-  }
-  return `${trimmed.slice(0, 137)}...`;
-}
-
 export function WishesList({ wishes }: WishesListProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   useEffect(() => {
     if (wishes.length <= 1 || isPaused) {
@@ -58,10 +48,13 @@ export function WishesList({ wishes }: WishesListProps) {
 
   const safeIndex = activeIndex % wishes.length;
   const activeWish = wishes[safeIndex];
-  const previousWish = wishes[(safeIndex - 1 + wishes.length) % wishes.length];
-  const nextWish = wishes[(safeIndex + 1) % wishes.length];
-
-  const sideCards = [previousWish, activeWish, nextWish];
+  const hasMultipleWishes = wishes.length > 1;
+  const showPreviousWish = () => {
+    setActiveIndex((current) => (current - 1 + wishes.length) % wishes.length);
+  };
+  const showNextWish = () => {
+    setActiveIndex((current) => (current + 1) % wishes.length);
+  };
 
   return (
     <div
@@ -76,76 +69,90 @@ export function WishesList({ wishes }: WishesListProps) {
           <p className="wedly-kicker">Guestbook Carousel</p>
           <h4 className="mt-2 text-3xl text-textMain">Wishes From Your Guests</h4>
         </div>
-        <div className="wedly-pill border border-border bg-white/75 px-3 py-1 text-xs font-medium text-textMuted">
-          {safeIndex + 1} / {wishes.length}
-        </div>
+        {hasMultipleWishes ? (
+          <div className="wedly-pill border border-border bg-white/75 px-3 py-1 text-xs font-medium text-textMuted">
+            {safeIndex + 1} / {wishes.length}
+          </div>
+        ) : null}
       </div>
 
-      <div className="wedly-carousel-stage mt-5">
-        {sideCards.map((wish, index) => {
-          const isCenter = index === 1 || wishes.length === 1;
-          return (
-            <article
-              key={`${wish.id}-${isCenter ? "active" : index}`}
-              className={[
-                "wedly-carousel-card wedly-fade-slide px-4 py-5 sm:px-5 sm:py-6",
-                isCenter
-                  ? "wedly-carousel-card-center min-h-[15rem]"
-                  : "wedly-carousel-card-side hidden min-h-[13rem] lg:block",
-              ].join(" ")}
-            >
-              <div className="text-4xl leading-none text-primary/38">&ldquo;</div>
-              <p
-                className={[
-                  "mt-3 break-words leading-8 text-textMain",
-                  isCenter ? "text-lg md:text-[1.12rem]" : "text-sm",
-                ].join(" ")}
-              >
-                {isCenter ? wish.wish_message || "Warm wishes received." : getWishPreview(wish.wish_message)}
-              </p>
-              <div className="mt-5 border-t border-border/70 pt-4">
-                <h5 className="break-words text-lg font-semibold text-textMain">
-                  {wish.guest_name}
-                </h5>
-                <p className="mt-1 text-xs font-medium tracking-[0.16em] uppercase text-textMuted">
-                  {wish.attendance.replace("_", " ")}
-                </p>
-              </div>
-            </article>
-          );
-        })}
-      </div>
+      <div
+        className="wedly-carousel-stage mt-5"
+        onFocus={() => setIsPaused(true)}
+        onBlur={() => setIsPaused(false)}
+        onTouchStart={(event) => {
+          if (hasMultipleWishes) {
+            setTouchStartX(event.touches[0]?.clientX ?? null);
+          }
+        }}
+        onTouchEnd={(event) => {
+          if (!hasMultipleWishes || touchStartX === null) {
+            return;
+          }
 
-      <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-        <button
-          type="button"
-          onClick={() => setActiveIndex((current) => (current - 1 + wishes.length) % wishes.length)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white/85 text-textMain transition hover:bg-white"
-          aria-label="Show previous wish"
+          const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX;
+          const deltaX = touchEndX - touchStartX;
+          if (Math.abs(deltaX) > 40) {
+            if (deltaX > 0) {
+              showPreviousWish();
+            } else {
+              showNextWish();
+            }
+          }
+          setTouchStartX(null);
+        }}
+      >
+        <article
+          key={activeWish.id}
+          className="wedly-carousel-card wedly-fade-slide mx-auto min-h-[15rem] w-full max-w-2xl px-4 py-5 sm:px-5 sm:py-6"
         >
-          &larr;
-        </button>
-        {wishes.map((wish, index) => (
+          <div className="text-4xl leading-none text-primary/38">&ldquo;</div>
+          <p className="mt-3 break-words text-lg leading-8 text-textMain md:text-[1.12rem]">
+            {activeWish.wish_message || "Warm wishes received."}
+          </p>
+          <div className="mt-5 border-t border-border/70 pt-4">
+            <h5 className="break-words text-lg font-semibold text-textMain">
+              {activeWish.guest_name}
+            </h5>
+            <p className="mt-1 text-xs font-medium tracking-[0.16em] uppercase text-textMuted">
+              {activeWish.attendance.replace("_", " ")}
+            </p>
+          </div>
+        </article>
+      </div>
+
+      {hasMultipleWishes ? (
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
           <button
-            key={wish.id}
             type="button"
-            onClick={() => setActiveIndex(index)}
-            className={[
-              "h-2.5 rounded-full transition-all",
-              index === safeIndex ? "w-8 bg-primaryDark" : "w-2.5 bg-primary/30",
-            ].join(" ")}
-            aria-label={`Show wish ${index + 1}`}
-          />
-        ))}
-        <button
-          type="button"
-          onClick={() => setActiveIndex((current) => (current + 1) % wishes.length)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white/85 text-textMain transition hover:bg-white"
-          aria-label="Show next wish"
-        >
-          &rarr;
-        </button>
-      </div>
+            onClick={showPreviousWish}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white/85 text-textMain transition hover:bg-white"
+            aria-label="Show previous wish"
+          >
+            &larr;
+          </button>
+          {wishes.map((wish, index) => (
+            <button
+              key={wish.id}
+              type="button"
+              onClick={() => setActiveIndex(index)}
+              className={[
+                "h-2.5 rounded-full transition-all",
+                index === safeIndex ? "w-8 bg-primaryDark" : "w-2.5 bg-primary/30",
+              ].join(" ")}
+              aria-label={`Show wish ${index + 1}`}
+            />
+          ))}
+          <button
+            type="button"
+            onClick={showNextWish}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white/85 text-textMain transition hover:bg-white"
+            aria-label="Show next wish"
+          >
+            &rarr;
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

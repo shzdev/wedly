@@ -417,33 +417,18 @@ h4 {
 
 .wedly-carousel-stage {
   position: relative;
-  display: grid;
-  gap: 0.85rem;
-  align-items: stretch;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 
-.wedly-carousel-stage::before,
-.wedly-carousel-stage::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 4rem;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.wedly-carousel-stage::before {
-  left: 0;
-  background: linear-gradient(90deg, rgba(248, 243, 238, 0.96), rgba(248, 243, 238, 0));
-}
-
-.wedly-carousel-stage::after {
-  right: 0;
-  background: linear-gradient(270deg, rgba(248, 243, 238, 0.96), rgba(248, 243, 238, 0));
+.wedly-carousel-stage::-webkit-scrollbar {
+  display: none;
 }
 
 .wedly-carousel-card {
+  scroll-snap-align: center;
   border-radius: var(--wedly-radius);
   border: 1px solid rgba(169, 110, 88, 0.16);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(250, 243, 238, 0.93));
@@ -453,17 +438,8 @@ h4 {
     transform 0.4s ease,
     box-shadow 0.4s ease,
     filter 0.4s ease;
-}
-
-.wedly-carousel-card-center {
   position: relative;
-  z-index: 3;
-}
-
-.wedly-carousel-card-side {
-  opacity: 0.42;
-  transform: scale(0.96);
-  filter: saturate(0.85);
+  z-index: 1;
 }
 
 .wedly-sticky-panel {
@@ -566,22 +542,11 @@ h4 {
     height: 3.2rem;
     width: 3.2rem;
   }
-
-  .wedly-carousel-stage::before,
-  .wedly-carousel-stage::after {
-    display: none;
-  }
 }
 
 @media (min-width: 768px) {
   .wedly-page-frame {
     padding-inline: 1.75rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .wedly-carousel-stage {
-    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 0.7fr);
   }
 }
 
