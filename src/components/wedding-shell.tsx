@@ -8,6 +8,8 @@ type WeddingShellProps = {
   panelLabel?: string;
   panelDescription?: string;
   priority?: "panel" | "content";
+  equalHeightDesktop?: boolean;
+  stickyPanel?: boolean;
   children: ReactNode;
 };
 
@@ -19,6 +21,8 @@ export function WeddingShell({
   panelLabel = "Wedly Invitation Studio",
   panelDescription = "A calm, polished RSVP experience for couples who want one refined link.",
   priority = "panel",
+  equalHeightDesktop = false,
+  stickyPanel = true,
   children,
 }: WeddingShellProps) {
   return (
@@ -26,10 +30,17 @@ export function WeddingShell({
       id={id}
       className="wedly-section-shell wedly-page-frame relative py-4 md:py-8"
     >
-      <div className="grid items-start gap-4 md:grid-cols-[0.92fr_1.08fr] md:gap-5 lg:gap-6">
+      <div
+        className={[
+          "grid items-start gap-4 md:grid-cols-[0.92fr_1.08fr] md:gap-5 lg:gap-6",
+          equalHeightDesktop ? "lg:items-stretch" : "",
+        ].join(" ")}
+      >
         <div
           className={[
-            "wedly-ticket wedly-ticket-large wedly-sticky-panel relative flex min-h-[16rem] items-center justify-center bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.96),rgba(250,241,233,0.86)_52%,rgba(243,229,221,0.78)_100%)] px-6 py-8 md:min-h-[31rem] md:px-8",
+            "wedly-ticket wedly-ticket-large relative flex min-h-[16rem] items-center justify-center bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.96),rgba(250,241,233,0.86)_52%,rgba(243,229,221,0.78)_100%)] px-6 py-8 md:min-h-[31rem] md:px-8",
+            stickyPanel ? "wedly-sticky-panel" : "",
+            equalHeightDesktop ? "lg:h-full lg:min-h-full" : "",
             priority === "content" ? "order-2 md:order-1" : "",
           ].join(" ")}
         >

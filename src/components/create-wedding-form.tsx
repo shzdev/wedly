@@ -3,11 +3,7 @@
 import { useActionState, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
-import {
-  clearOwnerSession,
-  createEvent,
-  type ActionState,
-} from "@/lib/actions/events";
+import { createEvent, type ActionState } from "@/lib/actions/events";
 import { normalizeSlug } from "@/lib/utils/slug";
 
 const initialState: ActionState = {};
@@ -58,24 +54,7 @@ export function CreateWeddingForm() {
   }, [brideName, groomName]);
 
   return (
-    <div className="wedly-card wedly-ticket-soft p-4 sm:p-5 md:p-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h3 className="text-3xl leading-tight text-textMain md:text-4xl">
-            Create Your Wedding Event
-          </h3>
-          <p className="mt-2 text-sm leading-relaxed text-textMuted">
-            Fill in your wedding details to generate your RSVP page.
-          </p>
-        </div>
-        <form action={clearOwnerSession}>
-          <button className="text-xs font-semibold tracking-[0.12em] uppercase text-textMuted underline-offset-2 hover:text-textMain hover:underline">
-            Switch Email
-          </button>
-        </form>
-      </div>
-
-      <form action={formAction} className="mt-5 space-y-4">
+    <form action={formAction} className="space-y-4">
         <div className="grid gap-3 md:grid-cols-2">
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-textMain">Bride Name</span>
@@ -100,19 +79,13 @@ export function CreateWeddingForm() {
             />
           </label>
         </div>
-
-        <div className="wedly-panel px-4 py-4">
-          <p className="text-xs font-semibold tracking-[0.18em] uppercase text-textMuted">
-            Couple Preview
-          </p>
-          <p className="mt-2 break-words font-serif text-3xl leading-tight text-textMain">
-            {couplePreview}
-          </p>
-          <p className="mt-3 text-sm text-textMuted">
-            Your link will be generated automatically:{" "}
-            <span className="font-medium text-primaryDark">/{slugPreview}</span>
-          </p>
-        </div>
+        <p className="text-sm text-textMuted">
+          Couple preview:{" "}
+          <span className="font-medium text-textMain">{couplePreview}</span>
+          {" · "}
+          Link preview:{" "}
+          <span className="font-medium text-primaryDark">/{slugPreview}</span>
+        </p>
 
         <label className="block">
           <span className="mb-2 block text-sm font-medium text-textMain">Wedding Date</span>
@@ -144,7 +117,6 @@ export function CreateWeddingForm() {
           {state.error ? <p className="text-sm text-rose-700">{state.error}</p> : null}
           {state.success ? <p className="text-sm text-emerald-800">{state.success}</p> : null}
         </div>
-      </form>
-    </div>
+    </form>
   );
 }
