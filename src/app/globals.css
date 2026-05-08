@@ -148,6 +148,7 @@ h4 {
 .wedly-textarea,
 .wedly-select {
   width: 100%;
+  min-width: 0;
   border-radius: var(--wedly-radius);
   border: 1px solid rgba(169, 110, 88, 0.18);
   background: rgba(255, 253, 251, 0.96);
@@ -160,6 +161,10 @@ h4 {
 .wedly-select {
   height: 3.15rem;
   padding: 0 1rem;
+}
+
+.wedly-input[type="date"] {
+  max-width: 100%;
 }
 
 .wedly-textarea {
