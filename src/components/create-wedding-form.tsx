@@ -35,20 +35,20 @@ export function CreateWeddingForm() {
     >
       <div className="grid gap-3 md:grid-cols-2">
         <label className="block min-w-0">
-          <span className="mb-2 block text-sm font-medium text-textMain">Bride Name</span>
-          <input
-            name="bride_name"
-            required
-            placeholder="Sarah"
-            className="wedly-input"
-          />
-        </label>
-        <label className="block min-w-0">
           <span className="mb-2 block text-sm font-medium text-textMain">Groom Name</span>
           <input
             name="groom_name"
             required
             placeholder="James"
+            className="wedly-input"
+          />
+        </label>
+        <label className="block min-w-0">
+          <span className="mb-2 block text-sm font-medium text-textMain">Bride Name</span>
+          <input
+            name="bride_name"
+            required
+            placeholder="Sarah"
             className="wedly-input"
           />
         </label>
