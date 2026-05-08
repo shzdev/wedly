@@ -13,8 +13,25 @@ const bodyFont = Plus_Jakarta_Sans({
   subsets: ["latin"],
 });
 
+function resolveMetadataBase() {
+  const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!rawSiteUrl) {
+    return new URL("http://localhost:3000");
+  }
+
+  const normalized = /^https?:\/\//i.test(rawSiteUrl)
+    ? rawSiteUrl
+    : `https://${rawSiteUrl}`;
+
+  try {
+    return new URL(normalized);
+  } catch {
+    return new URL("http://localhost:3000");
+  }
+}
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: resolveMetadataBase(),
   title: {
     default: "Wedly | Beautiful Wedding RSVP Pages",
     template: "%s | Wedly",
