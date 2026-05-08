@@ -55,6 +55,7 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
             weddingDate={event.wedding_date}
             venue={event.venue}
             message={event.message}
+            description="A graceful glimpse of the invitation your guests will receive and remember."
           />
         </aside>
 
@@ -66,8 +67,8 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
                 Manage Your Wedly Page
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-7 text-textMuted sm:text-base">
-                Keep your invitation link close, watch replies arrive, and revisit every
-                guest message in one polished owner view.
+                Share your invitation, follow each RSVP, and cherish every guest
+                message from one refined owner view.
               </p>
             </div>
           </div>

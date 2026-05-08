@@ -35,6 +35,7 @@ Project: Wedly
 - Create-event and public RSVP submit success handlers now explicitly scroll to top before refresh/reset to keep focus at the upper page after submission.
 - Mobile date input overflow on create-event form was fixed by enforcing `min-width: 0` on shared form controls and `max-width: 100%` for `.wedly-input[type="date"]` so width matches other text inputs.
 - Owner wedding page top-right `Switch Email` button was removed from the owner overview header.
+- Owner page wording was updated only: invitation-card subheading and owner-overview subheading now use the new refined copy requested by client.
 
 ## Validation
 - `npm run lint` passed.
