@@ -27,12 +27,14 @@ Project: Wedly
 - The wishes carousel now uses a center-focused premium layout with faded side previews, and falling petals were made denser and slightly faster on owner/public pages.
 - The 4 corner border ornaments were removed from the shared invitation card used on owner and public pages.
 - The shared invitation card no longer shows the `Wedly` pill in the top-right area; the card now keeps only the eyebrow, description, and invitation body.
+- Owner wedding page now has a bottom-right danger zone section with a dedicated owner-only action to delete the full workspace (`events` + cascading `rsvps`) and clear the owner email session cookie in one step.
 
 ## Validation
 - `npm run lint` passed.
 - `npm run typecheck` passed.
 - `npm run build` passed.
 - `npm audit` was reduced to `0 vulnerabilities` after fixing the dependency tree.
+- Post-update revalidation: `npm run lint`, `npm run typecheck`, and `npm run build` all passed after adding workspace-delete action/UI.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.

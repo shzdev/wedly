@@ -144,3 +144,27 @@ export async function clearOwnerSession() {
   revalidatePath("/");
   redirect("/");
 }
+
+export async function deleteOwnerWorkspace() {
+  const ownerEmail = await getCurrentOwnerEmail();
+  if (!ownerEmail) {
+    redirect("/");
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("events").delete().eq("owner_email", ownerEmail);
+
+  if (error) {
+    Sentry.withScope((scope) => {
+      scope.setTag("feature", "delete_owner_workspace");
+      scope.setExtra("db_error_code", error.code);
+      scope.setExtra("db_error_message", error.message);
+      Sentry.captureException(error);
+    });
+    throw new Error("Failed to delete workspace data.");
+  }
+
+  await clearOwnerEmailCookie();
+  revalidatePath("/");
+  redirect("/");
+}

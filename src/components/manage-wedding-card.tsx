@@ -1,5 +1,6 @@
-import { clearOwnerSession } from "@/lib/actions/events";
+import { clearOwnerSession, deleteOwnerWorkspace } from "@/lib/actions/events";
 import { CopyLinkButton } from "./copy-link-button";
+import { DeleteWorkspaceButton } from "./delete-workspace-button";
 import { WishesList } from "./wishes-list";
 import { WeddingInvitationCard } from "./wedding-invitation-card";
 
@@ -125,6 +126,18 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
 
           <section>
             <WishesList wishes={wishes} />
+          </section>
+
+          <section className="wedly-panel border-rose-200/70 bg-rose-50/60 p-4 sm:p-5">
+            <p className="wedly-kicker text-rose-600">Danger Zone</p>
+            <h3 className="mt-2 text-2xl text-rose-800">Delete Workspace</h3>
+            <p className="mt-2 max-w-2xl text-sm leading-7 text-rose-700/90">
+              This will permanently delete your event and all related RSVP/wishes data,
+              then leave this email workspace.
+            </p>
+            <form action={deleteOwnerWorkspace} className="mt-4">
+              <DeleteWorkspaceButton />
+            </form>
           </section>
         </div>
       </div>
