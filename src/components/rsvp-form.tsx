@@ -47,10 +47,6 @@ export function RsvpForm({ eventId, slug }: RsvpFormProps) {
       action={formAction}
       className="wedly-ticket wedly-ticket-large wedly-ticket-soft relative space-y-5 px-4 py-5 sm:px-5 sm:py-6 md:px-6"
     >
-      <div className="wedly-invitation-corner wedly-invitation-corner-top-left" />
-      <div className="wedly-invitation-corner wedly-invitation-corner-top-right" />
-      <div className="wedly-invitation-corner wedly-invitation-corner-bottom-left" />
-      <div className="wedly-invitation-corner wedly-invitation-corner-bottom-right" />
       <div className="wedly-flower-outline left-4 top-5 h-16 w-16 wedly-float-soft opacity-30" />
       <div className="wedly-flower-outline bottom-5 right-4 h-20 w-20 wedly-float-slower opacity-30" />
 

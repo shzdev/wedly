@@ -48,6 +48,7 @@ Project: Wedly
 - Landing `Continue` scroll timing was adjusted so it only marks a pending top-scroll and does not scroll immediately before the create-state transition.
 - Create-event submit now mirrors landing `Continue`: it marks pending top-scroll on submit and waits until owner-state render/refresh before resetting viewport to top.
 - Landing hero now uses `public/hero-img.png` as a full-section background image with layered ivory gradients; the previous right-side image card and `next/image` hero markup were removed.
+- The RSVP form no longer renders the four corner border ornaments, removing the black corner lines from the public RSVP page while leaving the rest of the ticket styling intact.
 
 ## Validation
 - `npm run lint` passed.
@@ -71,6 +72,7 @@ Project: Wedly
 - Validation after landing `Continue` scroll timing fix: `npm run lint` and `npm run typecheck` passed.
 - Validation after create-event scroll timing alignment: `npm run lint` and `npm run typecheck` passed.
 - Validation after full-background landing hero image correction: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
+- Validation after RSVP corner-border removal: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.
