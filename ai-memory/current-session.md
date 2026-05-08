@@ -53,6 +53,7 @@ Project: Wedly
 - Create-event form no longer shows the couple/link preview text; the public link appears only after event creation in the owner page.
 - Open Graph and Twitter link preview metadata now use `public/og-img.png` as the default sharing image for the site and dynamic public RSVP pages.
 - Create-event form input order was swapped so `Groom Name` appears before `Bride Name`, with matching `name` attributes preserved for server-side submission.
+- Shared invitation card now renders the couple name in groom-first display order (`Groom & Bride`) while leaving stored event data unchanged.
 
 ## Validation
 - `npm run lint` passed.
@@ -80,6 +81,7 @@ Project: Wedly
 - Validation after UUID-suffixed event slug update and preview removal: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 - Validation after OG/Twitter metadata update: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 - Validation after create-event field order swap: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
+- Validation after invitation-card name order swap: `npm run lint` and `npm run typecheck` passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.

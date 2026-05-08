@@ -17,6 +17,16 @@ export function WeddingInvitationCard({
   eyebrow = "Wedly Invitation",
   description = "A refined preview of the wedding page your guests will receive.",
 }: WeddingInvitationCardProps) {
+  const displayCoupleNames = (() => {
+    const parts = coupleNames.split(" & ").map((part) => part.trim());
+
+    if (parts.length !== 2 || !parts[0] || !parts[1]) {
+      return coupleNames;
+    }
+
+    return `${parts[1]} & ${parts[0]}`;
+  })();
+
   return (
     <div className="wedly-invitation-card wedly-card px-4 py-5 sm:px-6 sm:py-7 md:px-7 md:py-8">
       <div className="wedly-flower-outline left-8 top-10 h-18 w-18 wedly-float-soft opacity-40" />
@@ -35,7 +45,7 @@ export function WeddingInvitationCard({
             Together With Their Families
           </p>
           <h1 className="mt-8 break-words text-center text-4xl leading-[1] text-textMain sm:text-5xl xl:text-[3.8rem]">
-            {coupleNames}
+            {displayCoupleNames}
           </h1>
           <p className="mx-auto mt-5 max-w-md text-center text-sm leading-7 text-textMuted sm:text-base">
             Request the pleasure of your company as they celebrate their wedding day
