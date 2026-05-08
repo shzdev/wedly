@@ -19,10 +19,6 @@ export function WeddingInvitationCard({
 }: WeddingInvitationCardProps) {
   return (
     <div className="wedly-invitation-card wedly-card px-4 py-5 sm:px-6 sm:py-7 md:px-7 md:py-8">
-      <div className="wedly-invitation-corner wedly-invitation-corner-top-left" />
-      <div className="wedly-invitation-corner wedly-invitation-corner-top-right" />
-      <div className="wedly-invitation-corner wedly-invitation-corner-bottom-left" />
-      <div className="wedly-invitation-corner wedly-invitation-corner-bottom-right" />
       <div className="wedly-flower-outline left-8 top-10 h-18 w-18 wedly-float-soft opacity-40" />
       <div className="wedly-flower-outline bottom-12 right-8 h-24 w-24 wedly-float-slower opacity-35" />
 
@@ -31,9 +27,6 @@ export function WeddingInvitationCard({
           <div>
             <p className="wedly-kicker">{eyebrow}</p>
             <p className="mt-2 text-sm leading-7 text-textMuted">{description}</p>
-          </div>
-          <div className="wedly-pill border border-border/80 bg-white/70 px-4 py-2 text-sm font-medium text-primaryDark shadow-[0_10px_22px_rgba(110,83,69,0.08)]">
-            Wedly
           </div>
         </div>
 

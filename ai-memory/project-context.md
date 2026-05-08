@@ -21,6 +21,7 @@
 - `src/components/wedding-invitation-card.tsx` is the shared printed-invitation surface used by both owner and public wedding pages.
 - `/w/[slug]` now follows the same two-column pattern as the owner page on desktop: sticky invitation left, guest interaction content right.
 - `src/components/rsvp-form.tsx` keeps the existing hidden anti-spam fields and server action flow, but now renders as an invitation-style form with segmented attendance controls.
+- The shared invitation card no longer uses visible corner border ornaments; the visual emphasis is on floral outlines, paper texture, and rounded ticket framing.
 
 ## Shared UI Conventions
 - The current Wedly UI pass standardizes the primary radius system around 12px for cards, controls, buttons, and secondary panels.

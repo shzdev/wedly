@@ -25,6 +25,8 @@ Project: Wedly
 - `WeddingShell` was refactored into two sibling ticket panels so the decorative/invitation side can stay sticky on desktop for the create page.
 - Owner RSVP ledger card was removed from the manage page, leaving invitation, link tools, summary, and guestbook carousel only.
 - The wishes carousel now uses a center-focused premium layout with faded side previews, and falling petals were made denser and slightly faster on owner/public pages.
+- The 4 corner border ornaments were removed from the shared invitation card used on owner and public pages.
+- The shared invitation card no longer shows the `Wedly` pill in the top-right area; the card now keeps only the eyebrow, description, and invitation body.
 
 ## Validation
 - `npm run lint` passed.
