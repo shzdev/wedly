@@ -1,11 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useState } from "react";
+import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { createEvent, type ActionState } from "@/lib/actions/events";
 import { requestScrollTopAfterTransition } from "@/lib/scroll-to-top";
-import { normalizeSlug } from "@/lib/utils/slug";
 
 const initialState: ActionState = {};
 
@@ -18,14 +17,8 @@ function SubmitButton() {
   );
 }
 
-function normalizePreviewName(value: string) {
-  return value.trim().replace(/\s+/g, " ");
-}
-
 export function CreateWeddingForm() {
   const router = useRouter();
-  const [brideName, setBrideName] = useState("");
-  const [groomName, setGroomName] = useState("");
   const [state, formAction] = useActionState(createEvent, initialState);
 
   useEffect(() => {
@@ -33,26 +26,6 @@ export function CreateWeddingForm() {
       router.refresh();
     }
   }, [router, state.success]);
-
-  const couplePreview = useMemo(() => {
-    const bride = normalizePreviewName(brideName);
-    const groom = normalizePreviewName(groomName);
-    if (!bride && !groom) {
-      return "Bride Name & Groom Name";
-    }
-    if (!bride) {
-      return `Bride Name & ${groom}`;
-    }
-    if (!groom) {
-      return `${bride} & Groom Name`;
-    }
-    return `${bride} & ${groom}`;
-  }, [brideName, groomName]);
-
-  const slugPreview = useMemo(() => {
-    const slug = normalizeSlug(`${brideName} ${groomName}`);
-    return slug || "generated automatically";
-  }, [brideName, groomName]);
 
   return (
     <form
@@ -68,8 +41,6 @@ export function CreateWeddingForm() {
             required
             placeholder="Sarah"
             className="wedly-input"
-            value={brideName}
-            onChange={(event) => setBrideName(event.target.value)}
           />
         </label>
         <label className="block min-w-0">
@@ -79,17 +50,9 @@ export function CreateWeddingForm() {
             required
             placeholder="James"
             className="wedly-input"
-            value={groomName}
-            onChange={(event) => setGroomName(event.target.value)}
           />
         </label>
       </div>
-
-      <p className="text-sm text-textMuted">
-        Couple preview: <span className="font-medium text-textMain">{couplePreview}</span>{" "}
-        <span aria-hidden="true">&middot;</span> Link preview:{" "}
-        <span className="font-medium text-primaryDark">/{slugPreview}</span>
-      </p>
 
       <label className="block min-w-0">
         <span className="mb-2 block text-sm font-medium text-textMain">Wedding Date</span>

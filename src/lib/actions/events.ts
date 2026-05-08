@@ -10,7 +10,7 @@ import {
   validateOwnerEmail,
 } from "@/lib/owner-session";
 import { createClient } from "@/lib/supabase/server";
-import { normalizeSlug } from "@/lib/utils/slug";
+import { generateEventSlug } from "@/lib/utils/slug";
 import { createEventSchema, eventSchema } from "@/lib/validations/event";
 
 export type ActionState = {
@@ -82,61 +82,78 @@ export async function createEvent(
     return { error: parsedForm.error.issues[0]?.message ?? "Invalid event input." };
   }
 
-  const coupleNames = `${parsedForm.data.bride_name} & ${parsedForm.data.groom_name}`;
-  const generatedSlug = normalizeSlug(
-    `${parsedForm.data.bride_name} ${parsedForm.data.groom_name}`,
-  );
-
-  if (!generatedSlug) {
-    return { error: "We could not generate a valid RSVP link from those names." };
-  }
-
-  const parsed = eventSchema.safeParse({
-    couple_names: coupleNames,
-    wedding_date: parsedForm.data.wedding_date,
-    venue: parsedForm.data.venue,
-    slug: generatedSlug,
-    message: parsedForm.data.message,
-  });
-
-  if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid event input." };
-  }
-
   const supabase = await createClient();
   const existing = await getOwnerEvent(ownerEmail);
   if (existing) {
     return { error: "This email workspace already has one event for v1." };
   }
 
-  const { error } = await supabase.from("events").insert({
-    owner_email: ownerEmail,
-    ...parsed.data,
-    message: parsed.data.message || null,
-  });
+  const coupleNames = `${parsedForm.data.bride_name} & ${parsedForm.data.groom_name}`;
+  const maxSlugAttempts = 3;
+  let lastInsertError: { code?: string; message: string } | null = null;
+  let lastSlug = "";
 
-  if (error) {
+  for (let attempt = 0; attempt < maxSlugAttempts; attempt += 1) {
+    const generatedSlug = generateEventSlug(
+      parsedForm.data.bride_name,
+      parsedForm.data.groom_name,
+    );
+
+    if (!generatedSlug) {
+      return { error: "We could not generate a valid RSVP link from those names." };
+    }
+
+    const parsed = eventSchema.safeParse({
+      couple_names: coupleNames,
+      wedding_date: parsedForm.data.wedding_date,
+      venue: parsedForm.data.venue,
+      slug: generatedSlug,
+      message: parsedForm.data.message,
+    });
+
+    if (!parsed.success) {
+      return { error: parsed.error.issues[0]?.message ?? "Invalid event input." };
+    }
+
+    const { error } = await supabase.from("events").insert({
+      owner_email: ownerEmail,
+      ...parsed.data,
+      message: parsed.data.message || null,
+    });
+
+    if (!error) {
+      revalidatePath("/");
+      return { success: "Wedding page created successfully." };
+    }
+
+    lastInsertError = error;
+    lastSlug = parsed.data.slug;
+
+    if (error.code !== "23505" || error.message.includes("events_owner_email_one_event_idx")) {
+      break;
+    }
+  }
+
+  if (lastInsertError) {
     Sentry.withScope((scope) => {
       scope.setTag("feature", "create_event");
-      scope.setTag("slug", parsed.data.slug);
-      scope.setExtra("db_error_code", error.code);
-      scope.setExtra("db_error_message", error.message);
-      Sentry.captureException(error);
+      scope.setTag("slug", lastSlug);
+      scope.setExtra("db_error_code", lastInsertError.code);
+      scope.setExtra("db_error_message", lastInsertError.message);
+      Sentry.captureException(lastInsertError);
     });
-    if (error.code === "23505") {
-      if (error.message.includes("events_owner_email_one_event_idx")) {
+    if (lastInsertError.code === "23505") {
+      if (lastInsertError.message.includes("events_owner_email_one_event_idx")) {
         return { error: "This email workspace already has one event for v1." };
       }
       return {
-        error:
-          "A similar RSVP link already exists. Try using a middle name or a different spelling.",
+        error: "We could not create a unique RSVP link. Please try again.",
       };
     }
     return { error: "Failed to create event. Please try again." };
   }
 
-  revalidatePath("/");
-  return { success: "Wedding page created successfully." };
+  return { error: "Failed to create event. Please try again." };
 }
 
 export async function clearOwnerSession() {
