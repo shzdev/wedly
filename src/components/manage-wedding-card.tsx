@@ -1,6 +1,3 @@
-import { deleteRsvp } from "@/lib/actions/rsvps";
-import { formatDateTime } from "@/lib/utils/date";
-import { DeleteRsvpButton } from "./delete-rsvp-button";
 import { clearOwnerSession } from "@/lib/actions/events";
 import { CopyLinkButton } from "./copy-link-button";
 import { WishesList } from "./wishes-list";
@@ -50,7 +47,7 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
 
   return (
     <div className="relative">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:gap-10">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-8 xl:gap-10">
         <aside className="self-start lg:sticky lg:top-8">
           <WeddingInvitationCard
             coupleNames={event.couple_names}
@@ -60,7 +57,7 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
           />
         </aside>
 
-        <div className="space-y-6">
+        <div className="space-y-5">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="wedly-kicker">Owner Overview</p>
@@ -73,13 +70,13 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
               </p>
             </div>
             <form action={clearOwnerSession}>
-              <button className="rounded-full border border-border bg-white/80 px-4 py-2 text-sm font-medium text-textMuted transition hover:bg-white">
+              <button className="wedly-pill border border-border bg-white/80 px-4 py-2 text-sm font-medium text-textMuted transition hover:bg-white">
                 Switch Email
               </button>
             </form>
           </div>
 
-          <section className="wedly-ticket wedly-ticket-soft rounded-[2rem] px-5 py-5 sm:px-6 sm:py-6">
+          <section className="wedly-ticket wedly-ticket-soft px-4 py-4 sm:px-5 sm:py-5">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="wedly-kicker">Wedding Link</p>
@@ -88,12 +85,12 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
                   This is the link your guests can open to RSVP and leave their wishes.
                 </p>
               </div>
-              <div className="rounded-full border border-border/80 bg-secondary/40 px-3 py-1 text-xs font-medium tracking-[0.18em] uppercase text-primaryDark">
+              <div className="wedly-pill border border-border/80 bg-secondary/40 px-3 py-1 text-xs font-medium tracking-[0.18em] uppercase text-primaryDark">
                 Public Page Ready
               </div>
             </div>
 
-            <div className="mt-5 rounded-[1.5rem] border border-border/80 bg-white/86 p-4 shadow-[0_14px_28px_rgba(63,48,42,0.05)]">
+            <div className="wedly-panel mt-4 p-4">
               <code className="block break-all text-sm leading-7 text-textMain sm:text-[0.95rem]">
                 {publicLink}
               </code>
@@ -106,7 +103,7 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
             </div>
           </section>
 
-          <section className="wedly-ticket wedly-ticket-soft rounded-[2rem] px-5 py-5 sm:px-6 sm:py-6">
+          <section className="wedly-ticket wedly-ticket-soft px-4 py-4 sm:px-5 sm:py-5">
             <p className="wedly-kicker">RSVP Summary</p>
             <h3 className="mt-2 text-3xl text-textMain">Guest Response Snapshot</h3>
             <p className="mt-2 max-w-2xl text-sm leading-7 text-textMuted">
@@ -114,12 +111,9 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
               quickly.
             </p>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {summaryItems.map((item) => (
-                <article
-                  key={item.label}
-                  className="rounded-[1.45rem] border border-border/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,243,238,0.92))] p-4 shadow-[0_12px_24px_rgba(63,48,42,0.05)]"
-                >
+                <article key={item.label} className="wedly-panel p-4">
                   <p className="text-xs font-semibold tracking-[0.18em] uppercase text-textMuted">
                     {item.label}
                   </p>
@@ -131,65 +125,6 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
 
           <section>
             <WishesList wishes={wishes} />
-          </section>
-
-          <section className="wedly-ticket wedly-ticket-soft rounded-[2rem] px-5 py-5 sm:px-6 sm:py-6">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <p className="wedly-kicker">Guest Entries</p>
-                <h3 className="mt-2 text-3xl text-textMain">Your RSVP Ledger</h3>
-                <p className="mt-2 max-w-2xl text-sm leading-7 text-textMuted">
-                  Review every submission, confirm attendance details, and remove entries
-                  you do not want to keep.
-                </p>
-              </div>
-              <div className="rounded-full border border-border/80 bg-white/75 px-3 py-1 text-xs font-medium text-textMuted">
-                Updated in real time
-              </div>
-            </div>
-
-            <div className="mt-5 space-y-3">
-              {rsvps.length === 0 ? (
-                <div className="rounded-[1.5rem] border border-dashed border-border bg-white/75 px-5 py-6 text-sm leading-7 text-textMuted">
-                  No RSVP entries yet. Once guests reply, they will appear here with
-                  their attendance status and any message they share.
-                </div>
-              ) : null}
-
-              {rsvps.map((rsvp) => (
-                <article
-                  key={rsvp.id}
-                  className="rounded-[1.5rem] border border-border/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,244,239,0.92))] px-4 py-4 shadow-[0_12px_24px_rgba(63,48,42,0.05)] sm:px-5"
-                >
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <h4 className="break-words text-lg font-semibold text-textMain">
-                        {rsvp.guest_name}
-                      </h4>
-                      <p className="mt-1 text-xs text-textMuted">
-                        {formatDateTime(rsvp.created_at)}
-                      </p>
-                    </div>
-                    <form action={deleteRsvp.bind(null, rsvp.id)}>
-                      <DeleteRsvpButton />
-                    </form>
-                  </div>
-                  <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                    <span className="rounded-full bg-secondary/80 px-3 py-1.5 font-medium text-textMuted">
-                      {rsvp.attendance.replace("_", " ")}
-                    </span>
-                    <span className="rounded-full bg-secondary/80 px-3 py-1.5 font-medium text-textMuted">
-                      Pax: {rsvp.pax_count}
-                    </span>
-                  </div>
-                  {rsvp.wish_message ? (
-                    <p className="mt-4 break-words text-sm leading-7 text-textMuted">
-                      {rsvp.wish_message}
-                    </p>
-                  ) : null}
-                </article>
-              ))}
-            </div>
           </section>
         </div>
       </div>

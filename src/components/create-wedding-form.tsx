@@ -58,23 +58,25 @@ export function CreateWeddingForm() {
   }, [brideName, groomName]);
 
   return (
-    <div className="wedly-card wedly-ticket-soft p-6 md:p-7">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-200/80 bg-emerald-50/70 px-4 py-3 text-sm text-emerald-900">
-        <span>You&apos;re in your Wedly workspace. Let&apos;s create your RSVP page.</span>
+    <div className="wedly-card wedly-ticket-soft p-4 sm:p-5 md:p-6">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h3 className="text-3xl leading-tight text-textMain md:text-4xl">
+            Create Your Wedding Event
+          </h3>
+          <p className="mt-2 text-sm leading-relaxed text-textMuted">
+            Fill in your wedding details to generate your RSVP page.
+          </p>
+        </div>
         <form action={clearOwnerSession}>
-          <button className="text-xs font-semibold tracking-[0.12em] uppercase text-emerald-900 underline-offset-2 hover:underline">
+          <button className="text-xs font-semibold tracking-[0.12em] uppercase text-textMuted underline-offset-2 hover:text-textMain hover:underline">
             Switch Email
           </button>
         </form>
       </div>
-      <h3 className="mt-5 text-3xl leading-tight text-textMain md:text-4xl">
-        Create Your Wedding Event
-      </h3>
-      <p className="mt-2 text-sm leading-relaxed text-textMuted">
-        Fill in your wedding details to generate your RSVP page.
-      </p>
-      <form action={formAction} className="mt-6 space-y-5">
-        <div className="grid gap-4 md:grid-cols-2">
+
+      <form action={formAction} className="mt-5 space-y-4">
+        <div className="grid gap-3 md:grid-cols-2">
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-textMain">Bride Name</span>
             <input
@@ -99,7 +101,7 @@ export function CreateWeddingForm() {
           </label>
         </div>
 
-        <div className="rounded-2xl border border-border bg-white/65 px-4 py-4">
+        <div className="wedly-panel px-4 py-4">
           <p className="text-xs font-semibold tracking-[0.18em] uppercase text-textMuted">
             Couple Preview
           </p>

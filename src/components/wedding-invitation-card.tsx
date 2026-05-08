@@ -18,7 +18,7 @@ export function WeddingInvitationCard({
   description = "A refined preview of the wedding page your guests will receive.",
 }: WeddingInvitationCardProps) {
   return (
-    <div className="wedly-invitation-card wedly-card rounded-[2.4rem] px-6 py-7 sm:px-8 sm:py-9">
+    <div className="wedly-invitation-card wedly-card px-4 py-5 sm:px-6 sm:py-7 md:px-7 md:py-8">
       <div className="wedly-invitation-corner wedly-invitation-corner-top-left" />
       <div className="wedly-invitation-corner wedly-invitation-corner-top-right" />
       <div className="wedly-invitation-corner wedly-invitation-corner-bottom-left" />
@@ -32,12 +32,12 @@ export function WeddingInvitationCard({
             <p className="wedly-kicker">{eyebrow}</p>
             <p className="mt-2 text-sm leading-7 text-textMuted">{description}</p>
           </div>
-          <div className="rounded-full border border-border/80 bg-white/70 px-4 py-2 text-sm font-medium text-primaryDark shadow-[0_10px_22px_rgba(110,83,69,0.08)]">
+          <div className="wedly-pill border border-border/80 bg-white/70 px-4 py-2 text-sm font-medium text-primaryDark shadow-[0_10px_22px_rgba(110,83,69,0.08)]">
             Wedly
           </div>
         </div>
 
-        <div className="mt-10 rounded-[2rem] border border-primary/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(249,240,233,0.92))] px-6 py-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:px-8">
+        <div className="mt-8 rounded-[var(--wedly-radius)] border border-primary/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(249,240,233,0.92))] px-4 py-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:px-6 sm:py-7">
           <p className="text-center text-xs font-semibold tracking-[0.34em] uppercase text-primary/80">
             Together With Their Families
           </p>

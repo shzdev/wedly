@@ -21,6 +21,10 @@ Project: Wedly
 - Event ownership now resolves through `events.owner_email` and the cookie helper in `src/lib/owner-session.ts`.
 - Create event, owner page, CSV export, and RSVP delete now perform ownership checks through the owner email cookie instead of Supabase Auth user id.
 - Schema and docs were rewritten to reflect that this solves free-plan email limits for testing, but is not production-secure authentication.
+- Shared UI now standardizes toward a 12px radius system across cards, buttons, controls, and companion panels.
+- `WeddingShell` was refactored into two sibling ticket panels so the decorative/invitation side can stay sticky on desktop for the create page.
+- Owner RSVP ledger card was removed from the manage page, leaving invitation, link tools, summary, and guestbook carousel only.
+- The wishes carousel now uses a center-focused premium layout with faded side previews, and falling petals were made denser and slightly faster on owner/public pages.
 
 ## Validation
 - `npm run lint` passed.

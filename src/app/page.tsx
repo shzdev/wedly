@@ -45,11 +45,11 @@ export default async function Home() {
 
   if (ownerEmail && event) {
     return (
-      <main className="relative min-h-screen overflow-hidden bg-background">
+      <main className="relative min-h-screen overflow-x-hidden bg-background">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.92),transparent_32%),radial-gradient(circle_at_top_right,rgba(244,225,214,0.64),transparent_36%),linear-gradient(180deg,rgba(255,250,246,0.96),rgba(248,243,238,0.88)_44%,rgba(247,239,232,0.98)_100%)]" />
         <FloatingPetals />
-        <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-16 pt-8 md:px-8 md:pb-20 md:pt-10">
-          <div className="inline-flex items-center gap-3 self-start rounded-full border border-border/70 bg-white/70 px-4 py-2 shadow-[0_10px_24px_rgba(110,83,69,0.08)] backdrop-blur">
+        <div className="wedly-page-frame relative flex min-h-screen flex-col pb-14 pt-7 md:pb-18 md:pt-9">
+          <div className="wedly-pill inline-flex items-center gap-3 self-start border border-border/70 bg-white/70 px-4 py-2 shadow-[0_10px_24px_rgba(110,83,69,0.08)] backdrop-blur">
             <span className="font-serif text-xl tracking-[0.08em] text-primaryDark">Wedly</span>
           </div>
           <div className="mt-6">
@@ -66,10 +66,10 @@ export default async function Home() {
 
   if (ownerEmail && !event) {
     return (
-      <main className="relative min-h-screen overflow-hidden bg-background">
+      <main className="relative min-h-screen overflow-x-hidden bg-background">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.9),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(235,213,201,0.38),transparent_35%),linear-gradient(180deg,rgba(255,250,246,0.85),rgba(248,243,238,0))]" />
-        <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-14 pt-8 md:px-8 md:pb-18 md:pt-10">
-          <div className="inline-flex items-center gap-3 self-start rounded-full border border-border/70 bg-white/70 px-4 py-2 shadow-[0_10px_24px_rgba(110,83,69,0.08)] backdrop-blur">
+        <div className="wedly-page-frame relative flex min-h-screen flex-col pb-12 pt-7 md:pb-16 md:pt-9">
+          <div className="wedly-pill inline-flex items-center gap-3 self-start border border-border/70 bg-white/70 px-4 py-2 shadow-[0_10px_24px_rgba(110,83,69,0.08)] backdrop-blur">
             <span className="font-serif text-xl tracking-[0.08em] text-primaryDark">Wedly</span>
           </div>
           <div className="mt-6">
@@ -90,12 +90,12 @@ export default async function Home() {
   }
 
   return (
-    <main className="relative overflow-hidden bg-background">
+    <main className="relative overflow-x-hidden bg-background">
       <div className="absolute inset-x-0 top-0 h-[48rem] bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.85),transparent_35%),radial-gradient(circle_at_top_right,rgba(235,213,201,0.52),transparent_42%),linear-gradient(180deg,rgba(255,250,246,0.92),rgba(248,243,238,0))]" />
       <div className="relative">
-        <section className="mx-auto grid min-h-[92vh] w-full max-w-7xl items-center gap-12 px-4 pb-16 pt-10 md:px-8 md:pb-20 lg:grid-cols-[1.02fr_0.98fr] lg:gap-16">
+        <section className="wedly-page-frame grid min-h-[92vh] items-center gap-10 pb-14 pt-8 md:pb-18 md:pt-10 lg:grid-cols-[1.02fr_0.98fr] lg:gap-14">
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-3 rounded-full border border-border/70 bg-white/70 px-4 py-2 shadow-[0_10px_24px_rgba(110,83,69,0.08)] backdrop-blur">
+            <div className="wedly-pill inline-flex items-center gap-3 border border-border/70 bg-white/70 px-4 py-2 shadow-[0_10px_24px_rgba(110,83,69,0.08)] backdrop-blur">
               <span className="font-serif text-xl tracking-[0.08em] text-primaryDark">Wedly</span>
             </div>
             <p className="wedly-kicker mt-10">Luxury Wedding RSVP</p>
@@ -131,7 +131,7 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="relative mx-auto w-full max-w-6xl px-4 pb-10 md:px-8 md:pb-14">
+        <section className="wedly-page-frame relative max-w-6xl pb-10 md:pb-14">
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {featureCards.map((card) => (
               <article
@@ -166,7 +166,7 @@ export default async function Home() {
           <AuthCard />
         </WeddingShell>
 
-        <div className="mx-auto flex w-full max-w-6xl justify-center px-4 pb-16 pt-2 md:px-8">
+        <div className="wedly-page-frame mx-auto flex max-w-6xl justify-center pb-16 pt-2">
           <p className="text-center text-sm text-textMuted">
             Designed for elegant wedding RSVPs.
           </p>

@@ -13,6 +13,9 @@
   --border: #eadbd4;
   --shadowWarm: 0 22px 48px rgba(110, 83, 69, 0.11);
   --shadowSoft: 0 14px 28px rgba(110, 83, 69, 0.08);
+  --wedly-radius: 12px;
+  --wedly-mobile-gutter: 0.75rem;
+  --wedly-mobile-card-pad: 1rem;
 }
 
 @theme inline {
@@ -59,7 +62,7 @@ h4 {
   border: 1px solid rgba(169, 110, 88, 0.16);
   background:
     linear-gradient(180deg, rgba(255, 253, 250, 0.98) 0%, rgba(255, 250, 246, 0.96) 100%);
-  border-radius: 1.9rem;
+  border-radius: var(--wedly-radius);
   box-shadow: var(--shadowWarm);
 }
 
@@ -85,7 +88,7 @@ h4 {
 }
 
 .wedly-ticket-large {
-  border-radius: 2.2rem;
+  border-radius: var(--wedly-radius);
 }
 
 .wedly-ticket-soft {
@@ -145,7 +148,7 @@ h4 {
 .wedly-textarea,
 .wedly-select {
   width: 100%;
-  border-radius: 0.95rem;
+  border-radius: var(--wedly-radius);
   border: 1px solid rgba(169, 110, 88, 0.18);
   background: rgba(255, 253, 251, 0.96);
   color: var(--textMain);
@@ -179,7 +182,7 @@ h4 {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  border-radius: 1rem;
+  border-radius: var(--wedly-radius);
   font-size: 0.95rem;
   font-weight: 600;
   transition: transform 0.18s ease, filter 0.2s ease, background-color 0.2s ease;
@@ -215,6 +218,24 @@ h4 {
 .wedly-btn-inline {
   width: auto;
   min-width: 11rem;
+}
+
+.wedly-page-frame {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: var(--wedly-mobile-gutter);
+}
+
+.wedly-panel {
+  border-radius: var(--wedly-radius);
+  border: 1px solid rgba(169, 110, 88, 0.16);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(250, 243, 238, 0.92));
+  box-shadow: var(--shadowSoft);
+}
+
+.wedly-pill {
+  border-radius: var(--wedly-radius);
 }
 
 .wedly-kicker {
@@ -316,7 +337,7 @@ h4 {
   left: 1.2rem;
   border-top: 1px solid;
   border-left: 1px solid;
-  border-top-left-radius: 2rem;
+  border-top-left-radius: 1rem;
 }
 
 .wedly-invitation-corner-top-right {
@@ -324,7 +345,7 @@ h4 {
   right: 1.2rem;
   border-top: 1px solid;
   border-right: 1px solid;
-  border-top-right-radius: 2rem;
+  border-top-right-radius: 1rem;
 }
 
 .wedly-invitation-corner-bottom-left {
@@ -332,7 +353,7 @@ h4 {
   left: 1.2rem;
   border-bottom: 1px solid;
   border-left: 1px solid;
-  border-bottom-left-radius: 2rem;
+  border-bottom-left-radius: 1rem;
 }
 
 .wedly-invitation-corner-bottom-right {
@@ -340,7 +361,7 @@ h4 {
   bottom: 1.2rem;
   border-right: 1px solid;
   border-bottom: 1px solid;
-  border-bottom-right-radius: 2rem;
+  border-bottom-right-radius: 1rem;
 }
 
 .wedly-float-soft {
@@ -371,6 +392,57 @@ h4 {
   animation: wedlyPetalFall var(--petal-duration) linear var(--petal-delay) infinite;
 }
 
+.wedly-carousel-stage {
+  position: relative;
+  display: grid;
+  gap: 0.85rem;
+  align-items: stretch;
+}
+
+.wedly-carousel-stage::before,
+.wedly-carousel-stage::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.wedly-carousel-stage::before {
+  left: 0;
+  background: linear-gradient(90deg, rgba(248, 243, 238, 0.96), rgba(248, 243, 238, 0));
+}
+
+.wedly-carousel-stage::after {
+  right: 0;
+  background: linear-gradient(270deg, rgba(248, 243, 238, 0.96), rgba(248, 243, 238, 0));
+}
+
+.wedly-carousel-card {
+  border-radius: var(--wedly-radius);
+  border: 1px solid rgba(169, 110, 88, 0.16);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(250, 243, 238, 0.93));
+  box-shadow: 0 18px 36px rgba(110, 83, 69, 0.08);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    filter 0.4s ease;
+}
+
+.wedly-carousel-card-center {
+  position: relative;
+  z-index: 3;
+}
+
+.wedly-carousel-card-side {
+  opacity: 0.42;
+  transform: scale(0.96);
+  filter: saturate(0.85);
+}
+
 @keyframes wedlyPetalFall {
   0% {
     transform: translate3d(0, -10vh, 0) rotate(0deg);
@@ -380,11 +452,11 @@ h4 {
     opacity: 0.55;
   }
   50% {
-    transform: translate3d(var(--petal-drift), 45vh, 0) rotate(120deg);
+    transform: translate3d(var(--petal-drift), 38vh, 0) rotate(140deg);
     opacity: 0.62;
   }
   100% {
-    transform: translate3d(calc(var(--petal-drift) * -1), 110vh, 0) rotate(240deg);
+    transform: translate3d(calc(var(--petal-drift) * -1), 110vh, 0) rotate(280deg);
     opacity: 0;
   }
 }
@@ -452,6 +524,23 @@ h4 {
   .wedly-invitation-corner {
     height: 3.2rem;
     width: 3.2rem;
+  }
+
+  .wedly-carousel-stage::before,
+  .wedly-carousel-stage::after {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .wedly-page-frame {
+    padding-inline: 1.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wedly-carousel-stage {
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 0.7fr);
   }
 }
 

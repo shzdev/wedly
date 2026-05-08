@@ -22,6 +22,12 @@
 - `/w/[slug]` now follows the same two-column pattern as the owner page on desktop: sticky invitation left, guest interaction content right.
 - `src/components/rsvp-form.tsx` keeps the existing hidden anti-spam fields and server action flow, but now renders as an invitation-style form with segmented attendance controls.
 
+## Shared UI Conventions
+- The current Wedly UI pass standardizes the primary radius system around 12px for cards, controls, buttons, and secondary panels.
+- `src/components/wedding-shell.tsx` is now a true two-panel layout rather than a single overflow-hidden shell, so desktop sticky behavior works on create/setup screens.
+- The owner manage view no longer includes a raw RSVP ledger card; the intended surfaces are invitation, link tools, summary, and guestbook carousel.
+- `src/components/wishes-list.tsx` now uses a centered active-card carousel with faded side previews on larger screens.
+
 ## Owner Identity Model
 - Active owner identity no longer comes from Supabase Auth.
 - `src/lib/owner-session.ts` manages the `wedly_owner_email` httpOnly cookie and normalizes/validates owner emails.

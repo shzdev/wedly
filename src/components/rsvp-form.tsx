@@ -44,7 +44,7 @@ export function RsvpForm({ eventId, slug }: RsvpFormProps) {
     <form
       ref={formRef}
       action={formAction}
-      className="wedly-ticket wedly-ticket-large wedly-ticket-soft relative space-y-6 px-5 py-6 sm:px-6 sm:py-7 md:px-8"
+      className="wedly-ticket wedly-ticket-large wedly-ticket-soft relative space-y-5 px-4 py-5 sm:px-5 sm:py-6 md:px-6"
     >
       <div className="wedly-invitation-corner wedly-invitation-corner-top-left" />
       <div className="wedly-invitation-corner wedly-invitation-corner-top-right" />
@@ -67,7 +67,7 @@ export function RsvpForm({ eventId, slug }: RsvpFormProps) {
         </p>
       </div>
 
-      <div className="relative z-10 grid gap-5 md:grid-cols-2">
+      <div className="relative z-10 grid gap-4 md:grid-cols-2">
         <label className="block">
           <span className="mb-2 block text-sm font-medium text-textMain">Guest Name</span>
           <input
@@ -90,7 +90,7 @@ export function RsvpForm({ eventId, slug }: RsvpFormProps) {
                   defaultChecked={option.value === "attending"}
                   className="peer sr-only"
                 />
-                <span className="inline-flex min-h-[3.15rem] w-full items-center justify-center rounded-[1rem] border border-border bg-white/82 px-3 text-sm font-medium text-textMuted transition peer-checked:border-primaryDark peer-checked:bg-[linear-gradient(180deg,rgba(201,149,127,0.14),rgba(185,143,120,0.2))] peer-checked:text-textMain peer-focus-visible:ring-2 peer-focus-visible:ring-primary/35">
+                <span className="inline-flex min-h-[3.15rem] w-full items-center justify-center rounded-[var(--wedly-radius)] border border-border bg-white/82 px-3 text-sm font-medium text-textMuted transition peer-checked:border-primaryDark peer-checked:bg-[linear-gradient(180deg,rgba(201,149,127,0.14),rgba(185,143,120,0.2))] peer-checked:text-textMain peer-focus-visible:ring-2 peer-focus-visible:ring-primary/35">
                   {option.label}
                 </span>
               </label>
