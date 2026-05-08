@@ -10,7 +10,6 @@ export function scrollViewportToTop() {
 
 export function requestScrollTopAfterTransition() {
   sessionStorage.setItem(SCROLL_TOP_AFTER_TRANSITION_KEY, "1");
-  scrollViewportToTop();
 }
 
 export function consumeScrollTopAfterTransition() {
