@@ -29,6 +29,8 @@ Project: Wedly
 - The shared invitation card no longer shows the `Wedly` pill in the top-right area; the card now keeps only the eyebrow, description, and invitation body.
 - Owner wedding page now has a bottom-right danger zone section with a dedicated owner-only action to delete the full workspace (`events` + cascading `rsvps`) and clear the owner email session cookie in one step.
 - Sticky invitation behavior was fixed for create/owner/public layouts using a shared `.wedly-sticky-panel` class with desktop `position: sticky`, capped viewport height, and `overflow-y: auto` so left panels remain sticky and scrollable when content is tall.
+- Create-event screen UI was simplified: removed inner duplicate card/header/subheading and removed `Switch Email` action from the form body; form fields now render directly under the outer `WeddingShell` heading/subheading.
+- Create-event desktop layout now uses equal-height shell columns (`equalHeightDesktop`) and disables sticky on the left panel for this state (`stickyPanel={false}`) to keep both sides visually aligned.
 
 ## Validation
 - `npm run lint` passed.
@@ -37,6 +39,7 @@ Project: Wedly
 - `npm audit` was reduced to `0 vulnerabilities` after fixing the dependency tree.
 - Post-update revalidation: `npm run lint`, `npm run typecheck`, and `npm run build` all passed after adding workspace-delete action/UI.
 - Follow-up validation after sticky fix: `npm run lint` and `npm run typecheck` both passed.
+- Validation after create-event UI simplification: `npm run typecheck` passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.

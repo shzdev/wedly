@@ -80,6 +80,8 @@ export default async function Home() {
               panelLabel="A Refined Beginning"
               panelDescription="Set the tone for your wedding page with elegant details your guests will recognise instantly."
               priority="content"
+              equalHeightDesktop
+              stickyPanel={false}
             >
               <CreateWeddingForm />
             </WeddingShell>
