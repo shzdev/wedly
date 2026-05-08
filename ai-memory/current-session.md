@@ -1,6 +1,6 @@
 # Current Session
 
-Date: 2026-05-08
+Date: 2026-05-09
 Project: Wedly
 
 ## Current State
@@ -55,6 +55,7 @@ Project: Wedly
 - Create-event form input order was swapped so `Groom Name` appears before `Bride Name`, with matching `name` attributes preserved for server-side submission.
 - Shared invitation card now renders the couple name in groom-first display order (`Groom & Bride`) while leaving stored event data unchanged.
 - Landing email-start page no longer renders a duplicated inner auth card; the email form now sits directly under the outer `WeddingShell` heading and subheading.
+- Repository documentation was refreshed: `README.md` is now GitHub-ready with real repo badges and current architecture/security notes, and all files in `docs/` were updated to match the latest owner-email MVP flow, UUID public slugs, current owner dashboard surfaces, and real deployment/security guidance.
 
 ## Validation
 - `npm run lint` passed.
@@ -84,6 +85,7 @@ Project: Wedly
 - Validation after create-event field order swap: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 - Validation after invitation-card name order swap: `npm run lint` and `npm run typecheck` passed.
 - Validation after landing auth-card deduplication: `npm run lint` and `npm run typecheck` passed.
+- Validation after README/docs refresh: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.
@@ -99,3 +101,4 @@ Project: Wedly
 - Final production deploy on Vercel using real env vars and Supabase redirect URLs.
 - Manual smoke test on production URL.
 - Replace README/demo placeholders with live URLs and screenshots.
+- Add real production URL and actual product screenshots to the new README once deployment assets are ready.

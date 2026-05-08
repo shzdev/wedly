@@ -1,97 +1,108 @@
 # Wedly Case Study
 
-## Project Overview
-Wedly is a one-day MVP that helps couples create a beautiful wedding RSVP page with a simple guestbook experience.
+## Overview
 
-## Goal
-Build a small, production-ready-feeling app that feels premium, ships fast, and is maintainable for solo/freelance delivery.
+Wedly is a luxury RSVP and guestbook micro-product focused on one sharp job: let couples publish a polished wedding invitation page, collect responses, and manage everything from a lightweight owner workspace.
 
-## Target Users
-- Couples who need a simple RSVP page quickly
-- Freelancers/clients who want a focused wedding micro-product instead of a full website builder
+## Product Intent
 
-## Problem
-Many wedding tools are either too complex or too expensive for couples who only need:
-- one sharable page
-- RSVP collection
-- guest wishes
+The goal was not to build a full wedding website platform. The goal was to ship a narrower product with:
 
-## Solution
-Wedly keeps the workflow minimal:
-1. Enter owner email
-2. Create one event
-3. Share `/w/[slug]`
-4. Collect RSVP + wishes
+- stronger visual polish
+- lower setup friction
+- a fast owner flow
+- a simple guest-facing RSVP experience
 
-## MVP Scope
-- Included:
-  - Email-only owner workspace access for demo mode
-  - Single-event management
-  - Public RSVP page
-  - Basic anti-spam guard on public RSVP
-  - Duplicate RSVP prevention
-  - Owner RSVP management + CSV export
-  - Sentry error monitoring
-- Excluded:
-  - Production-grade authentication
-  - Image upload
-  - Multiple themes
-  - Payments
-  - Invitation automation
-  - Seating/vendor modules
+## Core Problem
 
-## Tech Stack
-- Next.js 16 App Router
-- TypeScript
-- Tailwind CSS
-- Supabase Postgres
-- Zod
-- Sentry
-- Vercel
+Many wedding products are heavier than necessary for couples who only need:
 
-## System Architecture
-- Server-rendered route decisions on `/` based on owner email cookie + event existence
-- Public dynamic route `/w/[slug]` for invitation pages
-- Server Actions for event creation and RSVP submission
-- Server-side owner checks for export/delete
+- one invitation page
+- one RSVP link
+- one simple way to collect warm wishes
 
-## Database Design
-- `events`: one event per owner email, unique slug
-- `rsvps`: references events, includes attendance and wish message
-- Indexes for lookup speed by owner email, slug, and event
+That gap is where Wedly sits.
 
-## Access Approach
-- Owner identity is a normalized email stored in an httpOnly cookie
-- No email is sent in MVP mode
-- This was chosen to avoid Supabase free-plan email rate limits during testing
-- It is intentionally not a production-secure auth system
+## Solution Shape
 
-## Monitoring Approach
-- Sentry on client, server, and edge runtimes
-- Tagged errors on critical paths:
-  - `feature=create_event`
-  - `feature=submit_rsvp`
-  - `feature=delete_rsvp`
-  - `feature=export_csv`
-  - `slug` when relevant
+Wedly reduces the journey to three meaningful moments:
 
-## Key Implementation Decisions
-- One-event-per-email enforced at DB and app layers
-- Public RSVP kept open for frictionless guest flow
-- Shared invitation-led UI system across owner and guest pages
-- Temporary email-only owner access used to remove free-plan email testing friction
+1. Enter owner email and open the workspace.
+2. Create one wedding page.
+3. Share one public RSVP link.
 
-## Trade-offs
-- Faster delivery over deep feature set
-- Lightweight spam control (honeypot + timing) instead of heavy CAPTCHA
-- Single visual theme to preserve speed and polish
-- Weaker auth model in exchange for simpler MVP testing
+From there, the owner gets one manage view with:
 
-## What I Would Improve for Production
-1. Restore verified authentication
-2. Reinstate strict DB ownership/RLS
-3. Add robust rate limiting per IP/session
-4. Add optional CAPTCHA switch for public events
+- invitation preview
+- copyable public link
+- RSVP summary
+- guestbook carousel
+- CSV export
 
-## Final Outcome
-Wedly is a focused, launch-ready-feeling micro-product that demonstrates rapid product delivery with strong UI polish and explicit trade-off handling around MVP authentication.
+## UX Direction
+
+The UI leans into an editorial wedding tone rather than a generic dashboard aesthetic.
+
+Key design decisions:
+
+- invitation-first layout
+- serif-forward typography
+- warm ivory and mocha palette
+- shared visual language across owner and guest surfaces
+- sticky invitation card on desktop for owner and guest pages
+
+## Architecture Summary
+
+- Next.js App Router on the frontend
+- server-rendered branching on `/`
+- Supabase Postgres as the database
+- Server Actions for owner and RSVP workflows
+- Sentry for operational monitoring
+- Vercel deployment target
+
+Notable implementation characteristics:
+
+- owner access currently uses an `httpOnly` email cookie rather than verified auth
+- event slugs are name-based prefixes with UUID suffixes
+- public RSVP protection uses honeypot, minimum-delay, and duplicate-name checks
+
+## Trade-offs Chosen Deliberately
+
+### Speed over full auth hardness
+
+Using email-only workspace access removes the friction of email delivery during MVP testing, but it weakens ownership guarantees.
+
+### Depth over breadth
+
+Wedly intentionally does not include:
+
+- multi-event management
+- theme builders
+- media uploads
+- payment flows
+- seating plans
+- vendor workflows
+
+### Lightweight abuse controls over heavy friction
+
+Public RSVP uses practical server-side checks without introducing CAPTCHA or guest login.
+
+## Why the Current Build Matters
+
+The current version demonstrates:
+
+- a complete owner-to-guest flow
+- a coherent visual system
+- reasonable production discipline around validation, error capture, and deployment
+- explicit handling of MVP security trade-offs instead of pretending they do not exist
+
+## What Would Change for a Production-Hard Version
+
+1. Restore verified authentication.
+2. Move ownership checks back into strict identity-backed RLS.
+3. Add stronger rate limiting and optional CAPTCHA.
+4. Introduce a more secure owner model before onboarding paying users.
+
+## Outcome
+
+Wedly is a strong portfolio-ready micro-product because it shows product judgment, UI refinement, backend pragmatism, and a realistic understanding of MVP trade-offs instead of overbuilding the first version.

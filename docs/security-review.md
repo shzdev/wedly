@@ -1,144 +1,162 @@
 # Wedly Security Review
 
-## 1) Security Overview
-Wedly is currently running in **email-only MVP owner access mode**.
+## Overview
+
+Wedly is currently operating in an email-only owner workspace model intended for MVP testing and demo review.
 
 Owner flow:
+
 - visitor enters an email on `/`
-- app stores normalized owner email in an httpOnly cookie
-- owner workspace loads by `events.owner_email`
+- the server stores a normalized owner email in an `httpOnly` cookie
+- owner workspace data is resolved by `events.owner_email`
 
-Public guest flow:
-- read invitation data via slug
-- submit RSVP and wish
+Public flow:
 
-This avoids Supabase free-plan email limits during testing, but it is **not production-grade authentication**.
+- anyone with the invitation URL can open `/w/[slug]`
+- guests can submit RSVP data and optional wishes
 
-## 2) Security Limitation
-This model is intentionally weaker than real auth:
-- anyone who knows an owner email can access that workspace on the same deployment
-- database ownership is no longer enforced by `auth.uid()`
-- owner isolation is enforced in server actions/routes, not by a verified identity provider
+This model deliberately reduces setup friction, but it is not equivalent to verified authentication.
 
-This is acceptable for local testing, demo mode, or temporary MVP review only.
+## Current Security Posture
 
-## 3) Data Access Model
-- Server Supabase client:
-  - [src/lib/supabase/server.ts](c:/MyProjects/Wedly/src/lib/supabase/server.ts)
+What is true today:
+
+- owner identity is app-enforced, not identity-provider-enforced
+- Supabase Auth is not the active owner boundary
+- database policies are intentionally relaxed for MVP compatibility
+- public invitation content and guestbook content are readable by slug
+
+What this means:
+
+- anyone who knows an owner email can open that workspace on the same deployment
+- this setup should not be treated as production-grade tenant isolation
+
+## Core Enforcement Points
+
 - Owner cookie helper:
-  - [src/lib/owner-session.ts](c:/MyProjects/Wedly/src/lib/owner-session.ts)
-- Owner server checks:
-  - [src/lib/actions/events.ts](c:/MyProjects/Wedly/src/lib/actions/events.ts)
-  - [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts)
-  - [src/app/api/rsvps/export/route.ts](c:/MyProjects/Wedly/src/app/api/rsvps/export/route.ts)
+  - [src/lib/owner-session.ts](../src/lib/owner-session.ts)
+- Owner event actions:
+  - [src/lib/actions/events.ts](../src/lib/actions/events.ts)
+- RSVP actions:
+  - [src/lib/actions/rsvps.ts](../src/lib/actions/rsvps.ts)
+- CSV export:
+  - [src/app/api/rsvps/export/route.ts](../src/app/api/rsvps/export/route.ts)
+- Supabase server client:
+  - [src/lib/supabase/server.ts](../src/lib/supabase/server.ts)
 
-## 4) Public vs Private Data
-- Publicly visible:
-  - `events` invitation content by slug
-  - `rsvps` guest wishes and attendance summaries shown publicly
-- Owner-only in app UX:
-  - event creation
-  - owner manage view on `/`
-  - delete RSVP action
-  - CSV export route
+## Owner-Only Operations
 
-## 5) Current Schema / RLS Posture
-Defined in [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql):
+The following operations are protected by server-side owner email checks:
 
-- `events.owner_email` is the owner identifier
-- public read of `events` and `rsvps` is enabled
-- insert/delete/update policies are relaxed so server-side anon-key calls can work without Supabase Auth
+- create event
+- load owner event on `/`
+- export RSVP CSV
+- delete RSVP
+- delete full workspace
 
-Important consequence:
-- these policies are intentionally looser than a real production setup
-- do not treat this schema as secure multi-tenant production isolation
+Important implementation rule:
 
-## 6) Owner-Only Action Checks
-- Create event:
-  - [src/lib/actions/events.ts](c:/MyProjects/Wedly/src/lib/actions/events.ts)
-  - reads owner email from cookie, never from form data
-- Delete RSVP:
-  - [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts)
-  - fetches RSVP, then event, then checks `event.owner_email === cookie owner email`
-- Export CSV:
-  - [src/app/api/rsvps/export/route.ts](c:/MyProjects/Wedly/src/app/api/rsvps/export/route.ts)
-  - filters by both `slug` and `owner_email`
+- owner identity must always come from the `wedly_owner_email` cookie, never from form data or URL parameters
 
-## 7) CSV Export Security
-- Export requires owner email cookie.
-- Query filters by both `slug` and `owner_email`.
-- CSV output uses explicit escaping for quotes.
-- Response includes `X-Content-Type-Options: nosniff`.
-- Exported columns are limited to RSVP reporting fields only.
+## Publicly Accessible Data
 
-## 8) Spam Protection Security
-- Implemented in [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts)
-- Controls:
-  - honeypot field `company_website`
-  - form-render timestamp `form_rendered_at`
-  - minimum submit delay check
-- Checks are server-side, not client-only.
-- Suspicious submissions are handled gracefully to reduce abuse signal leaks.
+By design, the following are public to anyone with the slug:
 
-## 9) Duplicate RSVP Protection
-- Guest name normalized (`trim`, `lowercase`, whitespace collapse) in server action.
-- Duplicate detection scoped to the same event.
-- Performance index:
-  - `rsvps_event_guest_name_ci_idx` in schema.
+- invitation details
+- RSVP summary context implied by visible wishes
+- wishes displayed in the guestbook carousel
 
-## 10) Environment Variable Safety
-- Public-safe env vars:
-  - `NEXT_PUBLIC_SUPABASE_URL`
-  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-  - `NEXT_PUBLIC_SITE_URL`
-  - `NEXT_PUBLIC_SENTRY_DSN`
-- Sensitive env vars:
-  - `SENTRY_AUTH_TOKEN`
-  - `SENTRY_ORG`
-  - `SENTRY_PROJECT`
-- No Supabase service role key is used by this app.
-- Env files are ignored via `.gitignore`.
+The following are not intended to be public in app UX:
 
-## 11) Sentry Privacy Notes
-- Sentry captures operational errors and warning signals.
-- RSVP private message content should not be intentionally sent to Sentry.
-- Owner email should not be intentionally sent to Sentry.
-- Captured tags are scoped to technical context:
-  - `feature`
-  - `slug`
-  - event/rsvp identifiers
-  - db error codes/messages
+- owner dashboard
+- CSV export
+- workspace deletion
 
-## 12) Manual Security Test Checklist
-1. Logged-out visitor cannot create event.
-2. Email A cannot see Email B owner view.
-3. Email A cannot delete Email B RSVP through app flow.
-4. Email A cannot export Email B RSVP CSV through app flow.
-5. Public guest can open `/w/[slug]`.
-6. Public guest can submit RSVP.
-7. Duplicate RSVP gets friendly rejection.
-8. Honeypot-triggered submission is rejected.
-9. CSV export returns `401` with no owner cookie.
-10. Unknown slug shows not-found.
-11. Dev Sentry test route works only in non-production.
-12. Verify no secrets are committed to repo.
+## Schema and RLS Reality
 
-## 13) Known Security Limitations
-- Owner access is email-only and not verified.
-- RLS is intentionally relaxed for MVP mode.
-- Public wishes are intentionally readable as guestbook content.
-- This setup should not be used for real production clients.
+See [supabase/schema.sql](../supabase/schema.sql).
 
-## 14) Recommended Production Upgrade Path
-1. Restore real auth:
-  - Supabase Auth on a sufficient plan
-  - passwordless provider with proper verification
-  - OAuth
-  - password auth if desired
-2. Move DB ownership back to verified identity
-3. Reinstate strict RLS policies
-4. Add rate limiting and optional CAPTCHA
+Current posture:
 
-## 15) Related Launch Docs
-- Demo flow and talking points: [docs/demo-script.md](c:/MyProjects/Wedly/docs/demo-script.md)
-- Production verification steps: [docs/production-smoke-test.md](c:/MyProjects/Wedly/docs/production-smoke-test.md)
+- `events.owner_email` is the durable owner identifier
+- `events.slug` is unique
+- `rsvps.event_id` cascades on delete
+- read and write policies are intentionally broad enough to support the current anon-key server flow
+
+Consequence:
+
+- the database is not enforcing strict owner isolation through verified identity
+- the application layer is carrying that responsibility
+
+## Anti-Spam and Duplicate Controls
+
+Public RSVP protection is lightweight but real:
+
+- honeypot field `company_website`
+- hidden render timestamp `form_rendered_at`
+- minimum submit delay check
+- duplicate guest detection by normalized guest name within the same event
+
+These checks live in [src/lib/actions/rsvps.ts](../src/lib/actions/rsvps.ts).
+
+## CSV Export Safety
+
+CSV export currently includes only reporting fields:
+
+- `guest_name`
+- `attendance`
+- `pax_count`
+- `wish_message`
+- `created_at`
+
+Additional safeguards:
+
+- requires owner cookie
+- filters by both `slug` and `owner_email`
+- escapes quotes in CSV output
+- sends `X-Content-Type-Options: nosniff`
+
+## Sentry Privacy Notes
+
+Sentry is used for operational visibility, not content analytics.
+
+Expected behavior:
+
+- RSVP message content should not be intentionally sent to Sentry
+- owner email should not be intentionally sent to Sentry
+- captured context should stay at the technical level such as `feature`, `slug`, IDs, and database errors
+
+## Manual Security Checklist
+
+1. Logged-out visitors cannot create an event.
+2. Email A cannot see Email B owner dashboard through normal app flow.
+3. Email A cannot export Email B CSV through normal app flow.
+4. Email A cannot delete Email B RSVP through normal app flow.
+5. Public guests can open `/w/[slug]`.
+6. Public guests can submit RSVP successfully.
+7. Duplicate RSVP attempts are rejected gracefully.
+8. Honeypot-triggered or too-fast submissions are handled safely.
+9. CSV export returns `401` without an owner cookie.
+10. Unknown slug renders the public not-found page.
+11. No secrets are committed to the repository.
+
+## Known Security Limitations
+
+- Owner access is not verified authentication.
+- Relaxed RLS is not suitable for a real multi-tenant client deployment.
+- Public wishes are intentionally visible to other guests on the event page.
+- There is no IP-based rate limiting or CAPTCHA yet.
+
+## Recommended Production Upgrade Path
+
+1. Restore verified authentication.
+2. Move ownership back to a verified identity boundary.
+3. Reinstate strict RLS policies.
+4. Add stronger rate limiting and optional CAPTCHA.
+5. Reassess whether public wishes should remain broadly readable.
+
+## Related Docs
+
+- [docs/developer-guide.md](./developer-guide.md)
+- [docs/production-smoke-test.md](./production-smoke-test.md)
+- [docs/deployment-troubleshooting.md](./deployment-troubleshooting.md)

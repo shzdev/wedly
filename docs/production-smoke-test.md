@@ -1,89 +1,80 @@
 # Production Smoke Test
 
-Run this sequence right after every production deploy on Vercel.
+Run this checklist after every production deployment.
 
 ## Preconditions
-- Vercel env vars are set.
-- Supabase schema is applied from [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql).
-- You have one owner email ready for workspace access.
 
-## Sequential Checks
-1. Open production URL (`[LIVE_DEMO_URL]`).
-Expected: Home page loads with Wedly branding and email access card.
-If fail: Check Vercel deployment status and runtime logs.
+- Vercel environment variables are set.
+- [supabase/schema.sql](../supabase/schema.sql) has been applied.
+- You have one owner email available for testing.
+- You can open an incognito window or a second browser profile for guest testing.
 
-2. Check home page render quality.
-Expected: No broken styles, no hydration warning, no blank sections.
-If fail: Check browser console and Vercel logs.
+## Checklist
 
-3. Enter owner email and continue.
-Expected: No email is sent. The app opens the owner workspace immediately.
-If fail: Check [src/components/auth-card.tsx](c:/MyProjects/Wedly/src/components/auth-card.tsx) and cookie behavior.
+1. Open the production URL.
+Expected: landing page renders with the Wedly hero, feature section, and email access area.
+
+2. Check social metadata.
+Expected: page source and link previews point to `og-img.png` and use the correct production domain from `NEXT_PUBLIC_SITE_URL`.
+
+3. Enter an owner email on `/`.
+Expected: no email is sent; the create-event workspace or owner dashboard opens immediately.
 
 4. Refresh `/`.
-Expected: Same owner workspace persists from cookie.
-If fail: Check [src/lib/owner-session.ts](c:/MyProjects/Wedly/src/lib/owner-session.ts).
+Expected: the current owner workspace persists through the owner email cookie.
 
-5. Create demo wedding event (if workspace has no event yet).
-Expected: Success message and manage card appears.
-If fail: Check [supabase/schema.sql](c:/MyProjects/Wedly/supabase/schema.sql) and [src/lib/actions/events.ts](c:/MyProjects/Wedly/src/lib/actions/events.ts).
+5. If no event exists yet, create one event.
+Expected: owner dashboard loads after submission and the viewport resets to top.
 
-6. Copy public link.
-Expected: Copy button feedback appears (`Copied`).
-If fail: Check [src/components/copy-link-button.tsx](c:/MyProjects/Wedly/src/components/copy-link-button.tsx).
+6. Confirm the public link block is present.
+Expected: the owner dashboard shows a full public RSVP URL containing a UUID-style slug suffix.
 
-7. Open public link in incognito.
-Expected: `/w/[slug]` page renders event details correctly.
-If fail: Check event slug data and route logs.
+7. Use the copy button.
+Expected: copy feedback appears and the copied value matches the visible link.
 
-8. Submit RSVP from incognito.
-Expected: Success message appears and no crash.
-If fail: Check insert access on `rsvps` and action in [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts).
+8. Open the public link in incognito.
+Expected: `/w/[slug]` renders the invitation, guestbook section, and RSVP form correctly.
 
-9. Submit duplicate RSVP (same guest name).
-Expected: Friendly duplicate message appears.
-If fail: Check duplicate logic in [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts).
+9. Submit one RSVP from incognito.
+Expected: success message appears, the form resets, and the page remains stable.
 
-10. Confirm guestbook updates.
-Expected: New wish appears on public page (if wish message provided).
-If fail: Check revalidation path and select query.
+10. Submit the same guest name again for the same event.
+Expected: duplicate RSVP is rejected with a friendly message.
 
-11. Return to owner manage view (`/`).
-Expected: Event manage card still loads in the same email workspace.
-If fail: Check owner cookie and event lookup by `owner_email`.
+11. Attempt a too-fast submission.
+Expected: the request is rejected gracefully by the minimum-delay spam guard.
 
-12. Check RSVP summary.
-Expected: Counts reflect submitted RSVP values.
-If fail: Check summary math in [src/components/manage-wedding-card.tsx](c:/MyProjects/Wedly/src/components/manage-wedding-card.tsx).
+12. Return to the owner dashboard.
+Expected: RSVP summary counts update and the guestbook carousel can show the new message if one was provided.
 
-13. Delete one RSVP as owner.
-Expected: RSVP entry is removed.
-If fail: Check owner email match in [src/lib/actions/rsvps.ts](c:/MyProjects/Wedly/src/lib/actions/rsvps.ts).
+13. Export the CSV.
+Expected: a file downloads as `wedly-rsvps-[slug].csv`.
 
-14. Export CSV.
-Expected: File downloads as `wedly-rsvps-[slug].csv`.
-If fail: Check [src/app/api/rsvps/export/route.ts](c:/MyProjects/Wedly/src/app/api/rsvps/export/route.ts) and owner cookie.
+14. Open the CSV file.
+Expected: columns are `guest_name`, `attendance`, `pax_count`, `wish_message`, and `created_at`.
 
-15. Switch email.
-Expected: Owner workspace clears and landing/email access state appears.
-If fail: Check `clearOwnerSession` in [src/lib/actions/events.ts](c:/MyProjects/Wedly/src/lib/actions/events.ts).
+15. Open the same export URL without an owner cookie.
+Expected: the endpoint returns `401 Unauthorized`.
 
-16. Test owner isolation with a second email.
-Expected: Second email does not see the first email workspace.
-If fail: Check `events.owner_email` rows and owner cookie normalization.
+16. Test unknown public slug.
+Expected: the elegant not-found page renders for `/w/unknown-slug`.
 
-17. Test unknown slug.
-Expected: Elegant not-found state appears.
-If fail: Check [src/app/w/[slug]/not-found.tsx](c:/MyProjects/Wedly/src/app/w/[slug]/not-found.tsx).
+17. Check mobile layout at 375px.
+Expected: no horizontal overflow on landing, create-event, owner, or public RSVP screens.
 
-18. Test mobile layout (375px width).
-Expected: No horizontal overflow on `/` and `/w/[slug]`.
-If fail: Check long text wrapping in manage/form/wishes components.
+18. Check desktop sticky behavior.
+Expected: owner and public invitation card stay sticky on the left while the right column scrolls.
 
-19. Trigger safe Sentry test (non-production only).
-Expected: `/api/dev/sentry-test` returns success on non-production, 404 on production.
-If fail: Check [src/app/api/dev/sentry-test/route.ts](c:/MyProjects/Wedly/src/app/api/dev/sentry-test/route.ts).
+19. If using demo data, test full workspace deletion last.
+Expected: the danger-zone action deletes the event and associated RSVPs, clears the owner cookie, and returns to landing state.
 
-20. Check Vercel logs, Supabase logs, and Sentry issues.
-Expected: No unhandled route/action runtime errors; only real failures appear.
-If fail: Correlate failing request path with the relevant server action/route handler.
+20. Review Vercel logs and Sentry.
+Expected: no unhandled action or route errors after the smoke test.
+
+## Failure Triage
+
+- Build or metadata issue: [docs/deployment-troubleshooting.md](./deployment-troubleshooting.md)
+- Owner access or cookie issue: [src/lib/owner-session.ts](../src/lib/owner-session.ts)
+- Event creation issue: [src/lib/actions/events.ts](../src/lib/actions/events.ts)
+- Public RSVP issue: [src/lib/actions/rsvps.ts](../src/lib/actions/rsvps.ts)
+- CSV export issue: [src/app/api/rsvps/export/route.ts](../src/app/api/rsvps/export/route.ts)
