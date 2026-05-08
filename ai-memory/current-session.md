@@ -47,6 +47,7 @@ Project: Wedly
 - State-transition scroll behavior was fixed for same-route Wedly transitions by adding a client scroll helper, marking pending top-scroll on `Continue`, consuming it globally after refresh/render, and using it after successful event creation before `router.refresh()`.
 - Landing `Continue` scroll timing was adjusted so it only marks a pending top-scroll and does not scroll immediately before the create-state transition.
 - Create-event submit now mirrors landing `Continue`: it marks pending top-scroll on submit and waits until owner-state render/refresh before resetting viewport to top.
+- Landing hero right-side abstract CSS visual was replaced with the real `public/hero-img.webp` asset via `next/image`, with a soft ivory gradient blend overlay.
 
 ## Validation
 - `npm run lint` passed.
@@ -69,6 +70,7 @@ Project: Wedly
 - Validation after state-transition scroll reset fix: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 - Validation after landing `Continue` scroll timing fix: `npm run lint` and `npm run typecheck` passed.
 - Validation after create-event scroll timing alignment: `npm run lint` and `npm run typecheck` passed.
+- Validation after landing hero image replacement: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.

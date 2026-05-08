@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { AuthCard } from "@/components/auth-card";
 import { CreateWeddingForm } from "@/components/create-wedding-form";
 import { FloatingPetals } from "@/components/floating-petals";
@@ -114,19 +115,17 @@ export default async function Home() {
               </a>
             </div>
           </div>
-          <div className="relative min-h-[26rem] md:min-h-[36rem]">
-            <div className="absolute -left-3 top-10 h-14 w-14 rounded-full bg-[radial-gradient(circle_at_35%_30%,#ffd3c4,#dfab93)] opacity-80 blur-[1px]" />
-            <div className="absolute bottom-16 left-4 h-12 w-12 rounded-full bg-[radial-gradient(circle_at_35%_30%,#f6ccb7,#dca78d)] opacity-65 blur-[1px]" />
-            <div className="absolute right-0 top-0 hidden h-48 w-40 rounded-[999px] border border-primary/25 lg:block" />
-            <div className="absolute inset-0 rounded-[2.7rem] bg-[radial-gradient(circle_at_18%_24%,rgba(255,255,255,0.98),rgba(255,248,242,0.74)_34%,transparent_55%),linear-gradient(135deg,rgba(255,248,241,0.94),rgba(245,224,209,0.5)_42%,rgba(201,150,123,0.18)_100%)] shadow-[0_36px_90px_rgba(110,83,69,0.18)]" />
-            <div className="absolute inset-x-[10%] bottom-0 top-[10%] rounded-[2.3rem] bg-[linear-gradient(180deg,rgba(255,247,240,0.86),rgba(236,209,190,0.44)),radial-gradient(circle_at_50%_20%,rgba(255,255,255,0.55),transparent_30%)]" />
-            <div className="absolute bottom-[7%] left-[16%] h-[18%] w-[68%] rounded-[999px] bg-[radial-gradient(circle_at_center,rgba(181,133,104,0.22),transparent_70%)] blur-xl" />
-            <div className="absolute bottom-[14%] left-[28%] h-[68%] w-[20%] rounded-t-[8rem] rounded-b-[2rem] bg-[linear-gradient(180deg,#4f382d,#241a16)] shadow-[0_20px_40px_rgba(44,25,18,0.22)]" />
-            <div className="absolute bottom-[14%] left-[47%] h-[52%] w-[15%] rounded-t-[6rem] rounded-b-[2rem] bg-[linear-gradient(180deg,#745347,#2f241f)] shadow-[0_18px_38px_rgba(44,25,18,0.18)]" />
-            <div className="absolute bottom-[14%] left-[52%] h-[45%] w-[24%] rounded-t-[9rem] rounded-b-[2.8rem] bg-[linear-gradient(180deg,rgba(248,237,231,0.96),rgba(232,201,185,0.88))] shadow-[0_22px_36px_rgba(172,132,108,0.22)]" />
-            <div className="absolute inset-x-[9%] bottom-[8%] h-[16%] rounded-[999px] bg-[linear-gradient(180deg,rgba(194,152,129,0.18),rgba(255,255,255,0))]" />
-            <div className="absolute left-[6%] top-[12%] h-32 w-32 rounded-full border border-primary/20" />
-            <div className="absolute bottom-[10%] right-[6%] h-40 w-40 rounded-full border border-primary/18" />
+          <div className="relative min-h-[24rem] overflow-hidden rounded-[var(--wedly-radius)] shadow-[0_36px_90px_rgba(110,83,69,0.18)] md:min-h-[36rem] lg:min-h-[42rem]">
+            <Image
+              src="/hero-img.webp"
+              alt="Bride and groom overlooking a warm wedding landscape"
+              fill
+              priority
+              sizes="(min-width: 1024px) 48vw, 100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,246,0.04)_0%,rgba(255,250,246,0.18)_100%)] lg:bg-[linear-gradient(90deg,rgba(255,250,246,0.98)_0%,rgba(255,250,246,0.82)_24%,rgba(255,250,246,0.28)_54%,rgba(255,250,246,0)_100%)]" />
+            <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,rgba(255,250,246,0)_0%,rgba(248,243,238,0.55)_100%)]" />
           </div>
         </section>
 
