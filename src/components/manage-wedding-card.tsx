@@ -1,4 +1,4 @@
-import { clearOwnerSession, deleteOwnerWorkspace } from "@/lib/actions/events";
+import { deleteOwnerWorkspace } from "@/lib/actions/events";
 import { CopyLinkButton } from "./copy-link-button";
 import { DeleteWorkspaceButton } from "./delete-workspace-button";
 import { WishesList } from "./wishes-list";
@@ -70,11 +70,6 @@ export function ManageWeddingCard({ event, publicLink, rsvps }: ManageWeddingCar
                 guest message in one polished owner view.
               </p>
             </div>
-            <form action={clearOwnerSession}>
-              <button className="wedly-pill border border-border bg-white/80 px-4 py-2 text-sm font-medium text-textMuted transition hover:bg-white">
-                Switch Email
-              </button>
-            </form>
           </div>
 
           <section className="wedly-ticket wedly-ticket-soft px-4 py-4 sm:px-5 sm:py-5">

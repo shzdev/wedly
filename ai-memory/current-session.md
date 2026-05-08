@@ -34,6 +34,7 @@ Project: Wedly
 - Global scroll reset behavior was added so route changes and browser page-show events restore viewport to top, preventing the app from reopening at lower scroll positions on create/owner/public pages.
 - Create-event and public RSVP submit success handlers now explicitly scroll to top before refresh/reset to keep focus at the upper page after submission.
 - Mobile date input overflow on create-event form was fixed by enforcing `min-width: 0` on shared form controls and `max-width: 100%` for `.wedly-input[type="date"]` so width matches other text inputs.
+- Owner wedding page top-right `Switch Email` button was removed from the owner overview header.
 
 ## Validation
 - `npm run lint` passed.
@@ -45,6 +46,7 @@ Project: Wedly
 - Validation after create-event UI simplification: `npm run typecheck` passed.
 - Validation after scroll-focus fix: `npm run lint` and `npm run typecheck` passed.
 - Validation after mobile date-width fix: `npm run typecheck` passed.
+- Validation after removing owner `Switch Email` button: `npm run typecheck` passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.
