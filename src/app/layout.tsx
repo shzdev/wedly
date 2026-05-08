@@ -43,11 +43,20 @@ export const metadata: Metadata = {
     type: "website",
     url: "/",
     siteName: "Wedly",
+    images: [
+      {
+        url: "/og-img.png",
+        width: 1200,
+        height: 630,
+        alt: "Wedly wedding RSVP preview",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Wedly",
     description: "Create a beautiful wedding RSVP page in minutes.",
+    images: ["/og-img.png"],
   },
 };
 

@@ -30,6 +30,25 @@ export async function generateMetadata({
   return {
     title: `${event.couple_names} | Wedly`,
     description: `RSVP for ${event.couple_names} wedding at ${event.venue}.`,
+    openGraph: {
+      title: `${event.couple_names} | Wedly`,
+      description: `RSVP for ${event.couple_names} wedding at ${event.venue}.`,
+      type: "website",
+      images: [
+        {
+          url: "/og-img.png",
+          width: 1200,
+          height: 630,
+          alt: `${event.couple_names} wedding RSVP preview`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${event.couple_names} | Wedly`,
+      description: `RSVP for ${event.couple_names} wedding at ${event.venue}.`,
+      images: ["/og-img.png"],
+    },
   };
 }
 
