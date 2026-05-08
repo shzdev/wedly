@@ -4,6 +4,7 @@ import { useActionState, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { createEvent, type ActionState } from "@/lib/actions/events";
+import { requestScrollTopAfterTransition } from "@/lib/scroll-to-top";
 import { normalizeSlug } from "@/lib/utils/slug";
 
 const initialState: ActionState = {};
@@ -29,7 +30,7 @@ export function CreateWeddingForm() {
 
   useEffect(() => {
     if (state.success) {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      requestScrollTopAfterTransition();
       router.refresh();
     }
   }, [router, state.success]);

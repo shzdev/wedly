@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { continueWithEmail, type ActionState } from "@/lib/actions/events";
+import { requestScrollTopAfterTransition } from "@/lib/scroll-to-top";
 
 const initialState: ActionState = {};
 
@@ -27,7 +28,11 @@ export function AuthCard() {
       <p className="mt-2 text-sm leading-relaxed text-textMuted">
         Enter your email to continue. No email will be sent.
       </p>
-      <form className="mt-6 space-y-4" action={formAction}>
+      <form
+        className="mt-6 space-y-4"
+        action={formAction}
+        onSubmit={requestScrollTopAfterTransition}
+      >
         <label className="block">
           <span className="mb-2 block text-sm font-medium text-textMain">Email Address</span>
           <input

@@ -2,6 +2,10 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import {
+  consumeScrollTopAfterTransition,
+  scrollViewportToTop,
+} from "@/lib/scroll-to-top";
 
 export function ScrollReset() {
   const pathname = usePathname();
@@ -11,12 +15,16 @@ export function ScrollReset() {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    scrollViewportToTop();
   }, [pathname]);
 
   useEffect(() => {
+    consumeScrollTopAfterTransition();
+  });
+
+  useEffect(() => {
     const handlePageShow = () => {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      scrollViewportToTop();
     };
 
     window.addEventListener("pageshow", handlePageShow);
