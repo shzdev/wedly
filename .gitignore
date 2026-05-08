@@ -3,6 +3,8 @@
 # dependencies
 /node_modules
 /ai-memory
+/AGENTS.md
+/CLAUDE.md
 /.pnp
 .pnp.*
 .yarn/*
