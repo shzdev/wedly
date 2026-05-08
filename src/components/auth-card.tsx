@@ -11,7 +11,7 @@ function ContinueButton() {
 
   return (
     <button disabled={pending} className="wedly-btn-primary">
-      {pending ? "Opening your Wedly workspace..." : "Continue"}
+      {pending ? "Opening..." : "Continue"}
     </button>
   );
 }

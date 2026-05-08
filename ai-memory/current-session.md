@@ -38,6 +38,9 @@ Project: Wedly
 - Owner page wording was updated only: invitation-card subheading and owner-overview subheading now use the new refined copy requested by client.
 - Vercel prerender failure on `/_not-found` was traced to global `ScrollReset` in layout using `useSearchParams()` without a Suspense boundary; this crashed static `/404` generation.
 - `ScrollReset` was hardened to depend on `usePathname()` only, preserving top-scroll behavior while remaining safe for prerender.
+- Global first-landing refresh was added per route in `ScrollReset`: each pathname triggers `router.refresh()` once per browser session (sessionStorage key) to ensure first arrival on a page revalidates data/state after transitions such as homepage submit -> create page.
+- Landing/auth `WeddingShell` now enables `equalHeightDesktop` so desktop left decorative card matches right content card height.
+- Real mobile date input overflow on create-event page was hardened further: shared form controls now explicitly use block display, max-width, border-box sizing, inherited font, and targeted WebKit date input constraints; create form labels now use `min-w-0`.
 
 ## Validation
 - `npm run lint` passed.
@@ -51,6 +54,9 @@ Project: Wedly
 - Validation after mobile date-width fix: `npm run typecheck` passed.
 - Validation after removing owner `Switch Email` button: `npm run typecheck` passed.
 - Validation after prerender fix: `npm run build` passed, including static generation for `/_not-found`.
+- Validation after first-landing refresh update: `npm run typecheck` and `npm run build` passed.
+- Validation after landing equal-height tweak: `npm run typecheck` passed.
+- Validation after real-mobile date input hardening: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.

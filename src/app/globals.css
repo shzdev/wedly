@@ -147,12 +147,16 @@ h4 {
 .wedly-input,
 .wedly-textarea,
 .wedly-select {
+  display: block;
   width: 100%;
+  max-width: 100%;
   min-width: 0;
+  box-sizing: border-box;
   border-radius: var(--wedly-radius);
   border: 1px solid rgba(169, 110, 88, 0.18);
   background: rgba(255, 253, 251, 0.96);
   color: var(--textMain);
+  font: inherit;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
@@ -164,7 +168,21 @@ h4 {
 }
 
 .wedly-input[type="date"] {
+  inline-size: 100%;
   max-width: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.wedly-input[type="date"]::-webkit-date-and-time-value {
+  min-width: 0;
+  text-align: left;
+}
+
+.wedly-input[type="date"]::-webkit-calendar-picker-indicator {
+  flex-shrink: 0;
 }
 
 .wedly-textarea {

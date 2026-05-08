@@ -111,9 +111,6 @@ export default async function Home() {
             <div className="mt-9 flex flex-wrap items-center gap-4">
               <a href="#wedly-entry" className="wedly-btn-primary wedly-btn-inline">
                 Get Started
-                <span aria-hidden="true" className="text-lg leading-none">
-                  v
-                </span>
               </a>
             </div>
           </div>
@@ -164,6 +161,7 @@ export default async function Home() {
           eyebrow="Email Workspace"
           title="Start Your Wedly Page"
           description="Enter your email to continue. No email will be sent."
+          equalHeightDesktop
         >
           <AuthCard />
         </WeddingShell>

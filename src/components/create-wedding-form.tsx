@@ -57,7 +57,7 @@ export function CreateWeddingForm() {
   return (
     <form action={formAction} className="space-y-4">
       <div className="grid gap-3 md:grid-cols-2">
-        <label className="block">
+        <label className="block min-w-0">
           <span className="mb-2 block text-sm font-medium text-textMain">Bride Name</span>
           <input
             name="bride_name"
@@ -68,7 +68,7 @@ export function CreateWeddingForm() {
             onChange={(event) => setBrideName(event.target.value)}
           />
         </label>
-        <label className="block">
+        <label className="block min-w-0">
           <span className="mb-2 block text-sm font-medium text-textMain">Groom Name</span>
           <input
             name="groom_name"
@@ -87,12 +87,12 @@ export function CreateWeddingForm() {
         <span className="font-medium text-primaryDark">/{slugPreview}</span>
       </p>
 
-      <label className="block">
+      <label className="block min-w-0">
         <span className="mb-2 block text-sm font-medium text-textMain">Wedding Date</span>
         <input name="wedding_date" type="date" required className="wedly-input" />
       </label>
 
-      <label className="block">
+      <label className="block min-w-0">
         <span className="mb-2 block text-sm font-medium text-textMain">Venue</span>
         <input
           name="venue"
@@ -102,7 +102,7 @@ export function CreateWeddingForm() {
         />
       </label>
 
-      <label className="block">
+      <label className="block min-w-0">
         <span className="mb-2 block text-sm font-medium text-textMain">Welcome Message</span>
         <textarea
           name="message"
