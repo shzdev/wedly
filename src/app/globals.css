@@ -164,6 +164,7 @@ h4 {
 .wedly-input,
 .wedly-select {
   height: 3.15rem;
+  line-height: 3.15rem;
   padding: 0 1rem;
 }
 
@@ -172,12 +173,18 @@ h4 {
   max-width: 100%;
   max-inline-size: 100%;
   min-inline-size: 0;
+  padding-top: 0;
+  padding-bottom: 0;
   -webkit-appearance: none;
   appearance: none;
 }
 
 .wedly-input[type="date"]::-webkit-date-and-time-value {
+  display: flex;
+  align-items: center;
+  min-height: 3.15rem;
   min-width: 0;
+  padding: 0;
   text-align: left;
 }
 

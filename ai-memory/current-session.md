@@ -43,6 +43,7 @@ Project: Wedly
 - Real mobile date input overflow on create-event page was hardened further: shared form controls now explicitly use block display, max-width, border-box sizing, inherited font, and targeted WebKit date input constraints; create form labels now use `min-w-0`.
 - Owner wedding page and public RSVP page sticky invitation behavior was fixed again by replacing desktop-page `overflow-x-hidden` with `overflow-x-clip`, keeping grid overflow visible, and hardening `.wedly-sticky-panel` with fit-content height, z-index, clipped horizontal overflow, and contained overscroll.
 - Shared wishes/guestbook carousel now renders exactly one active wish card at a time for both owner and public RSVP pages; side preview cards/fade overlays were removed, single-wish controls are hidden, multi-wish auto-slide/manual arrows/dots remain, and touch swipe navigation was added.
+- Create-event date input vertical alignment was adjusted for real mobile by giving shared single-line controls an explicit line-height and centering the WebKit date value pseudo-element within the existing input height.
 
 ## Validation
 - `npm run lint` passed.
@@ -61,6 +62,7 @@ Project: Wedly
 - Validation after real-mobile date input hardening: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 - Validation after owner/public sticky invitation fix: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 - Validation after single-card wishes carousel refactor: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
+- Validation after date input vertical alignment fix: `npm run lint`, `npm run typecheck`, and `npm run build` passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.
