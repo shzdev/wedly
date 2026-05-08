@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { ScrollReset } from "@/components/scroll-reset";
 import "./globals.css";
 
 const headingFont = Playfair_Display({
@@ -43,7 +44,10 @@ export default function RootLayout({
       lang="en"
       className={`${headingFont.variable} ${bodyFont.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ScrollReset />
+        {children}
+      </body>
     </html>
   );
 }

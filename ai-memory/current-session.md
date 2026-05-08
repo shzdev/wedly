@@ -31,6 +31,8 @@ Project: Wedly
 - Sticky invitation behavior was fixed for create/owner/public layouts using a shared `.wedly-sticky-panel` class with desktop `position: sticky`, capped viewport height, and `overflow-y: auto` so left panels remain sticky and scrollable when content is tall.
 - Create-event screen UI was simplified: removed inner duplicate card/header/subheading and removed `Switch Email` action from the form body; form fields now render directly under the outer `WeddingShell` heading/subheading.
 - Create-event desktop layout now uses equal-height shell columns (`equalHeightDesktop`) and disables sticky on the left panel for this state (`stickyPanel={false}`) to keep both sides visually aligned.
+- Global scroll reset behavior was added so route changes and browser page-show events restore viewport to top, preventing the app from reopening at lower scroll positions on create/owner/public pages.
+- Create-event and public RSVP submit success handlers now explicitly scroll to top before refresh/reset to keep focus at the upper page after submission.
 
 ## Validation
 - `npm run lint` passed.
@@ -40,6 +42,7 @@ Project: Wedly
 - Post-update revalidation: `npm run lint`, `npm run typecheck`, and `npm run build` all passed after adding workspace-delete action/UI.
 - Follow-up validation after sticky fix: `npm run lint` and `npm run typecheck` both passed.
 - Validation after create-event UI simplification: `npm run typecheck` passed.
+- Validation after scroll-focus fix: `npm run lint` and `npm run typecheck` passed.
 
 ## Deployment
 - Repository was pushed to GitHub on `main`.

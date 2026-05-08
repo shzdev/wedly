@@ -36,6 +36,7 @@ export function RsvpForm({ eventId, slug }: RsvpFormProps) {
 
   useEffect(() => {
     if (state.success) {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       formRef.current?.reset();
     }
   }, [state.success]);
