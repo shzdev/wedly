@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { AuthCard } from "@/components/auth-card";
 import { CreateWeddingForm } from "@/components/create-wedding-form";
 import { FloatingPetals } from "@/components/floating-petals";
@@ -94,38 +93,29 @@ export default async function Home() {
 
   return (
     <main className="relative overflow-x-hidden bg-background">
-      <div className="absolute inset-x-0 top-0 h-[48rem] bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.85),transparent_35%),radial-gradient(circle_at_top_right,rgba(235,213,201,0.52),transparent_42%),linear-gradient(180deg,rgba(255,250,246,0.92),rgba(248,243,238,0))]" />
       <div className="relative">
-        <section className="wedly-page-frame grid min-h-[92vh] items-center gap-10 pb-14 pt-8 md:pb-18 md:pt-10 lg:grid-cols-[1.02fr_0.98fr] lg:gap-14">
-          <div className="relative z-10">
-            <div className="wedly-pill inline-flex items-center gap-3 border border-border/70 bg-white/70 px-4 py-2 shadow-[0_10px_24px_rgba(110,83,69,0.08)] backdrop-blur">
-              <span className="font-serif text-xl tracking-[0.08em] text-primaryDark">Wedly</span>
+        <section className="wedly-hero-with-bg relative flex min-h-[92vh] items-center overflow-hidden pb-14 pt-8 md:pb-18 md:pt-10">
+          <div className="wedly-page-frame relative z-10 w-full">
+            <div className="max-w-2xl">
+              <div className="wedly-pill inline-flex items-center gap-3 border border-border/70 bg-white/70 px-4 py-2 shadow-[0_10px_24px_rgba(110,83,69,0.08)] backdrop-blur">
+                <span className="font-serif text-xl tracking-[0.08em] text-primaryDark">
+                  Wedly
+                </span>
+              </div>
+              <p className="wedly-kicker mt-10">Luxury Wedding RSVP</p>
+              <h1 className="mt-5 max-w-2xl text-5xl leading-[0.96] text-textMain sm:text-6xl md:text-7xl lg:text-[5.5rem]">
+                Create a Beautiful Wedding RSVP Experience
+              </h1>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-textMuted md:text-xl">
+                Design a polished RSVP page, share it with your guests, and manage
+                responses with ease.
+              </p>
+              <div className="mt-9 flex flex-wrap items-center gap-4">
+                <a href="#wedly-entry" className="wedly-btn-primary wedly-btn-inline">
+                  Get Started
+                </a>
+              </div>
             </div>
-            <p className="wedly-kicker mt-10">Luxury Wedding RSVP</p>
-            <h1 className="mt-5 max-w-2xl text-5xl leading-[0.96] text-textMain sm:text-6xl md:text-7xl lg:text-[5.5rem]">
-              Create a Beautiful Wedding RSVP Experience
-            </h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-textMuted md:text-xl">
-              Design a polished RSVP page, share it with your guests, and manage
-              responses with ease.
-            </p>
-            <div className="mt-9 flex flex-wrap items-center gap-4">
-              <a href="#wedly-entry" className="wedly-btn-primary wedly-btn-inline">
-                Get Started
-              </a>
-            </div>
-          </div>
-          <div className="relative min-h-[24rem] overflow-hidden rounded-[var(--wedly-radius)] shadow-[0_36px_90px_rgba(110,83,69,0.18)] md:min-h-[36rem] lg:min-h-[42rem]">
-            <Image
-              src="/hero-img.webp"
-              alt="Bride and groom overlooking a warm wedding landscape"
-              fill
-              priority
-              sizes="(min-width: 1024px) 48vw, 100vw"
-              className="object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,246,0.04)_0%,rgba(255,250,246,0.18)_100%)] lg:bg-[linear-gradient(90deg,rgba(255,250,246,0.98)_0%,rgba(255,250,246,0.82)_24%,rgba(255,250,246,0.28)_54%,rgba(255,250,246,0)_100%)]" />
-            <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,rgba(255,250,246,0)_0%,rgba(248,243,238,0.55)_100%)]" />
           </div>
         </section>
 
