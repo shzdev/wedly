@@ -47,9 +47,6 @@ export function AuthCard() {
         </label>
         <ContinueButton />
       </form>
-      <p className="mt-4 text-xs text-textMuted">
-        MVP demo mode only. This email opens your workspace directly for testing.
-      </p>
       <div aria-live="polite" className="mt-2 min-h-5">
         {state.error ? <p className="text-sm text-rose-700">{state.error}</p> : null}
       </div>
