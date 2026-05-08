@@ -26,6 +26,11 @@
 - The invitation preview became the visual anchor on the left, while operational tools stay in a right-hand companion column.
 - Guest wishes were upgraded from a static list to a lightweight client-side carousel so the owner view feels editorial rather than dashboard-like, without adding new dependencies.
 
+## 2026-05-08 - Public RSVP Page Aligned to the Owner Visual System
+- The public guest page now reuses the same invitation-led layout, motion treatment, and carousel style as the owner page instead of presenting a simpler one-off card and form.
+- A shared invitation component was introduced so owner and guest pages stay visually consistent without duplicating the printed-invitation markup.
+- The RSVP form was redesigned visually, but the honeypot, render timestamp, server action names, and submission values were intentionally preserved to avoid weakening spam or duplicate protection.
+
 ## 2026-05-08 - Publish Local Main to GitHub
 - Pushed local `main` to `origin/main` with `--force-with-lease` because the remote only contained the initial commit.
 - This preserved the Wedly project history and avoided merging against an empty remote baseline.

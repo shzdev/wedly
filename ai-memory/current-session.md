@@ -14,6 +14,9 @@ Project: Wedly
 - Logged-in users with an existing event now bypass the landing hero as well and see a dedicated owner page with a sticky invitation preview on desktop.
 - The owner page now uses a refined two-column layout: invitation card on the left, then link tools, RSVP summary, wishes carousel, and RSVP ledger on the right.
 - Guest wishes in the owner view now rotate automatically in a lightweight client-side carousel, and the owner page includes subtle falling-petal motion with reduced-motion fallback.
+- The public RSVP page now mirrors the owner visual system with a sticky invitation on the left, then a guest content column containing the wishes carousel and RSVP form.
+- The RSVP form now uses the same invitation/ticket language as the rest of the app and keeps the existing honeypot, timestamp, and duplicate-protection flow unchanged.
+- The wedding invitation card is now shared between owner and public pages through a reusable component.
 
 ## Validation
 - `npm run lint` passed.
