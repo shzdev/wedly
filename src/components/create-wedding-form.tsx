@@ -30,7 +30,6 @@ export function CreateWeddingForm() {
 
   useEffect(() => {
     if (state.success) {
-      requestScrollTopAfterTransition();
       router.refresh();
     }
   }, [router, state.success]);
@@ -56,7 +55,11 @@ export function CreateWeddingForm() {
   }, [brideName, groomName]);
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form
+      action={formAction}
+      className="space-y-4"
+      onSubmit={requestScrollTopAfterTransition}
+    >
       <div className="grid gap-3 md:grid-cols-2">
         <label className="block min-w-0">
           <span className="mb-2 block text-sm font-medium text-textMain">Bride Name</span>
